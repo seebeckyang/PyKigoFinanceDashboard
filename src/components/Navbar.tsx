@@ -14,7 +14,7 @@ export default function Navbar() {
                                     <Wallet className="h-5 w-5 text-white" />
                                 </div>
                                 <span className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-brand-900 to-brand-600">
-                                    RuiPYKigo
+                                    AlexFinance
                                 </span>
                             </Link>
                         </div>
@@ -50,7 +50,7 @@ export default function Navbar() {
                         <Wallet className="h-4 w-4 text-white" />
                     </div>
                     <span className="text-lg font-bold bg-clip-text text-transparent bg-gradient-to-r from-brand-900 to-brand-600">
-                        RuiPYKigo
+                        AlexFinance
                     </span>
                 </Link>
                 {/* Mobile More Menu Overlay placeholder if needed */}
