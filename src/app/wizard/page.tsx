@@ -30,8 +30,8 @@ type MappedAsset = Asset & {
 
 const getOwnerColor = (owner: string) => {
     switch (owner) {
-        case 'PY': return "bg-emerald-100 text-emerald-700";
-        case 'Kigo': return "bg-amber-100 text-amber-700";
+        case 'CY': return "bg-emerald-100 text-emerald-700";
+        case 'HY': return "bg-amber-100 text-amber-700";
         case 'Both': return "bg-indigo-100 text-indigo-700";
         default: return "bg-slate-100 text-slate-700";
     }
@@ -54,7 +54,7 @@ export default function QuarterlyWizard() {
 
     // Modal States
     const [isAddModalOpen, setIsAddModalOpen] = useState(false);
-    const [newAsset, setNewAsset] = useState({ title: '', owner: 'PY', asset_type: 'cash', currency: 'TWD', ticker_symbol: '' });
+    const [newAsset, setNewAsset] = useState({ title: '', owner: 'CY', asset_type: 'cash', currency: 'TWD', ticker_symbol: '' });
 
     // Ticker autocomplete states
     const [tickerQuery, setTickerQuery] = useState('');
@@ -205,7 +205,7 @@ export default function QuarterlyWizard() {
                 setCashAccounts(prev => [...prev, mapped]);
             }
             setIsAddModalOpen(false);
-            setNewAsset({ title: '', owner: 'PY', asset_type: 'cash', currency: 'TWD', ticker_symbol: '' });
+            setNewAsset({ title: '', owner: 'CY', asset_type: 'cash', currency: 'TWD', ticker_symbol: '' });
             resetTickerState();
         } catch (error) {
             alert("新增失敗");
@@ -364,7 +364,7 @@ export default function QuarterlyWizard() {
                 <>
                     {/* Owner Filter Tabs */}
                     <div className="flex flex-wrap items-center justify-center gap-2 bg-white p-1.5 md:p-2 rounded-2xl border border-slate-200 shadow-sm w-full sm:w-fit mx-auto">
-                        {['All', 'PY', 'Kigo', 'Both'].map((tab) => (
+                        {['All', 'CY', 'HY', 'Both'].map((tab) => (
                             <button
                                 key={tab}
                                 onClick={() => setActiveTab(tab)}
@@ -582,8 +582,8 @@ export default function QuarterlyWizard() {
                                                 onChange={e => setNewAsset(prev => ({ ...prev, owner: e.target.value }))}
                                                 className="w-full rounded-xl border-slate-200 shadow-sm focus:border-brand-500 focus:ring-brand-500 bg-white px-4 py-2.5 outline-none border transition-all font-medium"
                                             >
-                                                <option value="PY">PY</option>
-                                                <option value="Kigo">Kigo</option>
+                                                <option value="CY">CY</option>
+                                                <option value="HY">HY</option>
                                                 <option value="Both">Both</option>
                                             </select>
                                         </div>
