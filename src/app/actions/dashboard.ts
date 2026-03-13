@@ -20,8 +20,8 @@ const DEMO_DASHBOARD_DATA = {
         { name: "fixed_deposit", value: 8.0, raw_value: 7873600, color: "#f59e0b", originalKey: "fixed_deposit" }
     ],
     ownershipData: [
-        { name: "PY", value: 45.0, raw_value: 44289000, color: "#10b981", originalKey: "PY" },
-        { name: "Kigo", value: 30.0, raw_value: 29526000, color: "#fcd34d", originalKey: "Kigo" },
+        { name: "CY", value: 45.0, raw_value: 44289000, color: "#10b981", originalKey: "CY" },
+        { name: "HY", value: 30.0, raw_value: 29526000, color: "#fcd34d", originalKey: "HY" },
         { name: "Both", value: 25.0, raw_value: 24605000, color: "#6366f1", originalKey: "Both" }
     ],
     trendData: [
@@ -43,11 +43,11 @@ const DEMO_DASHBOARD_DATA = {
             period_name: "2026/2",
             totalNetWorth: 98420000,
             rawRecords: [
-                { id: "r1", total_twd_value: 17715600, assets: { currency: "USD", asset_type: "rsu", owner: "PY" } },
-                { id: "r2", total_twd_value: 49210000, assets: { currency: "USD", asset_type: "stock", owner: "PY" } },
-                { id: "r3", total_twd_value: 11810400, assets: { currency: "USD", asset_type: "stock", owner: "Kigo" } },
+                { id: "r1", total_twd_value: 17715600, assets: { currency: "USD", asset_type: "rsu", owner: "CY" } },
+                { id: "r2", total_twd_value: 49210000, assets: { currency: "USD", asset_type: "stock", owner: "CY" } },
+                { id: "r3", total_twd_value: 11810400, assets: { currency: "USD", asset_type: "stock", owner: "HY" } },
                 { id: "r4", total_twd_value: 9842000, assets: { currency: "TWD", asset_type: "cash", owner: "Both" } },
-                { id: "r5", total_twd_value: 7873600, assets: { currency: "JPY", asset_type: "fixed_deposit", owner: "Kigo" } },
+                { id: "r5", total_twd_value: 7873600, assets: { currency: "JPY", asset_type: "fixed_deposit", owner: "HY" } },
                 { id: "r6", total_twd_value: 1968400, assets: { currency: "TWD", asset_type: "cash", owner: "Both" } }
             ]
         },
@@ -55,47 +55,47 @@ const DEMO_DASHBOARD_DATA = {
             period_name: "2025/5",
             totalNetWorth: 84000000,
             rawRecords: [
-                { id: "s4-1", total_twd_value: 50000000, assets: { currency: "USD", asset_type: "stock", owner: "PY" } },
+                { id: "s4-1", total_twd_value: 50000000, assets: { currency: "USD", asset_type: "stock", owner: "CY" } },
                 { id: "s4-2", total_twd_value: 10000000, assets: { currency: "TWD", asset_type: "cash", owner: "Both" } },
-                { id: "s4-3", total_twd_value: 15000000, assets: { currency: "USD", asset_type: "rsu", owner: "PY" } },
-                { id: "s4-4", total_twd_value: 9000000, assets: { currency: "USD", asset_type: "stock", owner: "Kigo" } }
+                { id: "s4-3", total_twd_value: 15000000, assets: { currency: "USD", asset_type: "rsu", owner: "CY" } },
+                { id: "s4-4", total_twd_value: 9000000, assets: { currency: "USD", asset_type: "stock", owner: "HY" } }
             ]
         },
         "snap-3": {
             period_name: "2024/8",
             totalNetWorth: 62000000,
             rawRecords: [
-                { id: "s3-1", total_twd_value: 35000000, assets: { currency: "USD", asset_type: "stock", owner: "PY" } },
+                { id: "s3-1", total_twd_value: 35000000, assets: { currency: "USD", asset_type: "stock", owner: "CY" } },
                 { id: "s3-2", total_twd_value: 12000000, assets: { currency: "TWD", asset_type: "cash", owner: "Both" } },
-                { id: "s3-3", total_twd_value: 10000000, assets: { currency: "USD", asset_type: "rsu", owner: "PY" } },
-                { id: "s3-4", total_twd_value: 5000000, assets: { currency: "JPY", asset_type: "fixed_deposit", owner: "Kigo" } }
+                { id: "s3-3", total_twd_value: 10000000, assets: { currency: "USD", asset_type: "rsu", owner: "CY" } },
+                { id: "s3-4", total_twd_value: 5000000, assets: { currency: "JPY", asset_type: "fixed_deposit", owner: "HY" } }
             ]
         },
         "snap-2": {
             period_name: "2024/5",
             totalNetWorth: 48500000,
             rawRecords: [
-                { id: "s2-1", total_twd_value: 28000000, assets: { currency: "USD", asset_type: "stock", owner: "PY" } },
+                { id: "s2-1", total_twd_value: 28000000, assets: { currency: "USD", asset_type: "stock", owner: "CY" } },
                 { id: "s2-2", total_twd_value: 10500000, assets: { currency: "TWD", asset_type: "cash", owner: "Both" } },
-                { id: "s2-3", total_twd_value: 10000000, assets: { currency: "USD", asset_type: "rsu", owner: "PY" } }
+                { id: "s2-3", total_twd_value: 10000000, assets: { currency: "USD", asset_type: "rsu", owner: "CY" } }
             ]
         },
         "snap-1": {
             period_name: "2024/4",
             totalNetWorth: 42000000,
             rawRecords: [
-                { id: "s1-1", total_twd_value: 25000000, assets: { currency: "USD", asset_type: "stock", owner: "PY" } },
+                { id: "s1-1", total_twd_value: 25000000, assets: { currency: "USD", asset_type: "stock", owner: "CY" } },
                 { id: "s1-2", total_twd_value: 10000000, assets: { currency: "TWD", asset_type: "cash", owner: "Both" } },
-                { id: "s1-3", total_twd_value: 7000000, assets: { currency: "USD", asset_type: "rsu", owner: "PY" } }
+                { id: "s1-3", total_twd_value: 7000000, assets: { currency: "USD", asset_type: "rsu", owner: "CY" } }
             ]
         }
     },
     rawRecords: [
-        { id: "r1", total_twd_value: 17715600, assets: { currency: "USD", asset_type: "rsu", owner: "PY" } },
-        { id: "r2", total_twd_value: 49210000, assets: { currency: "USD", asset_type: "stock", owner: "PY" } },
-        { id: "r3", total_twd_value: 11810400, assets: { currency: "USD", asset_type: "stock", owner: "Kigo" } },
+        { id: "r1", total_twd_value: 17715600, assets: { currency: "USD", asset_type: "rsu", owner: "CY" } },
+        { id: "r2", total_twd_value: 49210000, assets: { currency: "USD", asset_type: "stock", owner: "CY" } },
+        { id: "r3", total_twd_value: 11810400, assets: { currency: "USD", asset_type: "stock", owner: "HY" } },
         { id: "r4", total_twd_value: 9842000, assets: { currency: "TWD", asset_type: "cash", owner: "Both" } },
-        { id: "r5", total_twd_value: 7873600, assets: { currency: "JPY", asset_type: "fixed_deposit", owner: "Kigo" } },
+        { id: "r5", total_twd_value: 7873600, assets: { currency: "JPY", asset_type: "fixed_deposit", owner: "HY" } },
         { id: "r6", total_twd_value: 1968400, assets: { currency: "TWD", asset_type: "cash", owner: "Both" } }
     ]
 };
@@ -103,13 +103,13 @@ const DEMO_DASHBOARD_DATA = {
 const DEMO_REPORT_DATA = {
     summaryCards: [
         { title: "家庭總資產淨值", amount: 98420000, subtitle: "資料期數：2026/2", borderColor: "border-blue-500" },
-        { title: "PY 資產總計", amount: 44289000, subtitle: "個人獨立帳戶合計", borderColor: "border-emerald-500" },
-        { title: "Kigo 資產總計", amount: 29526000, subtitle: "個人獨立帳戶合計", borderColor: "border-amber-400" },
+        { title: "CY 資產總計", amount: 44289000, subtitle: "個人獨立帳戶合計", borderColor: "border-emerald-500" },
+        { title: "HY 資產總計", amount: 29526000, subtitle: "個人獨立帳戶合計", borderColor: "border-amber-400" },
         { title: "Both (共同帳戶)", amount: 24605000, subtitle: "共同家用與投資", borderColor: "border-indigo-500" },
     ],
     assetItems: [
-        { id: 1, owner: "PY", ownerColor: "bg-emerald-100 text-emerald-700", type: "RSU", name: "Global Tech RSU", originalAmount: "2,000 股 (@ $280.00 USD)", ntdAmount: 17715600, category: "Stocks" },
-        { id: 2, owner: "Kigo", ownerColor: "bg-amber-100 text-amber-700", type: "股票", name: "Semi Giant (2330)", originalAmount: "1,500 股 (@ $1,050.00 TWD)", ntdAmount: 1575000, category: "Stocks" },
+        { id: 1, owner: "CY", ownerColor: "bg-emerald-100 text-emerald-700", type: "RSU", name: "Global Tech RSU", originalAmount: "2,000 股 (@ $280.00 USD)", ntdAmount: 17715600, category: "Stocks" },
+        { id: 2, owner: "HY", ownerColor: "bg-amber-100 text-amber-700", type: "股票", name: "Semi Giant (2330)", originalAmount: "1,500 股 (@ $1,050.00 TWD)", ntdAmount: 1575000, category: "Stocks" },
         { id: 3, owner: "Both", ownerColor: "bg-indigo-100 text-indigo-700", type: "活存", name: "Family Reserve Fund", originalAmount: "$ 8,500,000 (TWD)", ntdAmount: 8500000, category: "Cash" }
     ],
     liveMarketData: [
@@ -186,9 +186,9 @@ export async function getLatestDashboardData(): Promise<any> {
         snapshotDetails[snap.id] = {
             period_name: snap.period_name || snap.created_at.split('T')[0],
             totalNetWorth, rawRecords: records,
-            currencyData: formatPieData(currencyMap, { USD: "#f59e0b", TWD: "#3b82f6", JPY: "#ef4444" }),
+            currencyData: formatPieData(currencyMap, { USD: "#f59e0b", TWD: "#3b82f6", JPY: "#ef4444",CNY: "#22c55e",HKD: "#06b6d4" }),
             allocationData: formatPieData(allocationMap, { cash: "#3b82f6", stock: "#8b5cf6", fixed_deposit: "#f59e0b", rsu: "#10b981" }),
-            ownershipData: formatPieData(ownershipMap, { PY: "#10b981", Kigo: "#fcd34d", Both: "#6366f1" }),
+            ownershipData: formatPieData(ownershipMap, { CY: "#10b981", HY: "#fcd34d", Both: "#6366f1" }),
             strategyAllocationData: formatPieData(strategyMap, {})
         };
     });
@@ -254,15 +254,15 @@ export async function getReportData(snapshotId?: string) {
     }
 
     let totalAmount = 0;
-    const ownerTotals = { PY: 0, Kigo: 0, Both: 0 };
+    const ownerTotals = { CY: 0, HY: 0, Both: 0 };
 
     const assetItems = records.map((record) => {
         const asset = Array.isArray(record.assets) ? record.assets[0] : record.assets;
         if (!asset) return null;
         const val = Number(record.total_twd_value) || 0;
         totalAmount += val;
-        if (asset.owner === 'PY') ownerTotals.PY += val;
-        else if (asset.owner === 'Kigo') ownerTotals.Kigo += val;
+        if (asset.owner === 'CY') ownerTotals.CY += val;
+        else if (asset.owner === 'HY') ownerTotals.HY += val;
         else if (asset.owner === 'Both') ownerTotals.Both += val;
 
         const isCash = asset.asset_type === 'cash' || asset.asset_type === 'fixed_deposit';
@@ -274,7 +274,7 @@ export async function getReportData(snapshotId?: string) {
         return {
             id: record.id,
             owner: asset.owner,
-            ownerColor: asset.owner === 'PY' ? 'bg-emerald-100 text-emerald-700' : asset.owner === 'Kigo' ? 'bg-amber-100 text-amber-700' : 'bg-indigo-100 text-indigo-700',
+            ownerColor: asset.owner === 'CY' ? 'bg-emerald-100 text-emerald-700' : asset.owner === 'HY' ? 'bg-amber-100 text-amber-700' : 'bg-indigo-100 text-indigo-700',
             type: asset.asset_type === 'rsu' ? 'RSU' : asset.asset_type === 'stock' ? '股票' : asset.asset_type === 'fixed_deposit' ? '定存' : '活存',
             name: asset.title,
             originalAmount,
@@ -291,8 +291,8 @@ export async function getReportData(snapshotId?: string) {
 
     const summaryCards = [
         { title: "家庭總資產淨值", amount: totalAmount, subtitle: `期數：${latestSnapshot?.period_name || '-'}`, borderColor: "border-blue-500" },
-        { title: "PY 資產總計", amount: ownerTotals.PY, subtitle: "個人獨立帳戶合計", borderColor: "border-emerald-500" },
-        { title: "Kigo 資產總計", amount: ownerTotals.Kigo, subtitle: "個人獨立帳戶合計", borderColor: "border-amber-400" },
+        { title: "CY 資產總計", amount: ownerTotals.CY, subtitle: "個人獨立帳戶合計", borderColor: "border-emerald-500" },
+        { title: "HY 資產總計", amount: ownerTotals.HY, subtitle: "個人獨立帳戶合計", borderColor: "border-amber-400" },
         { title: "Both (共同帳戶)", amount: ownerTotals.Both, subtitle: "共同家用與投資", borderColor: "border-indigo-500" },
     ];
 
