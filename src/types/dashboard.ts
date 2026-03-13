@@ -1,9 +1,9 @@
 export interface Asset {
     id: string;
     title: string;
-    owner: 'PY' | 'Kigo' | 'Both';
+    owner: 'CY' | 'HY' | 'Both';
     asset_type: 'cash' | 'stock' | 'fixed_deposit' | 'rsu';
-    currency: 'TWD' | 'USD' | 'JPY';
+    currency: 'TWD' | 'USD' | 'CNY'| 'JPY' | 'HKD' ;
     ticker_symbol?: string;
 }
 
