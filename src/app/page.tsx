@@ -145,7 +145,7 @@ export default function Dashboard() {
             trendData,
             currencyData: formatPieData(currencyMap, { USD: "#f59e0b", TWD: "#3b82f6", JPY: "#ef4444" }),
             allocationData: formatPieData(allocationMap, { cash: "#3b82f6", stock: "#8b5cf6", fixed_deposit: "#f59e0b", rsu: "#10b981" }),
-            ownershipData: formatPieData(ownershipMap, { PY: "#10b981", Kigo: "#fcd34d", Both: "#6366f1" })
+            ownershipData: formatPieData(ownershipMap, { CY: "#10b981", HY: "#fcd34d", Both: "#6366f1" })
         };
     }, [dashboardData, activeSnapshotId, activeFilters]);
 
