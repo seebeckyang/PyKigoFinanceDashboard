@@ -58,7 +58,7 @@ export function LiveMarketTicker({ tickers, fxPairs = ["USD", "JPY", "CNY", "HKD
             {/* 股價 */}
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2">
                 {quotes.length === 0 && (
-                    <div className="col-span-full text-center text-xs text-[#5A6B89] py-4">正在載入即時報價…</div>
+                    <div className="col-span-full text-center text-xs text-[#5A6B89] py-4">預覽（Demo）模式：市值以最近快照計算，即時報價需連接市場資料源。</div>
                 )}
                 {quotes.map((q) => {
                     const up = q.changePercent >= 0;

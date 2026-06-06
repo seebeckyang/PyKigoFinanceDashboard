@@ -1,18 +1,34 @@
-import { createClient } from '@supabase/supabase-js'
+// 靜態 Demo Mode — 不連接 Supabase，提供安全的查詢鏈空殼，
+// 避免 @supabase/supabase-js 在預覽 iframe 內存取 localStorage 而導致白屏。
+// Demo Mode 下所有 action 皆提早回傳，不會真的呼叫到這裡的查詢方法。
 
-const isDemo = process.env.NEXT_PUBLIC_DEMO_MODE === 'true'
+type Result = { data: any; error: any };
 
-// Provide dummy values for demo mode to prevent build-time crashes
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || (isDemo ? 'https://demo.supabase.co' : '')
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || (isDemo ? 'demo-key' : '')
-
-if (!supabaseUrl || !supabaseAnonKey) {
-    if (!isDemo) {
-        console.warn('⚠️ Supabase URL or Anon Key is missing. This will break non-demo functionality.')
-    }
+function makeBuilder(): any {
+    const result: Result = { data: null, error: { message: "demo-mode: supabase disabled" } };
+    const builder: any = new Proxy(
+        {
+            // 讓 await 直接拿到結果
+            then: (resolve: (v: Result) => any) => resolve(result),
+        },
+        {
+            get(target: any, prop: string) {
+                if (prop === "then") return target.then;
+                // 任意鏈式方法皆回傳同一個 builder，最終 await 得到空結果
+                return () => builder;
+            },
+        }
+    );
+    return builder;
 }
 
-export const supabase = createClient(
-    supabaseUrl || 'https://placeholder.supabase.co', 
-    supabaseAnonKey || 'placeholder'
-)
+export const supabase: any = {
+    from: () => makeBuilder(),
+    rpc: () => makeBuilder(),
+    auth: {
+        getSession: async () => ({ data: { session: null }, error: null }),
+        getUser: async () => ({ data: { user: null }, error: null }),
+        signOut: async () => ({ error: null }),
+    },
+    storage: { from: () => makeBuilder() },
+};

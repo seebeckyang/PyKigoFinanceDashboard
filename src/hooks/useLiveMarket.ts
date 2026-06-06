@@ -42,6 +42,11 @@ export function useLiveMarket(tickers: string[], intervalMs = 60000): UseLiveMar
     tickerKeyRef.current = tickerKey;
 
     const fetchAll = useCallback(async () => {
+        // 靜態 Demo Mode：無後端報價 API，直接跳過即時輪詢（市值改用預計真實值）。
+        if (typeof window !== "undefined" && (window as any).__STATIC_DEMO__ !== false) {
+            setLastUpdated(new Date());
+            return;
+        }
         setIsRefreshing(true);
         try {
             const tk = tickerKeyRef.current;
