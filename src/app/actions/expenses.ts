@@ -1,4 +1,4 @@
-"use server";
+
 
 import { supabase } from "@/lib/supabase";
 import { Expense, ExpenseCategory, Settlement } from "@/types/expenses";
@@ -464,7 +464,13 @@ export async function createExpenses(expenses: Partial<Expense>[]) {
     return data as Expense[];
 }
 
-import { GoogleGenerativeAI } from "@google/generative-ai";
+// Demo Mode 靜態版：移除後端 AI SDK，提供相容的空殼以保留型別與分支
+class GoogleGenerativeAI {
+    constructor(_key?: string) {}
+    getGenerativeModel(_opts?: any): any {
+        return { generateContent: async (..._args: any[]) => ({ response: { text: () => "{}" } }) };
+    }
+}
 
 /**
  * AI Data Import & Deduplication

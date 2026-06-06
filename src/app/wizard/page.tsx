@@ -30,10 +30,10 @@ type MappedAsset = Asset & {
 
 const getOwnerColor = (owner: string) => {
     switch (owner) {
-        case 'CY': return "bg-emerald-100 text-emerald-700";
-        case 'HY': return "bg-amber-100 text-amber-700";
-        case 'Both': return "bg-indigo-100 text-indigo-700";
-        default: return "bg-slate-100 text-slate-700";
+        case 'CY': return "bg-[#10B981]/15 text-[#0ea072]";
+        case 'HY': return "bg-[#F59E0B]/15 text-[#d4880a]";
+        case 'Both': return "bg-[#16223D] text-[#1a6ae3]";
+        default: return "bg-[#16223D] text-[#E6EDF7]";
     }
 };
 
@@ -339,38 +339,38 @@ export default function QuarterlyWizard() {
         <div className="max-w-5xl mx-auto space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700 pb-20">
 
             {/* Header */}
-            <div className="bg-gradient-to-br from-slate-800 to-brand-600 rounded-2xl md:rounded-3xl p-6 md:p-8 text-white shadow-lg relative overflow-hidden">
+            <div className="bg-gradient-to-br from-[#0B1220] to-[#16223D] rounded-2xl md:rounded-3xl p-6 md:p-8 text-white shadow-lg relative overflow-hidden">
                 <div className="relative z-10">
                     <h1 className="text-2xl md:text-3xl font-black tracking-tight mb-2 flex items-center gap-2 md:gap-3">
                         <span className="text-3xl md:text-4xl">📝</span> {currentPeriod} 資產結算
                     </h1>
-                    <p className="text-brand-100 font-medium opacity-90 text-sm md:text-base">
+                    <p className="text-[#93A4C2] font-medium opacity-90 text-sm md:text-base">
                         上一次結算：{lastPeriod} {monthsSinceLast !== null ? `(相隔 ${monthsSinceLast} 個月)` : ''}
                     </p>
                 </div>
 
                 {/* Background decorative elements */}
                 <div className="absolute top-0 right-0 w-64 h-64 bg-white opacity-5 rounded-full -translate-y-1/2 translate-x-1/3 blur-2xl"></div>
-                <div className="absolute bottom-0 left-0 w-48 h-48 bg-brand-400 opacity-20 rounded-full translate-y-1/2 -translate-x-1/4 blur-xl"></div>
+                <div className="absolute bottom-0 left-0 w-48 h-48 bg-[#2E7CF6] opacity-20 rounded-full translate-y-1/2 -translate-x-1/4 blur-xl"></div>
             </div>
 
 
             {loading ? (
                 <div className="flex flex-col items-center justify-center p-20 opacity-60">
-                    <div className="w-10 h-10 border-4 border-slate-200 border-t-brand-600 rounded-full animate-spin mb-4"></div>
-                    <p className="font-bold text-slate-500">正在同步雲端資料庫資產清單...</p>
+                    <div className="w-10 h-10 border-4 border-[#1F2C4A] border-t-[#2E7CF6] rounded-full animate-spin mb-4"></div>
+                    <p className="font-bold text-[#93A4C2]">正在同步雲端資料庫資產清單...</p>
                 </div>
             ) : (
                 <>
                     {/* Owner Filter Tabs */}
-                    <div className="flex flex-wrap items-center justify-center gap-2 bg-white p-1.5 md:p-2 rounded-2xl border border-slate-200 shadow-sm w-full sm:w-fit mx-auto">
+                    <div className="flex flex-wrap items-center justify-center gap-2 bg-[#111A2E] p-1.5 md:p-2 rounded-2xl border border-[#1F2C4A] shadow-sm w-full sm:w-fit mx-auto">
                         {['All', 'CY', 'HY', 'Both'].map((tab) => (
                             <button
                                 key={tab}
                                 onClick={() => setActiveTab(tab)}
                                 className={`flex-1 sm:flex-none px-4 md:px-6 py-2.5 md:py-2 rounded-xl text-xs md:text-sm font-bold transition-all ${activeTab === tab
-                                    ? "bg-slate-800 text-white shadow-md"
-                                    : "text-slate-500 hover:bg-slate-100 hover:text-slate-800"
+                                    ? "bg-[#111A2E] text-white shadow-md"
+                                    : "text-[#93A4C2] hover:bg-[#16223D] hover:text-[#E6EDF7]"
                                     }`}
                             >
                                 {tab === 'All' ? '全部資產' : tab}
@@ -382,8 +382,8 @@ export default function QuarterlyWizard() {
                     <div className="space-y-4">
                         <div className="flex items-center justify-between mb-6">
                             <div className="flex items-center gap-3">
-                                <h2 className="text-xl font-bold text-slate-800">1. 投資部位 / 現金帳戶總覽</h2>
-                                <span className="bg-emerald-50 text-emerald-600 text-xs px-3 py-1 rounded-full font-bold hidden md:flex items-center gap-1 border border-emerald-100">
+                                <h2 className="text-xl font-bold text-[#E6EDF7]">1. 投資部位 / 現金帳戶總覽</h2>
+                                <span className="bg-[#10B981]/10 text-[#10B981] text-xs px-3 py-1 rounded-full font-bold hidden md:flex items-center gap-1 border border-[#10B981]/20">
                                     <CheckCircle2 className="w-3 h-3" />
                                     可隨時新增或移除資產
                                 </span>
@@ -391,14 +391,14 @@ export default function QuarterlyWizard() {
                             <div className="flex items-center gap-2 w-full sm:w-auto overflow-x-auto pb-2 sm:pb-0">
                                 <button
                                     onClick={handleOpenRestoreModal}
-                                    className="flex-1 sm:flex-none flex items-center justify-center gap-1.5 px-3 md:px-4 py-2.5 md:py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg font-bold text-xs md:text-sm transition-colors whitespace-nowrap"
+                                    className="flex-1 sm:flex-none flex items-center justify-center gap-1.5 px-3 md:px-4 py-2.5 md:py-2 bg-[#16223D] hover:bg-[#1F2C4A] text-[#E6EDF7] rounded-lg font-bold text-xs md:text-sm transition-colors whitespace-nowrap"
                                 >
                                     <ArchiveRestore className="w-4 h-4" />
                                     <span>還原隱藏</span>
                                 </button>
                                 <button
                                     onClick={() => setIsAddModalOpen(true)}
-                                    className="flex-1 sm:flex-none flex items-center justify-center gap-1.5 px-3 md:px-4 py-2.5 md:py-2 bg-slate-800 hover:bg-slate-700 text-white rounded-lg font-bold text-xs md:text-sm transition-colors shadow-sm whitespace-nowrap"
+                                    className="flex-1 sm:flex-none flex items-center justify-center gap-1.5 px-3 md:px-4 py-2.5 md:py-2 bg-[#111A2E] hover:bg-[#16223D] text-white rounded-lg font-bold text-xs md:text-sm transition-colors shadow-sm whitespace-nowrap"
                                 >
                                     <Plus className="w-4 h-4" />
                                     新增帳戶
@@ -407,34 +407,34 @@ export default function QuarterlyWizard() {
                         </div>
 
                         {filteredStocks.length === 0 ? (
-                            <div className="p-8 text-center text-slate-500 font-medium bg-slate-50 rounded-2xl border border-slate-100 border-dashed">
+                            <div className="p-8 text-center text-[#93A4C2] font-medium bg-[#111A2E] rounded-2xl border border-[#1F2C4A]/60 border-dashed">
                                 {activeTab} 沒有需要確認的投資部位。
                             </div>
                         ) : (
                             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                                 {filteredStocks.map((stock) => (
-                                    <div key={stock.id} className="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm hover:shadow-md transition-shadow">
+                                    <div key={stock.id} className="bg-[#111A2E] rounded-2xl border border-[#1F2C4A] p-5 shadow-sm hover:shadow-md transition-shadow">
 
                                         <div className="flex justify-between items-start mb-4">
                                             <div className="flex items-center gap-2">
-                                                <h3 className="font-bold text-slate-800">{stock.title}</h3>
+                                                <h3 className="font-bold text-[#E6EDF7]">{stock.title}</h3>
                                                 <span className={`text-[10px] font-black px-2 py-0.5 rounded-md uppercase ${stock.ownerColor}`}>
                                                     {stock.owner}
                                                 </span>
                                             </div>
                                             <button
                                                 onClick={() => handleDeleteAsset(stock.id)}
-                                                className="text-slate-300 hover:text-rose-500 hover:bg-rose-50 p-1.5 rounded-md transition-colors"
+                                                className="text-[#5A6B89] hover:text-rose-500 hover:bg-rose-50 p-1.5 rounded-md transition-colors"
                                             >
                                                 <Trash2 className="w-4 h-4" />
                                             </button>
                                         </div>
 
-                                        <div className="bg-slate-50 rounded-xl p-4 flex justify-between items-center border border-slate-100">
+                                        <div className="bg-[#111A2E] rounded-xl p-4 flex justify-between items-center border border-[#1F2C4A]/60">
                                             <div>
                                                 <div className="flex-grow">
-                                                    <h3 className="font-bold text-slate-800 text-lg mb-1">
-                                                        {stock.title} {stock.ticker_symbol && <span className="text-sm text-slate-400 ml-1">({stock.ticker_symbol})</span>}
+                                                    <h3 className="font-bold text-[#E6EDF7] text-lg mb-1">
+                                                        {stock.title} {stock.ticker_symbol && <span className="text-sm text-[#5A6B89] ml-1">({stock.ticker_symbol})</span>}
                                                     </h3>
                                                     <div className="flex items-center gap-3 mt-1">
                                                         <div className="flex items-center gap-2">
@@ -443,15 +443,15 @@ export default function QuarterlyWizard() {
                                                                 value={stock.shares === 0 ? '' : stock.shares}
                                                                 onChange={(e) => updateStockShares(stock.id, e.target.value)}
                                                                 placeholder="0"
-                                                                className="bg-white border border-slate-200 rounded-md px-2 py-1 w-24 text-brand-600 font-black text-lg outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-500"
+                                                                className="bg-[#16223D] border border-[#1F2C4A] rounded-md px-2 py-1 w-24 text-[#2E7CF6] font-black text-lg outline-none focus:border-[#2E7CF6] focus:ring-1 focus:ring-[#2E7CF6]"
                                                             />
-                                                            <span className="text-xl font-black text-brand-600">股</span>
+                                                            <span className="text-xl font-black text-[#2E7CF6]">股</span>
                                                         </div>
-                                                        <span className="text-sm font-medium text-slate-400">@ ${stock.price?.toFixed(2) || '0.00'} {stock.currency}</span>
+                                                        <span className="text-sm font-medium text-[#5A6B89]">@ ${stock.price?.toFixed(2) || '0.00'} {stock.currency}</span>
                                                     </div>
                                                 </div>
                                                 <div className="text-right flex-shrink-0">
-                                                    <div className="text-xl font-bold text-slate-700 mt-2">
+                                                    <div className="text-xl font-bold text-[#E6EDF7] mt-2">
                                                         = NT$ {stock.totalValue?.toLocaleString(undefined, { maximumFractionDigits: 0 }) || 0}
                                                     </div>
                                                 </div>        </div>
@@ -463,60 +463,60 @@ export default function QuarterlyWizard() {
                     </div>
 
                     {/* Section 2: Manual Cash Input */}
-                    <div className="space-y-4 pt-4 border-t border-slate-100">
+                    <div className="space-y-4 pt-4 border-t border-[#1F2C4A]/60">
                         <div className="flex items-center gap-3 mb-6">
-                            <h2 className="text-xl font-bold text-slate-800">2. 更新銀行餘額</h2>
-                            <span className="bg-amber-50 text-amber-600 text-xs px-3 py-1 rounded-full font-bold flex items-center gap-1 border border-amber-100">
+                            <h2 className="text-xl font-bold text-[#E6EDF7]">2. 更新銀行餘額</h2>
+                            <span className="bg-[#F59E0B]/10 text-[#F59E0B] text-xs px-3 py-1 rounded-full font-bold flex items-center gap-1 border border-amber-100">
                                 <Wallet className="w-3 h-3" />
                                 請填入今日網銀餘額
                             </span>
                         </div>
 
                         {filteredCash.length === 0 ? (
-                            <div className="p-8 text-center text-slate-500 font-medium bg-slate-50 rounded-2xl border border-slate-100 border-dashed">
+                            <div className="p-8 text-center text-[#93A4C2] font-medium bg-[#111A2E] rounded-2xl border border-[#1F2C4A]/60 border-dashed">
                                 {activeTab} 沒有需要填寫的現金帳戶。
                             </div>
                         ) : (
                             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                                 {filteredCash.map((account) => (
-                                    <div key={account.id} className="bg-white rounded-2xl border border-slate-200 p-5 md:p-6 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
+                                    <div key={account.id} className="bg-[#111A2E] rounded-2xl border border-[#1F2C4A] p-5 md:p-6 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
 
                                         <div className="flex-grow">
                                             <div className="flex items-center justify-between mb-1">
                                                 <div className="flex items-center gap-2">
-                                                    <h3 className="font-bold text-slate-800 text-lg">{account.title}</h3>
+                                                    <h3 className="font-bold text-[#E6EDF7] text-lg">{account.title}</h3>
                                                     <span className={`text-[10px] font-black px-2 py-0.5 rounded-md uppercase ${account.ownerColor}`}>
                                                         {account.owner}
                                                     </span>
                                                 </div>
                                                 <button
                                                     onClick={() => handleDeleteAsset(account.id)}
-                                                    className="text-slate-300 hover:text-rose-500 hover:bg-rose-50 p-1.5 rounded-md transition-colors md:hidden"
+                                                    className="text-[#5A6B89] hover:text-rose-500 hover:bg-rose-50 p-1.5 rounded-md transition-colors md:hidden"
                                                 >
                                                     <Trash2 className="w-4 h-4" />
                                                 </button>
                                             </div>
-                                            <div className="text-sm font-medium text-slate-400 mt-1">
+                                            <div className="text-sm font-medium text-[#5A6B89] mt-1">
                                                 輸入結算當下的帳戶總額
                                             </div>
                                         </div>
 
                                         <div className="flex-shrink-0 w-full md:w-64">
-                                            <div className="flex items-center bg-slate-50 rounded-xl px-4 py-2 border border-slate-200 focus-within:border-brand-500 focus-within:ring-2 focus-within:ring-brand-500/20 transition-all">
-                                                <span className="text-slate-400 font-bold mr-3">{account.currency}</span>
+                                            <div className="flex items-center bg-[#111A2E] rounded-xl px-4 py-2 border border-[#1F2C4A] focus-within:border-[#2E7CF6] focus-within:ring-2 focus-within:ring-[#2E7CF6]/20 transition-all">
+                                                <span className="text-[#5A6B89] font-bold mr-3">{account.currency}</span>
                                                 <input
                                                     type="number"
                                                     value={account.defaultValue || ''}
                                                     onChange={(e) => updateCashBalance(account.id, e.target.value)}
                                                     placeholder="0"
-                                                    className="w-full bg-transparent border-none text-xl font-black text-slate-800 text-right outline-none p-2 focus:ring-0"
+                                                    className="w-full bg-transparent border-none text-xl font-black text-[#E6EDF7] text-right outline-none p-2 focus:ring-0"
                                                 />
                                             </div>
                                         </div>
 
                                         <button
                                             onClick={() => handleDeleteAsset(account.id)}
-                                            className="hidden md:flex flex-shrink-0 text-slate-300 hover:text-rose-500 hover:bg-rose-50 p-2 rounded-lg transition-colors items-center justify-center border border-transparent hover:border-rose-100"
+                                            className="hidden md:flex flex-shrink-0 text-[#5A6B89] hover:text-rose-500 hover:bg-rose-50 p-2 rounded-lg transition-colors items-center justify-center border border-transparent hover:border-rose-100"
                                             title="移除帳戶"
                                         >
                                             <Trash2 className="w-5 h-5" />
@@ -529,13 +529,13 @@ export default function QuarterlyWizard() {
                     </div>
 
                     {/* Auto-calc Total Preview Box (Bonus addition for web) */}
-                    <div className="bg-emerald-50 border border-emerald-100 rounded-2xl p-6 flex flex-col sm:flex-row items-center justify-end gap-4 mt-8">
+                    <div className="bg-[#10B981]/10 border border-[#10B981]/20 rounded-2xl p-6 flex flex-col sm:flex-row items-center justify-end gap-4 mt-8">
                         <button
                             onClick={handleSave}
                             disabled={saving || saved}
                             className={`px-8 py-3 rounded-xl font-bold text-lg shadow-md transition-all flex items-center gap-2 ${saved
-                                ? 'bg-brand-600 text-white shadow-brand-200'
-                                : 'bg-brand-600 hover:bg-brand-700 text-white hover:-translate-y-0.5 hover:shadow-lg'
+                                ? 'bg-[#2E7CF6] text-white shadow-[#2E7CF6]/15'
+                                : 'bg-[#2E7CF6] hover:bg-[#1a6ae3] text-white hover:-translate-y-0.5 hover:shadow-lg'
                                 }`}
                         >
                             {saving ? (
@@ -550,49 +550,49 @@ export default function QuarterlyWizard() {
 
                     {/* Add Asset Modal */}
                     {isAddModalOpen && (
-                        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 backdrop-blur-sm p-4 animate-in fade-in duration-200">
-                            <div className="bg-white rounded-3xl w-full max-w-md shadow-2xl">
-                                <div className="p-6 border-b border-slate-100 flex justify-between items-center">
-                                    <h3 className="text-xl font-bold text-slate-800 flex items-center gap-2">
-                                        <Plus className="w-5 h-5 text-brand-500" /> 新增資產帳戶
+                        <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#0B1220]/50 backdrop-blur-sm p-4 animate-in fade-in duration-200">
+                            <div className="bg-[#111A2E] rounded-3xl w-full max-w-md shadow-2xl">
+                                <div className="p-6 border-b border-[#1F2C4A]/60 flex justify-between items-center">
+                                    <h3 className="text-xl font-bold text-[#E6EDF7] flex items-center gap-2">
+                                        <Plus className="w-5 h-5 text-[#2E7CF6]" /> 新增資產帳戶
                                     </h3>
-                                    <button onClick={() => setIsAddModalOpen(false)} className="text-slate-400 hover:text-slate-600 p-2 bg-slate-50 rounded-full">
+                                    <button onClick={() => setIsAddModalOpen(false)} className="text-[#5A6B89] hover:text-[#93A4C2] p-2 bg-[#111A2E] rounded-full">
                                         <X className="w-4 h-4" />
                                     </button>
                                 </div>
 
-                                <form onSubmit={handleAddAssetSubmit} className="p-6 space-y-5 bg-slate-50/50">
+                                <form onSubmit={handleAddAssetSubmit} className="p-6 space-y-5 bg-[#16223D]/30">
                                     <div>
-                                        <label className="block text-sm font-bold text-slate-700 mb-1">資產名稱</label>
+                                        <label className="block text-sm font-bold text-[#E6EDF7] mb-1">資產名稱</label>
                                         <input
                                             required
                                             type="text"
                                             placeholder="ex: 台新 Richart / 富邦證券"
                                             value={newAsset.title}
                                             onChange={e => setNewAsset(prev => ({ ...prev, title: e.target.value }))}
-                                            className="w-full rounded-xl border-slate-200 shadow-sm focus:border-brand-500 focus:ring-brand-500 bg-white px-4 py-2.5 outline-none border transition-all"
+                                            className="w-full rounded-xl border-[#1F2C4A] shadow-sm focus:border-[#2E7CF6] focus:ring-[#2E7CF6] bg-[#16223D] px-4 py-2.5 outline-none border transition-all text-[#E6EDF7]"
                                         />
                                     </div>
 
                                     <div className="grid grid-cols-2 gap-4">
                                         <div>
-                                            <label className="block text-sm font-bold text-slate-700 mb-1">所有者</label>
+                                            <label className="block text-sm font-bold text-[#E6EDF7] mb-1">所有者</label>
                                             <select
                                                 value={newAsset.owner}
                                                 onChange={e => setNewAsset(prev => ({ ...prev, owner: e.target.value }))}
-                                                className="w-full rounded-xl border-slate-200 shadow-sm focus:border-brand-500 focus:ring-brand-500 bg-white px-4 py-2.5 outline-none border transition-all font-medium"
+                                                className="w-full rounded-xl border-[#1F2C4A] shadow-sm focus:border-[#2E7CF6] focus:ring-[#2E7CF6] bg-[#16223D] px-4 py-2.5 outline-none border transition-all font-medium text-[#E6EDF7]"
                                             >
                                                 <option value="CY">CY</option>
                                                 <option value="HY">HY</option>
-                                                <option value="Both">Both</option>
+                                                <option value="Both">共同</option>
                                             </select>
                                         </div>
                                         <div>
-                                            <label className="block text-sm font-bold text-slate-700 mb-1">資產類型</label>
+                                            <label className="block text-sm font-bold text-[#E6EDF7] mb-1">資產類型</label>
                                             <select
                                                 value={newAsset.asset_type}
                                                 onChange={e => setNewAsset(prev => ({ ...prev, asset_type: e.target.value }))}
-                                                className="w-full rounded-xl border-slate-200 shadow-sm focus:border-brand-500 focus:ring-brand-500 bg-white px-4 py-2.5 outline-none border transition-all font-medium"
+                                                className="w-full rounded-xl border-[#1F2C4A] shadow-sm focus:border-[#2E7CF6] focus:ring-[#2E7CF6] bg-[#16223D] px-4 py-2.5 outline-none border transition-all font-medium text-[#E6EDF7]"
                                             >
                                                 <option value="cash">現金活存</option>
                                                 <option value="fixed_deposit">定存</option>
@@ -603,20 +603,23 @@ export default function QuarterlyWizard() {
 
                                     <div className="grid grid-cols-2 gap-4">
                                         <div>
-                                            <label className="block text-sm font-bold text-slate-700 mb-1">幣別</label>
+                                            <label className="block text-sm font-bold text-[#E6EDF7] mb-1">幣別</label>
                                             <select
                                                 value={newAsset.currency}
                                                 onChange={e => setNewAsset(prev => ({ ...prev, currency: e.target.value }))}
-                                                className="w-full rounded-xl border-slate-200 shadow-sm focus:border-brand-500 focus:ring-brand-500 bg-white px-4 py-2.5 outline-none border transition-all font-medium"
+                                                className="w-full rounded-xl border-[#1F2C4A] shadow-sm focus:border-[#2E7CF6] focus:ring-[#2E7CF6] bg-[#16223D] px-4 py-2.5 outline-none border transition-all font-medium text-[#E6EDF7]"
                                             >
                                                 <option value="TWD">TWD 台幣</option>
                                                 <option value="USD">USD 美金</option>
+                                                <option value="CNY">CNY 人民幣</option>
+                                                <option value="EUR">EUR 歐元</option>
                                                 <option value="JPY">JPY 日幣</option>
+                                                <option value="HKD">HKD 港幣</option>
                                             </select>
                                         </div>
                                         {(newAsset.asset_type === 'stock' || newAsset.asset_type === 'rsu') && (
                                             <div className="relative">
-                                                <label className="block text-sm font-bold text-slate-700 mb-1">股票代號 (Ticker)</label>
+                                                <label className="block text-sm font-bold text-[#E6EDF7] mb-1">股票代號 (Ticker)</label>
                                                 <div className="relative">
                                                     <input
                                                         type="text"
@@ -629,21 +632,21 @@ export default function QuarterlyWizard() {
                                                             if (!e.target.value) setNewAsset(prev => ({ ...prev, ticker_symbol: '' }));
                                                         }}
                                                         onFocus={() => setTickerDropdownOpen(true)}
-                                                        className={`w-full rounded-xl border shadow-sm bg-white px-4 py-2.5 outline-none transition-all pr-8 ${tickerError ? 'border-rose-400 focus:border-rose-500 focus:ring-rose-500/20 focus:ring-2' :
-                                                            'border-slate-200 focus:border-brand-500 focus:ring-brand-500/20 focus:ring-2'
+                                                        className={`w-full rounded-xl border shadow-sm bg-[#16223D] px-4 py-2.5 outline-none transition-all pr-8 ${tickerError ? 'border-rose-400 focus:border-rose-500 focus:ring-rose-500/20 focus:ring-2' :
+                                                            'border-[#1F2C4A] focus:border-[#2E7CF6] focus:ring-[#2E7CF6]/20 focus:ring-2'
                                                             }`}
                                                         autoComplete="off"
                                                     />
                                                     {tickerSearching && (
                                                         <div className="absolute right-3 top-1/2 -translate-y-1/2">
-                                                            <div className="w-4 h-4 border-2 border-brand-400 border-t-transparent rounded-full animate-spin" />
+                                                            <div className="w-4 h-4 border-2 border-[#2E7CF6] border-t-transparent rounded-full animate-spin" />
                                                         </div>
                                                     )}
                                                     {tickerSelected && newAsset.ticker_symbol && (
                                                         <button
                                                             type="button"
                                                             onClick={resetTickerState}
-                                                            className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
+                                                            className="absolute right-3 top-1/2 -translate-y-1/2 text-[#5A6B89] hover:text-[#93A4C2]"
                                                         >
                                                             <X className="w-3.5 h-3.5" />
                                                         </button>
@@ -652,10 +655,10 @@ export default function QuarterlyWizard() {
 
                                                 {/* Dropdown suggestions */}
                                                 {tickerDropdownOpen && (tickerSearching || tickerSuggestions.length > 0 || (tickerQuery.trim().length > 0 && !tickerSearching)) && (
-                                                    <div className="absolute z-50 w-full mt-1 bg-white border border-slate-200 rounded-xl shadow-xl overflow-hidden max-h-60 overflow-y-auto py-1">
+                                                    <div className="absolute z-50 w-full mt-1 bg-[#111A2E] border border-[#1F2C4A] rounded-xl shadow-xl overflow-hidden max-h-60 overflow-y-auto py-1">
                                                         {tickerSearching ? (
-                                                            <div className="px-4 py-3 text-sm text-slate-500 flex items-center gap-2">
-                                                                <div className="w-3 h-3 border-2 border-brand-400 border-t-transparent rounded-full animate-spin" />
+                                                            <div className="px-4 py-3 text-sm text-[#93A4C2] flex items-center gap-2">
+                                                                <div className="w-3 h-3 border-2 border-[#2E7CF6] border-t-transparent rounded-full animate-spin" />
                                                                 搜尋中...
                                                             </div>
                                                         ) : tickerSuggestions.length > 0 ? (
@@ -664,17 +667,17 @@ export default function QuarterlyWizard() {
                                                                     key={s.symbol}
                                                                     type="button"
                                                                     onClick={() => handleTickerSelect(s)}
-                                                                    className="w-full text-left px-4 py-2.5 hover:bg-brand-50 flex items-center justify-between gap-2 transition-colors border-b border-slate-50 last:border-0"
+                                                                    className="w-full text-left px-4 py-2.5 hover:bg-[#111A2E] flex items-center justify-between gap-2 transition-colors border-b border-[#1F2C4A]/30 last:border-0"
                                                                 >
                                                                     <div className="flex flex-col">
-                                                                        <span className="font-bold text-slate-800 text-sm">{s.symbol}</span>
-                                                                        <span className="text-slate-400 text-[10px] leading-tight truncate max-w-[150px]">{s.name}</span>
+                                                                        <span className="font-bold text-[#E6EDF7] text-sm">{s.symbol}</span>
+                                                                        <span className="text-[#5A6B89] text-[10px] leading-tight truncate max-w-[150px]">{s.name}</span>
                                                                     </div>
-                                                                    <span className="text-slate-300 text-[10px] font-medium px-1.5 py-0.5 bg-slate-50 rounded border border-slate-100 uppercase">{s.exchange}</span>
+                                                                    <span className="text-[#5A6B89] text-[10px] font-medium px-1.5 py-0.5 bg-[#111A2E] rounded border border-[#1F2C4A]/60 uppercase">{s.exchange}</span>
                                                                 </button>
                                                             ))
                                                         ) : (tickerQuery.trim().length > 0 && !tickerSearching) && (
-                                                            <div className="px-4 py-3 text-sm text-slate-400 italic">
+                                                            <div className="px-4 py-3 text-sm text-[#5A6B89] italic">
                                                                 無符合結果 (請嘗試輸入代號如 AAPL)
                                                             </div>
                                                         )}
@@ -693,13 +696,13 @@ export default function QuarterlyWizard() {
                                         <button
                                             type="button"
                                             onClick={() => setIsAddModalOpen(false)}
-                                            className="flex-1 py-3 px-4 bg-white border border-slate-200 text-slate-700 rounded-xl font-bold hover:bg-slate-50 transition-colors shadow-sm"
+                                            className="flex-1 py-3 px-4 bg-[#16223D] border border-[#1F2C4A] text-[#E6EDF7] rounded-xl font-bold hover:bg-[#111A2E] transition-colors shadow-sm"
                                         >
                                             取消
                                         </button>
                                         <button
                                             type="submit"
-                                            className="flex-1 py-3 px-4 bg-slate-800 text-white rounded-xl font-bold hover:bg-slate-700 transition-colors shadow-sm shadow-slate-200"
+                                            className="flex-1 py-3 px-4 bg-[#111A2E] text-white rounded-xl font-bold hover:bg-[#16223D] transition-colors shadow-sm"
                                         >
                                             確定新增
                                         </button>
@@ -711,40 +714,40 @@ export default function QuarterlyWizard() {
 
                     {/* Restore Hidden Asset Modal */}
                     {isRestoreModalOpen && (
-                        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 backdrop-blur-sm p-4 animate-in fade-in duration-200">
-                            <div className="bg-white rounded-3xl w-full max-w-lg shadow-2xl overflow-hidden flex flex-col max-h-[80vh]">
-                                <div className="p-6 border-b border-slate-100 flex justify-between items-center bg-white z-10">
-                                    <h3 className="text-xl font-bold text-slate-800 flex items-center gap-2">
-                                        <ArchiveRestore className="w-5 h-5 text-indigo-500" /> 管理已隱藏 / 停用的資產
+                        <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#0B1220]/50 backdrop-blur-sm p-4 animate-in fade-in duration-200">
+                            <div className="bg-[#111A2E] rounded-3xl w-full max-w-lg shadow-2xl overflow-hidden flex flex-col max-h-[80vh]">
+                                <div className="p-6 border-b border-[#1F2C4A]/60 flex justify-between items-center glass z-10">
+                                    <h3 className="text-xl font-bold text-[#E6EDF7] flex items-center gap-2">
+                                        <ArchiveRestore className="w-5 h-5 text-[#2E7CF6]" /> 管理已隱藏 / 停用的資產
                                     </h3>
-                                    <button onClick={() => setIsRestoreModalOpen(false)} className="text-slate-400 hover:text-slate-600 p-2 bg-slate-50 rounded-full transition-colors">
+                                    <button onClick={() => setIsRestoreModalOpen(false)} className="text-[#5A6B89] hover:text-[#93A4C2] p-2 bg-[#111A2E] rounded-full transition-colors">
                                         <X className="w-4 h-4" />
                                     </button>
                                 </div>
 
-                                <div className="p-6 overflow-y-auto bg-slate-50/50 flex-grow">
+                                <div className="p-6 overflow-y-auto bg-[#16223D]/30 flex-grow">
                                     {hiddenAssets.length === 0 ? (
-                                        <div className="text-center py-10 text-slate-500 font-medium bg-white rounded-2xl border border-slate-200 border-dashed">
+                                        <div className="text-center py-10 text-[#93A4C2] font-medium bg-[#111A2E] rounded-2xl border border-[#1F2C4A] border-dashed">
                                             目前沒有被隱藏的資產。
                                         </div>
                                     ) : (
                                         <div className="space-y-3">
                                             {hiddenAssets.map(asset => (
-                                                <div key={asset.id} className="flex items-center justify-between p-4 bg-white rounded-2xl border border-slate-200 shadow-sm">
+                                                <div key={asset.id} className="flex items-center justify-between p-4 bg-[#111A2E] rounded-2xl border border-[#1F2C4A] shadow-sm">
                                                     <div>
                                                         <div className="flex items-center gap-2 mb-1">
-                                                            <h4 className="font-bold text-slate-800">{asset.title}</h4>
+                                                            <h4 className="font-bold text-[#E6EDF7]">{asset.title}</h4>
                                                             <span className={`text-[10px] font-black px-2 py-0.5 rounded-md uppercase ${asset.ownerColor}`}>
                                                                 {asset.owner}
                                                             </span>
                                                         </div>
-                                                        <p className="text-xs font-bold text-slate-400 uppercase tracking-widest">
+                                                        <p className="text-xs font-bold text-[#5A6B89] uppercase tracking-widest">
                                                             {asset.asset_type} • {asset.currency} {asset.ticker_symbol ? `• ${asset.ticker_symbol}` : ''}
                                                         </p>
                                                     </div>
                                                     <button
                                                         onClick={() => handleRestoreAsset(asset)}
-                                                        className="flex items-center gap-2 px-3 py-1.5 bg-indigo-50 text-indigo-600 hover:bg-indigo-100 rounded-lg font-bold text-sm transition-colors"
+                                                        className="flex items-center gap-2 px-3 py-1.5 bg-[#16223D] text-[#2E7CF6] hover:bg-[#16223D] rounded-lg font-bold text-sm transition-colors"
                                                     >
                                                         <RefreshCcw className="w-4 h-4" />
                                                         重新啟用

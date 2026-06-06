@@ -79,10 +79,10 @@ export default function TradingViewChart({ symbol }: TradingViewChartProps) {
             {/* Restriction Warning Overlay (Subtle) */}
             {symbol.startsWith('TPE:') && !symbol.endsWith('B') && (
                 <div className="absolute top-24 left-0 right-0 z-10 px-12 pointer-events-none">
-                    <div className="bg-slate-900/60 backdrop-blur-md border border-white/5 p-4 rounded-xl shadow-2xl pointer-events-auto">
+                    <div className="bg-[#0B1220]/60 backdrop-blur-md border border-white/5 p-4 rounded-xl shadow-2xl pointer-events-auto">
                         <div className="flex items-center gap-3 mb-2">
-                            <div className="p-1 bg-amber-500/20 rounded">
-                                <span className="text-amber-500 text-xs font-bold">⚠️ 數據受限</span>
+                            <div className="p-1 bg-[#F59E0B]/20 rounded">
+                                <span className="text-[#F59E0B] text-xs font-bold">⚠️ 數據受限</span>
                             </div>
                             <span className="text-white/80 text-[11px] font-bold">部分台股上市標的無法直接顯示線圖</span>
                         </div>
@@ -93,7 +93,7 @@ export default function TradingViewChart({ symbol }: TradingViewChartProps) {
                             href={`https://www.tradingview.com/chart/?symbol=TWSE:${symbol.split(':')[1] || symbol}`}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="inline-flex items-center gap-2 px-3 py-1.5 bg-brand-500 hover:bg-brand-600 text-white rounded-lg text-[10px] font-black transition-all shadow-xl shadow-brand-500/20 shadow-lg active:scale-95"
+                            className="inline-flex items-center gap-2 px-3 py-1.5 bg-[#111A2E] hover:bg-[#2E7CF6] text-white rounded-lg text-[10px] font-black transition-all shadow-xl shadow-[#2E7CF6]/20 shadow-lg active:scale-95"
                         >
                             前往 TradingView 觀看完整數據
                         </a>

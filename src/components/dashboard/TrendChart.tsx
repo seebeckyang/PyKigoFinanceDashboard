@@ -20,13 +20,13 @@ export const TrendChart: React.FC<TrendChartProps> = ({
     const chartMax = Math.max(maxAsset * 1.2, 100);
 
     return (
-        <div className="bg-white rounded-3xl p-6 shadow-sm border border-slate-100 flex flex-col h-full">
-            <h3 className="text-sm font-bold text-slate-600 mb-6 text-center flex items-center justify-center gap-2">
-                📈 總資產成長趨勢 (等值 NTD)
+        <div className="glass-card rounded-3xl p-6 flex flex-col h-full">
+            <h3 className="text-sm font-bold text-[#93A4C2] mb-6 text-center flex items-center justify-center gap-2 uppercase tracking-wider">
+                📈 總資產成長趨勢（等值 NTD）
             </h3>
             <div className="h-[250px] w-full flex flex-col items-center justify-end relative">
-                <div className="flex w-full justify-around items-end h-[150px] px-8 border-b border-slate-200 pb-0 gap-2">
-                    {trendData.map((item, index) => {
+                <div className="flex w-full justify-around items-end h-[150px] px-8 border-b border-[#1F2C4A] pb-0 gap-2">
+                    {trendData.map((item) => {
                         const isSelected = activeSnapshotId === item.id;
                         const fullHeight = Math.max((item.fullAssets / chartMax) * 100, 2);
                         const filteredHeight = Math.max((item.filteredAssets / chartMax) * 100, 2);
@@ -40,9 +40,9 @@ export const TrendChart: React.FC<TrendChartProps> = ({
                             >
                                 <div className="absolute -top-8 flex flex-col items-center">
                                     {showStack && item.filteredAssets < item.fullAssets && (
-                                        <span className="text-[10px] text-slate-400 font-bold leading-none mb-0.5">{item.fullAssets}萬</span>
+                                        <span className="text-[10px] text-[#5A6B89] font-bold leading-none mb-0.5">{item.fullAssets}萬</span>
                                     )}
-                                    <span className={`text-xs font-black z-10 ${isSelected ? 'text-brand-600' : 'text-slate-600 opacity-60 group-hover:opacity-100 transition-all'}`}>
+                                    <span className={`text-xs font-black z-10 tabnum ${isSelected ? 'text-[#2E7CF6]' : 'text-[#93A4C2] opacity-60 group-hover:opacity-100 transition-all'}`}>
                                         {item.filteredAssets}萬
                                     </span>
                                 </div>
@@ -50,13 +50,13 @@ export const TrendChart: React.FC<TrendChartProps> = ({
                                 <div className="w-full relative h-full flex items-end justify-center">
                                     {showStack && (
                                         <div
-                                            className="absolute w-full bg-slate-100 rounded-t-lg transition-all"
+                                            className="absolute w-full bg-[#16223D] rounded-t-lg transition-all"
                                             style={{ height: `${fullHeight}%` }}
                                         ></div>
                                     )}
 
                                     <div
-                                        className={`w-full rounded-t-lg transition-all border-b-0 border-white/20 border-x z-10 ${isSelected ? 'opacity-100 ring-2 ring-brand-400 ring-offset-2' : 'opacity-70 group-hover:opacity-100'}`}
+                                        className={`w-full rounded-t-lg transition-all border-b-0 border-white/10 border-x z-10 ${isSelected ? 'opacity-100 ring-2 ring-[#2E7CF6] ring-offset-2 ring-offset-[#0B1220]' : 'opacity-70 group-hover:opacity-100'}`}
                                         style={{
                                             height: `${filteredHeight}%`,
                                             backgroundColor: item.color
@@ -71,7 +71,7 @@ export const TrendChart: React.FC<TrendChartProps> = ({
                     {trendData.map((item) => (
                         <div
                             key={item.id}
-                            className={`text-[10px] md:text-sm font-bold text-center flex-1 cursor-pointer transition-colors ${activeSnapshotId === item.id ? 'text-brand-600' : 'text-slate-400 hover:text-slate-600'}`}
+                            className={`text-[10px] md:text-sm font-bold text-center flex-1 cursor-pointer transition-colors ${activeSnapshotId === item.id ? 'text-[#2E7CF6]' : 'text-[#5A6B89] hover:text-[#93A4C2]'}`}
                             onClick={() => setActiveSnapshotId(item.id)}
                         >
                             {item.name}
@@ -79,7 +79,7 @@ export const TrendChart: React.FC<TrendChartProps> = ({
                     ))}
                 </div>
 
-                <div className="text-emerald-500 font-black text-lg mt-4 flex items-center gap-1">
+                <div className="text-[#10B981] font-black text-lg mt-4 flex items-center gap-1">
                     <span className="text-xs">▲</span> +80.9%
                 </div>
             </div>

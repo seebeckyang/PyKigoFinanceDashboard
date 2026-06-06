@@ -17,14 +17,14 @@ interface ExpenseCategoryChartProps {
 const CustomTooltip = ({ active, payload }: any) => {
     if (active && payload && payload.length) {
         return (
-            <div className="bg-slate-900/90 backdrop-blur-xl border border-white/10 p-4 rounded-2xl shadow-2xl">
-                <p className="text-[10px] font-black text-slate-400 tracking-widest uppercase mb-1">{payload[0].name}</p>
+            <div className="bg-[#0B1220]/90 backdrop-blur-xl border border-[#1F2C4A]/50 p-4 rounded-2xl shadow-2xl">
+                <p className="text-[10px] font-black text-[#5A6B89] tracking-widest uppercase mb-1">{payload[0].name}</p>
                 <p className="text-xl font-black text-white">
                     NT$ {payload[0].value.toLocaleString()}
                 </p>
-                <div className="w-full bg-white/10 h-1 rounded-full mt-2 overflow-hidden">
+                <div className="w-full bg-[#16223D]/40 h-1 rounded-full mt-2 overflow-hidden">
                     <div
-                        className="h-full bg-indigo-500 rounded-full"
+                        className="h-full bg-[#2E7CF6] rounded-full"
                         style={{ width: `${payload[0].payload.percent * 100}%` }}
                     />
                 </div>
@@ -48,10 +48,10 @@ const CustomLegend = ({ payload }: any) => {
                             style={{ backgroundColor: entry.color }}
                         />
                         <div className="flex flex-col">
-                            <span className="text-[10px] font-black text-slate-500 uppercase tracking-widest leading-none group-hover:text-slate-900 transition-colors">
+                            <span className="text-[10px] font-black text-[#93A4C2] uppercase tracking-widest leading-none group-hover:text-[#E6EDF7] transition-colors">
                                 {entry.value}
                             </span>
-                            <span className="text-xs font-bold text-slate-400 mt-0.5">
+                            <span className="text-xs font-bold text-[#5A6B89] mt-0.5">
                                 {Math.round(percent)}%
                             </span>
                         </div>
@@ -71,10 +71,10 @@ export function ExpenseCategoryChart({ data, loading }: ExpenseCategoryChartProp
     if (loading) {
         return (
             <div className="w-full h-full flex flex-col items-center justify-center animate-pulse">
-                <div className="w-48 h-48 rounded-full border-8 border-gray-100 border-t-indigo-100" />
+                <div className="w-48 h-48 rounded-full border-8 border-[#1F2C4A]/60 border-t-indigo-100" />
                 <div className="mt-8 space-y-2 w-full max-w-[200px]">
-                    <div className="h-3 bg-gray-100 rounded-full w-full" />
-                    <div className="h-3 bg-gray-100 rounded-full w-2/3" />
+                    <div className="h-3 bg-[#16223D] rounded-full w-full" />
+                    <div className="h-3 bg-[#16223D] rounded-full w-2/3" />
                 </div>
             </div>
         );
@@ -82,11 +82,11 @@ export function ExpenseCategoryChart({ data, loading }: ExpenseCategoryChartProp
 
     if (chartData.length === 0) {
         return (
-            <div className="flex flex-col items-center justify-center h-[300px] border-2 border-dashed border-gray-100 rounded-[2rem] bg-gray-50/50">
-                <div className="w-12 h-12 bg-gray-100 rounded-2xl flex items-center justify-center mb-4">
+            <div className="flex flex-col items-center justify-center h-[300px] border-2 border-dashed border-[#1F2C4A]/60 rounded-[2rem] bg-[#111A2E]/50">
+                <div className="w-12 h-12 bg-[#16223D] rounded-2xl flex items-center justify-center mb-4">
                     <div className="w-6 h-6 border-2 border-gray-300 border-dashed rounded-full" />
                 </div>
-                <p className="text-sm font-bold text-gray-400">目前無分類數據</p>
+                <p className="text-sm font-bold text-[#5A6B89]">目前無分類數據</p>
             </div>
         );
     }
@@ -117,8 +117,8 @@ export function ExpenseCategoryChart({ data, loading }: ExpenseCategoryChartProp
 
                 {/* Center Balance Label */}
                 <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 mt-[-40px] text-center pointer-events-none">
-                    <div className="text-[10px] font-black text-slate-400 tracking-[0.2em] uppercase mb-1">Total</div>
-                    <div className="text-xl font-black text-slate-900 tracking-tighter">
+                    <div className="text-[10px] font-black text-[#5A6B89] tracking-[0.2em] uppercase mb-1">Total</div>
+                    <div className="text-xl font-black text-[#E6EDF7] tracking-tighter">
                         {chartData.reduce((acc, curr) => acc + curr.amount, 0).toLocaleString()}
                     </div>
                 </div>

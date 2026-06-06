@@ -1,25 +1,73 @@
 @import "tailwindcss";
 
 @theme {
-  --color-brand-50: #eff6ff;
-  --color-brand-100: #dbeafe;
-  --color-brand-500: #3b82f6;
-  --color-brand-600: #2563eb;
-  --color-brand-900: #1e3a8a;
-  
+  /* === 深色金融科技主色票 === */
+  --color-brand-50:  #0d1829;
+  --color-brand-100: #111A2E;
+  --color-brand-200: #16223D;
+  --color-brand-300: #1F2C4A;
+  --color-brand-400: #2a3d60;
+  --color-brand-500: #2E7CF6;
+  --color-brand-600: #1a6ae3;
+  --color-brand-900: #E6EDF7;
+
+  /* 強調色 */
+  --color-accent-cyan:   #22D3EE;
+  --color-accent-green:  #10B981;
+  --color-accent-red:    #EF4444;
+  --color-accent-gold:   #F59E0B;
+
+  /* 文字色 */
+  --color-text-primary: #E6EDF7;
+  --color-text-muted:   #93A4C2;
+  --color-text-faint:   #5A6B89;
+
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
 }
 
-/* Custom base styles for premium feel */
+/* Custom base styles for dark fintech feel */
 @layer base {
   body {
-    @apply bg-slate-50 text-slate-900 antialiased selection:bg-brand-500 selection:text-white transition-colors duration-300;
+    background-color: #0B1220;
+    background-image: radial-gradient(
+      ellipse at 50% 30%,
+      #111e38 0%,
+      #0B1220 60%,
+      #080e1a 100%
+    );
+    color: #E6EDF7;
+    font-variant-numeric: tabular-nums lining-nums;
+    @apply antialiased selection:bg-[#2E7CF6] selection:text-white transition-colors duration-300;
   }
 }
 
-/* Utilities for glassmorphism */
+/* Glassmorphism utilities */
 @layer utilities {
   .glass {
-    @apply bg-white/70 backdrop-blur-lg border border-white/20 shadow-xl;
+    background-color: rgba(17, 26, 46, 0.80);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid #1F2C4A;
+    box-shadow: 0 4px 24px 0 rgba(0,0,0,0.35);
+  }
+
+  .glass-card {
+    background-color: rgba(17, 26, 46, 0.75);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid #1F2C4A;
+    box-shadow: 0 2px 16px 0 rgba(0,0,0,0.30);
+  }
+
+  .glass-card-alt {
+    background-color: rgba(22, 34, 61, 0.80);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid #1F2C4A;
+    box-shadow: 0 2px 16px 0 rgba(0,0,0,0.30);
+  }
+
+  .tabnum {
+    font-variant-numeric: tabular-nums lining-nums;
   }
 }

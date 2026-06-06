@@ -1,4 +1,4 @@
-"use server";
+
 
 import { supabase } from "@/lib/supabase";
 import { StrategyTarget, ProjectedDividend } from "@/types/dashboard";

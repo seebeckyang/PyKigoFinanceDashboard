@@ -17,8 +17,8 @@ interface StatCardProps {
 }
 
 const colorClasses = {
-    indigo: "bg-indigo-50 text-indigo-600 border border-indigo-100/50",
-    amber: "bg-amber-50 text-amber-600 border border-amber-100/50"
+    indigo: "bg-[#16223D] text-[#2E7CF6] border border-[#2E7CF6]/20/50",
+    amber: "bg-[#F59E0B]/10 text-[#F59E0B] border border-amber-100/50"
 };
 
 export const StatCard = memo(function StatCard({
@@ -34,8 +34,8 @@ export const StatCard = memo(function StatCard({
 }: StatCardProps) {
     return (
         <div className={cn(
-            "group bg-white rounded-[2.5rem] p-8 shadow-sm border border-gray-100 transition-all duration-500 hover:shadow-xl hover:shadow-indigo-500/5 hover:-translate-y-1 relative overflow-hidden",
-            project && "bg-gradient-to-br from-indigo-50/30 to-purple-50/30 border-indigo-100/50",
+            "group bg-[#111A2E] rounded-[2.5rem] p-8 shadow-sm border border-[#1F2C4A]/60 transition-all duration-500 hover:shadow-xl hover:shadow-indigo-500/5 hover:-translate-y-1 relative overflow-hidden",
+            project && "bg-gradient-to-br from-indigo-50/30 to-purple-50/30 border-[#2E7CF6]/20/50",
             loading && "animate-pulse"
         )}>
             <div className="flex justify-between items-start">
@@ -48,22 +48,22 @@ export const StatCard = memo(function StatCard({
                     </span>
                 )}
                 {project && (
-                    <span className="text-[9px] font-black text-indigo-600 bg-white border border-indigo-100 px-2.5 py-1 rounded-full shadow-sm">
+                    <span className="text-[9px] font-black text-[#2E7CF6] bg-white border border-[#2E7CF6]/20 px-2.5 py-1 rounded-full shadow-sm">
                         PROJECT
                     </span>
                 )}
             </div>
             <div className="mt-4">
-                <h4 className={cn("text-xs font-black text-gray-400 uppercase tracking-widest", project && "text-indigo-400")}>{label}</h4>
-                <div className={cn("text-2xl md:text-3xl font-black text-gray-900 tracking-tighter mt-1", project && "text-indigo-900", loading && "text-gray-200")}>
+                <h4 className={cn("text-xs font-black text-[#5A6B89] uppercase tracking-widest", project && "text-[#22D3EE]")}>{label}</h4>
+                <div className={cn("text-2xl md:text-3xl font-black text-[#E6EDF7] tracking-tighter mt-1", project && "text-indigo-900", loading && "text-gray-200")}>
                     {loading ? "---" : value}
                 </div>
-                {subtext && <div className="text-[11px] font-bold text-gray-400 mt-2 flex items-center gap-1.5"><div className="w-1 h-1 rounded-full bg-gray-200"></div>{subtext}</div>}
+                {subtext && <div className="text-[11px] font-bold text-[#5A6B89] mt-2 flex items-center gap-1.5"><div className="w-1 h-1 rounded-full bg-gray-200"></div>{subtext}</div>}
                 {progress !== undefined && (
-                    <div className="w-full bg-gray-100 rounded-full h-2 mt-4 relative overflow-hidden">
+                    <div className="w-full bg-[#16223D] rounded-full h-2 mt-4 relative overflow-hidden">
                         <div className="absolute inset-0 bg-white/30 backdrop-blur-[1px]"></div>
                         <div
-                            className={cn("h-full rounded-full transition-all duration-1000 ease-out shadow-sm", color === 'amber' ? "bg-amber-400" : "bg-indigo-500")}
+                            className={cn("h-full rounded-full transition-all duration-1000 ease-out shadow-sm", color === 'amber' ? "bg-amber-400" : "bg-[#2E7CF6]")}
                             style={{ width: loading ? "0%" : `${progress}%` }}
                         ></div>
                     </div>

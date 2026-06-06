@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useMemo } from "react";
 import { BarChart3, XCircle } from "lucide-react";
+import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip as RechartsTooltip, Legend } from "recharts";
 import { getLatestDashboardData } from "@/app/actions/dashboard";
 import { generateLiveAISummary } from "@/app/actions/ai";
 import { DashboardData } from "@/types/dashboard";
@@ -10,6 +11,10 @@ import { DashboardData } from "@/types/dashboard";
 import { AIInsightSection } from "@/components/dashboard/AIInsightSection";
 import { TrendChart } from "@/components/dashboard/TrendChart";
 import { AggregationPieCharts } from "@/components/dashboard/AggregationPieCharts";
+import { LiveMarketTicker } from "@/components/dashboard/LiveMarketTicker";
+
+// 戰情室常用追蹤標的（之後可由 assets 表帶入）
+const DASHBOARD_TICKERS = ["NVDA", "GOOGL", "TSM", "AAPL", "MSFT", "VOO", "O", "SCHD"];
 
 export default function Dashboard() {
     const [mounted, setMounted] = useState(false);
@@ -143,13 +148,13 @@ export default function Dashboard() {
             ...snapshotDetail,
             totalNetWorth: totalValueFiltered,
             trendData,
-            currencyData: formatPieData(currencyMap, { USD: "#f59e0b", TWD: "#3b82f6", JPY: "#ef4444" }),
-            allocationData: formatPieData(allocationMap, { cash: "#3b82f6", stock: "#8b5cf6", fixed_deposit: "#f59e0b", rsu: "#10b981" }),
-            ownershipData: formatPieData(ownershipMap, { CY: "#10b981", HY: "#fcd34d", Both: "#6366f1" })
+            currencyData: formatPieData(currencyMap, { USD: "#F59E0B", TWD: "#2E7CF6", JPY: "#EF4444" }),
+            allocationData: formatPieData(allocationMap, { cash: "#2E7CF6", stock: "#A855F7", fixed_deposit: "#F59E0B", rsu: "#10B981" }),
+            ownershipData: formatPieData(ownershipMap, { CY: "#10B981", HY: "#22D3EE", Both: "#6366F1" })
         };
     }, [dashboardData, activeSnapshotId, activeFilters]);
 
-    if (!mounted) return <div className="animate-pulse space-y-8 p-4"><div className="h-32 bg-slate-200 rounded-2xl w-full"></div></div>;
+    if (!mounted) return <div className="animate-pulse space-y-8 p-4"><div className="h-32 bg-[#111A2E] rounded-2xl w-full"></div></div>;
 
     const hasFilters = Object.keys(activeFilters).length > 0;
 
@@ -158,12 +163,52 @@ export default function Dashboard() {
 
             {/* Header */}
             <div>
-                <h1 className="text-2xl font-black text-slate-800 tracking-tight flex items-center gap-2">
-                    <BarChart3 className="w-6 h-6 text-brand-600" />
-                    家庭財務戰情室 (Financial Dashboard)
+                <h1 className="text-2xl font-black text-[#E6EDF7] tracking-tight flex items-center gap-2">
+                    <BarChart3 className="w-6 h-6 text-[#2E7CF6]" />
+                    家庭財務戰情室
                 </h1>
-                <p className="text-slate-500 mt-1 text-sm font-medium">包含自動化財務洞察與多維度資產解析</p>
+                <p className="text-[#93A4C2] mt-1 text-sm font-medium">包含自動化財務洞察與多維度資產解析</p>
             </div>
+
+            {/* 總資產淨值 Hero */}
+            <div className="rounded-3xl p-6 sm:p-8 border border-[#1F2C4A] shadow-lg relative overflow-hidden" style={{background:'linear-gradient(135deg, #111A2E 0%, #16223D 60%, #0E1A33 100%)'}}>
+                <div className="absolute -right-10 -top-10 w-48 h-48 rounded-full blur-3xl opacity-30" style={{background:'radial-gradient(circle, #2E7CF6 0%, transparent 70%)'}} />
+                <div className="relative">
+                    <div className="text-xs font-semibold text-[#93A4C2] uppercase tracking-widest">家庭總資產淨值（等值 NTD · 2026/02）</div>
+                    <div className="text-4xl sm:text-5xl font-black mt-2 text-[#E6EDF7] tabnum">
+                        NT$ {(dashboardData?.grandTotal ?? dashboardData?.totalNetWorth ?? 0).toLocaleString()}
+                    </div>
+                    <div className="flex flex-wrap gap-x-6 gap-y-1 mt-3 text-xs text-[#93A4C2]">
+                        <span>股票部位 <b className="text-[#22D3EE]">NT$ {(dashboardData?.stockTotal ?? 0).toLocaleString()}</b></span>
+                        <span>持股 <b className="text-[#E6EDF7]">{dashboardData?.rawRecords?.filter((r:any)=>r.assets?.ticker_symbol).length ?? 26} 檔</b></span>
+                        <span>帳戶 <b className="text-[#E6EDF7]">15 個</b></span>
+                    </div>
+                </div>
+            </div>
+
+            {/* 集中度示警 */}
+            {dashboardData?.concentrationAlerts?.length > 0 && (
+                <div className="glass-card rounded-3xl p-5 border border-[#3A2E16]" style={{background:'linear-gradient(135deg, rgba(245,158,11,0.06), rgba(17,26,46,0.6))'}}>
+                    <div className="flex items-center gap-2 text-sm font-bold text-[#F59E0B] mb-3">
+                        <span>⚠️ 集中度示警</span>
+                        <span className="text-[11px] font-medium text-[#93A4C2]">單一標的佔總資產比重（🟡≥10% 🟠≥15% 🔴≥20%）</span>
+                    </div>
+                    <div className="flex flex-wrap gap-3">
+                        {dashboardData.concentrationAlerts.map((a:any) => (
+                            <div key={a.symbol} className="flex items-center gap-2 bg-[#0E1A33] border border-[#1F2C4A] rounded-xl px-3 py-2">
+                                <span className="text-lg">{a.light}</span>
+                                <div>
+                                    <div className="text-sm font-bold text-[#E6EDF7]">{a.symbol} <span className="text-[11px] font-normal text-[#5A6B89]">{a.name}</span></div>
+                                    <div className="text-[11px] text-[#93A4C2]">佔總資產 <b className="text-[#F59E0B]">{a.pctOfTotal}%</b></div>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            )}
+
+            {/* 即時市場行情（每 60 秒輪詢） */}
+            <LiveMarketTicker tickers={DASHBOARD_TICKERS} />
 
             {/* AI Insights Section */}
             <AIInsightSection
@@ -176,18 +221,18 @@ export default function Dashboard() {
 
             {/* Filter Banner */}
             {hasFilters && (
-                <div className="sticky top-16 z-30 flex items-center gap-3 bg-brand-50/95 backdrop-blur-sm text-brand-700 px-4 py-3 rounded-xl border border-brand-200 text-sm font-medium animate-in fade-in shadow-sm md:static md:z-auto md:bg-brand-50 md:backdrop-none">
+                <div className="sticky top-16 z-30 flex items-center gap-3 bg-[#16223D]/95 backdrop-blur-sm text-[#22D3EE] px-4 py-3 rounded-xl border border-[#1F2C4A] text-sm font-medium animate-in fade-in shadow-sm md:static md:z-auto">
                     <span className="flex items-center gap-2">
-                        <span className="w-2 h-2 rounded-full bg-brand-500 animate-pulse"></span>
+                        <span className="w-2 h-2 rounded-full bg-[#22D3EE] animate-pulse"></span>
                         <span className="hidden xs:inline">依點擊互動篩選中：</span>
                         <span className="xs:hidden">篩選中:</span>
                     </span>
                     <div className="flex gap-2 overflow-x-auto no-scrollbar">
-                        {activeFilters.currency && <span className="bg-white px-2 py-1 rounded shadow-sm whitespace-nowrap">幣別: {activeFilters.currency}</span>}
-                        {activeFilters.type && <span className="bg-white px-2 py-1 rounded shadow-sm whitespace-nowrap">資產: {activeFilters.type === 'fixed_deposit' ? '定存' : activeFilters.type}</span>}
-                        {activeFilters.owner && <span className="bg-white px-2 py-1 rounded shadow-sm whitespace-nowrap">成員: {activeFilters.owner}</span>}
+                        {activeFilters.currency && <span className="bg-[#111A2E] text-[#E6EDF7] px-2 py-1 rounded shadow-sm whitespace-nowrap">幣別: {activeFilters.currency}</span>}
+                        {activeFilters.type && <span className="bg-[#111A2E] text-[#E6EDF7] px-2 py-1 rounded shadow-sm whitespace-nowrap">資產: {activeFilters.type === 'fixed_deposit' ? '定存' : activeFilters.type}</span>}
+                        {activeFilters.owner && <span className="bg-[#111A2E] text-[#E6EDF7] px-2 py-1 rounded shadow-sm whitespace-nowrap">成員: {activeFilters.owner}</span>}
                     </div>
-                    <button onClick={() => setActiveFilters({})} className="ml-auto flex items-center gap-1 bg-white hover:bg-slate-100 px-3 py-1 rounded shadow-sm text-slate-600 transition-colors shrink-0">
+                    <button onClick={() => setActiveFilters({})} className="ml-auto flex items-center gap-1 bg-[#111A2E] hover:bg-[#16223D] px-3 py-1 rounded shadow-sm text-[#93A4C2] transition-colors shrink-0">
                         <XCircle className="w-4 h-4" /> 清除
                     </button>
                 </div>
@@ -202,6 +247,26 @@ export default function Dashboard() {
                     setActiveSnapshotId={setActiveSnapshotId}
                     hasFilters={hasFilters}
                 />
+
+                {/* 資產配置（核心/成長/定存/投機） */}
+                <div className="glass-card rounded-3xl p-6 flex flex-col">
+                    <h3 className="text-sm font-bold text-[#93A4C2] mb-2 uppercase tracking-wider">資產配置（策略分類）</h3>
+                    <div className="h-[280px] w-full">
+                        <ResponsiveContainer width="100%" height="100%">
+                            <PieChart>
+                                <Pie data={(dashboardData?.strategyAllocationData||[])} cx="50%" cy="50%" innerRadius={62} outerRadius={108} dataKey="value" nameKey="name" stroke="#0B1220" strokeWidth={2} paddingAngle={1}>
+                                    {(dashboardData?.strategyAllocationData||[]).map((e:any,i:number)=>(<Cell key={i} fill={e.color} />))}
+                                </Pie>
+                                <RechartsTooltip contentStyle={{ background: '#111A2E', border: '1px solid #1F2C4A', borderRadius: '8px', color: '#E6EDF7' }} formatter={(value:any,name:any,props:any)=>[`${value}% (NT$ ${props.payload.raw_value.toLocaleString()})`, name]} />
+                            </PieChart>
+                        </ResponsiveContainer>
+                    </div>
+                    <div className="flex flex-wrap gap-x-4 gap-y-1.5 justify-center mt-2">
+                        {(dashboardData?.strategyAllocationData||[]).map((e:any)=>(
+                            <span key={e.name} className="text-[11px] text-[#93A4C2] flex items-center gap-1"><span className="w-2.5 h-2.5 rounded-full" style={{background:e.color}} />{e.name} ({e.value}%)</span>
+                        ))}
+                    </div>
+                </div>
 
                 {/* Pie Charts */}
                 <AggregationPieCharts

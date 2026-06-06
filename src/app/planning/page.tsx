@@ -7,6 +7,7 @@ import { getPlanningData, updateAssetStrategy } from "@/app/actions/planning";
 import { getLatestDashboardData } from "@/app/actions/dashboard";
 import TradingViewChart from "@/components/dashboard/TradingViewChart";
 import StockPlanningNotes from "@/components/dashboard/StockPlanningNotes";
+import { LiveMarketTicker } from "@/components/dashboard/LiveMarketTicker";
 
 export default function PlanningPage() {
     const [planningData, setPlanningData] = useState<any>(null);
@@ -47,7 +48,7 @@ export default function PlanningPage() {
         }
     };
 
-    if (loading || !planningData) return <div className="p-8 animate-pulse text-slate-400">正在規劃您的財富藍圖中...</div>;
+    if (loading || !planningData) return <div className="p-8 animate-pulse text-[#5A6B89]">正在規劃您的財富藍圖中...</div>;
 
     const selectedAsset = planningData.availableStocks?.find((s: any) => s.symbol === selectedStock);
 
@@ -77,43 +78,49 @@ export default function PlanningPage() {
             <div className="flex justify-between items-end">
                 <div>
                     <div className="flex items-center gap-3">
-                        <h1 className="text-xl sm:text-3xl font-black text-slate-800 tracking-tight flex items-center gap-3">
-                            <TrendingUp className="w-8 h-8 text-brand-600" />
-                            投資策略指揮中心 (Command Center)
+                        <h1 className="text-xl sm:text-3xl font-black text-[#E6EDF7] tracking-tight flex items-center gap-3">
+                            <TrendingUp className="w-8 h-8 text-[#2E7CF6]" />
+                            投資策略指揮中心
                         </h1>
-                        <span className="bg-brand-100 text-brand-700 text-[10px] font-black px-2.5 py-1 rounded-full tracking-widest uppercase shadow-sm">Milestone V1.2</span>
+                        <span className="bg-[#111A2E] text-[#1a6ae3] text-[10px] font-black px-2.5 py-1 rounded-full tracking-widest uppercase shadow-sm">版本 V1.2</span>
                     </div>
-                    <p className="text-slate-500 mt-2 text-sm font-semibold opacity-80">
+                    <p className="text-[#93A4C2] mt-2 text-sm font-semibold opacity-80">
                         整合即時行情分析、個人化交易筆記與長期配置策略
                     </p>
                 </div>
-                <div className="bg-emerald-50 border border-emerald-100 px-5 py-2.5 rounded-2xl flex items-center gap-4 shadow-sm">
-                    <div className="bg-emerald-500 p-1.5 rounded-full shadow-lg shadow-emerald-200">
+                <div className="bg-[#10B981]/10 border border-[#10B981]/20 px-5 py-2.5 rounded-2xl flex items-center gap-4 shadow-sm">
+                    <div className="bg-[#10B981]/100 p-1.5 rounded-full shadow-lg shadow-emerald-200">
                         <ShieldCheck className="w-5 h-5 text-white" />
                     </div>
                     <div>
-                        <div className="text-[10px] text-emerald-600 font-black uppercase tracking-widest">{planningData.userGoal?.goal_name || '財富自由'}進度</div>
-                        <div className="text-lg font-black text-slate-700 leading-tight">
-                            {achievementPercent}% <span className="text-xs font-bold text-slate-400">已達成</span>
+                        <div className="text-[10px] text-[#10B981] font-black uppercase tracking-widest">{planningData.userGoal?.goal_name || '財富自由'}進度</div>
+                        <div className="text-lg font-black text-[#E6EDF7] leading-tight">
+                            {achievementPercent}% <span className="text-xs font-bold text-[#5A6B89]">已達成</span>
                         </div>
                     </div>
                 </div>
             </div>
 
+            {/* 即時市場行情（每 60 秒輪詢） */}
+            <LiveMarketTicker
+                tickers={(planningData.availableStocks || []).map((s: any) => s.symbol).filter(Boolean)}
+                title="持股即時行情"
+            />
+
             {/* 1. High Level Overview Row (Portfolio Stats) */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                 {/* Module 1: Portfolio Rebalancing */}
-                <div className="glass p-8 rounded-3xl border border-slate-200/60 shadow-lg space-y-6 bg-gradient-to-br from-white/80 to-slate-50/50 overflow-visible relative z-10">
+                <div className="glass p-8 rounded-3xl border border-[#1F2C4A] shadow-lg space-y-6 bg-gradient-to-br from-[#111A2E]/80 to-[#16223D]/50 overflow-visible relative z-10">
                     <div className="flex justify-between items-center">
                         <div>
-                            <h2 className="text-xl font-black text-slate-800 flex items-center gap-3">
-                                <Activity className="w-6 h-6 text-brand-500" />
+                            <h2 className="text-xl font-black text-[#E6EDF7] flex items-center gap-3">
+                                <Activity className="w-6 h-6 text-[#2E7CF6]" />
                                 資產再平衡對照 (Rebalancing)
                             </h2>
-                            <p className="text-xs font-bold text-slate-400 mt-1">目前實際配額 vs 理想目標偏離值</p>
+                            <p className="text-xs font-bold text-[#5A6B89] mt-1">目前實際配額 vs 理想目標偏離值</p>
                         </div>
                         {rebalanceNeeded && (
-                            <div className="bg-amber-100 text-amber-600 px-3 py-1 rounded-lg text-[10px] font-black uppercase tracking-widest animate-pulse">
+                            <div className="bg-[#F59E0B]/15 text-[#F59E0B] px-3 py-1 rounded-lg text-[10px] font-black uppercase tracking-widest animate-pulse">
                                 Rebalance Recommended
                             </div>
                         )}
@@ -121,7 +128,7 @@ export default function PlanningPage() {
 
                     <div className="grid grid-cols-2 gap-8 h-44">
                         <div className="flex flex-col items-center">
-                            <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-4">目標配置 (Target)</span>
+                            <span className="text-[10px] font-black text-[#5A6B89] uppercase tracking-widest mb-4">目標配置 (Target)</span>
                             <ResponsiveContainer width="100%" height="100%">
                                 <PieChart>
                                     <Pie data={planningData.strategyTargets} dataKey="target_percentage" innerRadius={40} outerRadius={60} paddingAngle={8} minAngle={15}>
@@ -136,7 +143,7 @@ export default function PlanningPage() {
                             </ResponsiveContainer>
                         </div>
                         <div className="flex flex-col items-center">
-                            <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-4">實際資產 (Actual)</span>
+                            <span className="text-[10px] font-black text-[#5A6B89] uppercase tracking-widest mb-4">實際資產 (Actual)</span>
                             <ResponsiveContainer width="100%" height="100%">
                                 <PieChart>
                                     <Pie data={actualAllocation} dataKey="value" innerRadius={40} outerRadius={60} paddingAngle={8} minAngle={15}>
@@ -154,7 +161,7 @@ export default function PlanningPage() {
                     </div>
 
                     {/* Rebalancing Actions List */}
-                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-4 border-t border-slate-100">
+                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-4 border-t border-[#1F2C4A]/60">
                         {rebalanceItems.map((item: any) => {
                             const getDefinition = (cat: string) => {
                                 if (cat.includes("核心")) return "基石資產，追求市場平均報酬（如 0050、VOO），波動相對穩定。";
@@ -165,23 +172,23 @@ export default function PlanningPage() {
                             };
 
                             return (
-                                <div key={item.category} className="flex flex-col bg-white p-2.5 rounded-xl border border-slate-100 shadow-sm relative group/card cursor-help overflow-visible">
+                                <div key={item.category} className="flex flex-col bg-[#111A2E] p-2.5 rounded-xl border border-[#1F2C4A]/60 shadow-sm relative group/card cursor-help overflow-visible">
                                     <div className="absolute left-0 top-0 bottom-0 w-1 rounded-l-xl" style={{ backgroundColor: item.color }}></div>
 
                                     {/* Tooltip Popup - Popping Down */}
-                                    <div className="absolute left-0 top-full mt-2 w-48 p-3 bg-slate-900 text-white text-[10px] rounded-xl shadow-2xl opacity-0 group-hover/card:opacity-100 pointer-events-none transition-all duration-300 z-[100] transform -translate-y-1 group-hover/card:translate-y-0 text-left">
-                                        <div className="font-black mb-1 border-b border-white/10 pb-1" style={{ color: item.color }}>{item.category}</div>
+                                    <div className="absolute left-0 top-full mt-2 w-48 p-3 bg-[#0B1220] text-white text-[10px] rounded-xl shadow-2xl opacity-0 group-hover/card:opacity-100 pointer-events-none transition-all duration-300 z-[100] transform -translate-y-1 group-hover/card:translate-y-0 text-left">
+                                        <div className="font-black mb-1 border-b border-[#1F2C4A]/50 pb-1" style={{ color: item.color }}>{item.category}</div>
                                         <div className="leading-relaxed text-white/80 font-medium whitespace-normal">{getDefinition(item.category)}</div>
                                         <div className="absolute left-4 -top-1 w-0 h-0 border-l-[5px] border-l-transparent border-r-[5px] border-r-transparent border-b-[5px] border-b-slate-900"></div>
                                     </div>
 
-                                    <div className="text-[9px] font-black text-slate-400 truncate pl-1 flex items-center gap-1">
+                                    <div className="text-[9px] font-black text-[#5A6B89] truncate pl-1 flex items-center gap-1">
                                         {item.category}
                                     </div>
                                     <div className="flex items-center justify-between mt-1 pl-1">
-                                        <div className="text-[10px] font-bold text-slate-700">{item.actual}%</div>
+                                        <div className="text-[10px] font-bold text-[#E6EDF7]">{item.actual}%</div>
                                         <span className={`text-[8px] font-black px-1.5 py-0.5 rounded-md ${item.diff > 2 ? 'bg-rose-100 text-rose-600' :
-                                            item.diff < -2 ? 'bg-emerald-100 text-emerald-600' : 'bg-slate-100 text-slate-400'
+                                            item.diff < -2 ? 'bg-[#10B981]/15 text-[#10B981]' : 'bg-[#16223D] text-[#5A6B89]'
                                             }`}>
                                             {item.diff > 2 ? 'Sell' : item.diff < -2 ? 'Buy' : 'Hold'}
                                         </span>
@@ -193,29 +200,29 @@ export default function PlanningPage() {
                 </div>
 
                 {/* Module 2: Dividend Snowball */}
-                <div className="glass p-8 rounded-3xl border border-slate-200/60 shadow-lg space-y-6 bg-gradient-to-br from-white/80 to-emerald-50/30">
+                <div className="glass p-8 rounded-3xl border border-[#1F2C4A] shadow-lg space-y-6 bg-gradient-to-br from-[#111A2E]/80 to-[#10B981]/5">
                     <div className="flex justify-between items-center">
                         <div>
-                            <h2 className="text-xl font-black text-slate-800 flex items-center gap-3 group relative">
-                                <TrendingUp className="w-6 h-6 text-emerald-500" />
+                            <h2 className="text-xl font-black text-[#E6EDF7] flex items-center gap-3 group relative">
+                                <TrendingUp className="w-6 h-6 text-[#10B981]" />
                                 股息滾雪球預測
                                 <div className="relative group/tooltip">
-                                    <Activity className="w-4 h-4 text-slate-300 hover:text-brand-500 cursor-help transition-colors" />
-                                    <div className="absolute left-0 top-full mt-3 w-64 p-4 bg-slate-900 text-white text-[11px] rounded-2xl shadow-2xl opacity-0 group-hover/tooltip:opacity-100 pointer-events-none transition-all duration-300 z-50 transition-translate transform -translate-y-2 group-hover/tooltip:translate-y-0">
-                                        <div className="font-black text-brand-400 mb-2 uppercase tracking-widest border-b border-white/10 pb-1">數據計算說明</div>
+                                    <Activity className="w-4 h-4 text-[#5A6B89] hover:text-[#2E7CF6] cursor-help transition-colors" />
+                                    <div className="absolute left-0 top-full mt-3 w-64 p-4 bg-[#0B1220] text-white text-[11px] rounded-2xl shadow-2xl opacity-0 group-hover/tooltip:opacity-100 pointer-events-none transition-all duration-300 z-50 transition-translate transform -translate-y-2 group-hover/tooltip:translate-y-0">
+                                        <div className="font-black text-[#22D3EE] mb-2 uppercase tracking-widest border-b border-[#1F2C4A]/50 pb-1">數據計算說明</div>
                                         <p className="leading-relaxed font-medium mb-2">
                                             此預測基於您 <span className="text-emerald-400">目前持有的真實資產</span> 與其對應的股息殖利率換算。
                                         </p>
                                         <ul className="space-y-1.5 list-disc pl-3 text-white/70">
                                             <li><span className="text-white">基準點</span>：加總所有股票與 RSU 價值 × 殖利率。</li>
-                                            <li><span className="text-white">增長率</span>：預設採用 <span className="text-brand-400">12% 複合年增長率</span>。</li>
+                                            <li><span className="text-white">增長率</span>：預設採用 <span className="text-[#22D3EE]">12% 複合年增長率</span>。</li>
                                             <li><span className="text-white">包含項目</span>：資產增值 (7%) + 股息成長與再投入 (5%)。</li>
                                         </ul>
                                         <div className="absolute left-4 -top-1.5 w-0 h-0 border-l-[6px] border-l-transparent border-r-[6px] border-r-transparent border-b-[6px] border-b-slate-900"></div>
                                     </div>
                                 </div>
                             </h2>
-                            <p className="text-xs font-bold text-slate-400 mt-1">基於歷史股息率與再投入策略的 10 年成長模擬</p>
+                            <p className="text-xs font-bold text-[#5A6B89] mt-1">基於歷史股息率與再投入策略的 10 年成長模擬</p>
                         </div>
                     </div>
 
@@ -236,19 +243,19 @@ export default function PlanningPage() {
                     </div>
 
                     <div className="grid grid-cols-2 gap-4">
-                        <div className="p-4 bg-white rounded-2xl border border-slate-100 shadow-sm flex items-center gap-3">
-                            <div className="bg-slate-50 p-1.5 rounded-lg">
-                                <Activity className="w-4 h-4 text-slate-400" />
+                        <div className="p-4 bg-[#111A2E] rounded-2xl border border-[#1F2C4A]/60 shadow-sm flex items-center gap-3">
+                            <div className="bg-[#111A2E] p-1.5 rounded-lg">
+                                <Activity className="w-4 h-4 text-[#5A6B89]" />
                             </div>
                             <div>
-                                <div className="text-[9px] text-slate-400 font-black uppercase tracking-widest">目前年收</div>
-                                <div className="text-lg font-black text-slate-700">
+                                <div className="text-[9px] text-[#5A6B89] font-black uppercase tracking-widest">目前年收</div>
+                                <div className="text-lg font-black text-[#E6EDF7]">
                                     ${Number(planningData.dividendProjections[0]?.amount || 0).toLocaleString()}
                                 </div>
                             </div>
                         </div>
-                        <div className="p-4 bg-brand-500 rounded-2xl border border-brand-600 shadow-lg shadow-brand-200 flex items-center gap-3">
-                            <div className="bg-white/20 p-1.5 rounded-lg">
+                        <div className="p-4 bg-[#111A2E] rounded-2xl border border-[#2E7CF6] shadow-lg shadow-[#2E7CF6]/15 flex items-center gap-3">
+                            <div className="bg-[#1F2C4A]/40 p-1.5 rounded-lg">
                                 <TrendingUp className="w-4 h-4 text-white" />
                             </div>
                             <div>
@@ -268,25 +275,25 @@ export default function PlanningPage() {
             <div className="grid grid-cols-12 gap-6 h-auto lg:h-[800px] mb-6 relative">
 
                 {/* A. Asset List (Desktop Only Sidebar - Hidden on Mobile) */}
-                <div className="hidden lg:flex lg:col-span-2 glass rounded-3xl border border-slate-200/60 shadow-xl overflow-hidden flex-col">
-                    <div className="p-4 border-b border-slate-100 bg-slate-50/50 space-y-3">
+                <div className="hidden lg:flex lg:col-span-2 glass rounded-3xl border border-[#1F2C4A] shadow-xl overflow-hidden flex-col">
+                    <div className="p-4 border-b border-[#1F2C4A]/60 bg-[#16223D]/30 space-y-3">
                         <div className="flex items-center justify-between">
-                            <h2 className="text-[10px] font-black text-slate-800 uppercase tracking-widest flex items-center gap-2">
-                                <Activity className="w-3 h-3 text-brand-500" />
+                            <h2 className="text-[10px] font-black text-[#E6EDF7] uppercase tracking-widest flex items-center gap-2">
+                                <Activity className="w-3 h-3 text-[#2E7CF6]" />
                                 持股清單
                             </h2>
-                            <span className="text-[9px] font-bold text-slate-400">
+                            <span className="text-[9px] font-bold text-[#5A6B89]">
                                 {planningData.availableStocks?.length || 0}
                             </span>
                         </div>
                         <div className="relative">
-                            <Search className="w-3 h-3 text-slate-400 absolute left-2.5 top-1/2 -translate-y-1/2" />
+                            <Search className="w-3 h-3 text-[#5A6B89] absolute left-2.5 top-1/2 -translate-y-1/2" />
                             <input
                                 type="text"
                                 placeholder="..."
                                 value={searchQuery}
                                 onChange={(e) => setSearchQuery(e.target.value)}
-                                className="w-full bg-white border border-slate-200 rounded-lg py-1.5 pl-7 pr-2 text-[10px] font-bold outline-none focus:ring-2 focus:ring-brand-500 transition-all shadow-inner"
+                                className="w-full bg-[#16223D] border border-[#1F2C4A] rounded-lg py-1.5 pl-7 pr-2 text-[10px] font-bold outline-none focus:ring-2 focus:ring-[#2E7CF6] transition-all shadow-inner"
                             />
                         </div>
                     </div>
@@ -306,13 +313,13 @@ export default function PlanningPage() {
                                         key={stock.id}
                                         onClick={() => stock.symbol && setSelectedStock(stock.symbol)}
                                         className={`w-full p-2 rounded-xl transition-all border flex flex-col gap-1 group relative overflow-hidden ${selectedStock === stock.symbol
-                                            ? 'bg-white border-brand-200 shadow-md'
-                                            : 'bg-transparent border-transparent hover:bg-white/60 hover:border-slate-100'
+                                            ? 'bg-[#16223D] border-[#2E7CF6]/40 shadow-md'
+                                            : 'bg-transparent border-transparent hover:bg-[#16223D]/60 hover:border-[#1F2C4A]/60'
                                             } ${!stock.symbol ? 'opacity-70 grayscale' : ''}`}
                                     >
                                         <div className="absolute left-0 top-0 bottom-0 w-0.5" style={{ backgroundColor: categoryColor }}></div>
-                                        <div className="text-[10px] font-black text-slate-700 truncate">{stock.symbol || 'N/A'}</div>
-                                        <div className="text-[8px] font-bold text-slate-400 truncate opacity-70 italic">{stock.name}</div>
+                                        <div className="text-[10px] font-black text-[#E6EDF7] truncate">{stock.symbol || 'N/A'}</div>
+                                        <div className="text-[8px] font-bold text-[#5A6B89] truncate opacity-70 italic">{stock.name}</div>
                                     </button>
                                 );
                             })}
@@ -320,10 +327,10 @@ export default function PlanningPage() {
                 </div>
 
                 {/* B. Deep Technical Analysis (Expanded: Flexible Span) */}
-                <div className="col-span-12 lg:col-span-7 glass rounded-3xl border border-slate-200/60 shadow-2xl overflow-hidden flex flex-col bg-white transition-all duration-500">
-                    <div className="px-4 sm:px-5 py-3 border-b border-slate-100 bg-slate-50/50 flex flex-col lg:flex-row justify-between lg:items-center gap-4 transition-all">
+                <div className="col-span-12 lg:col-span-7 glass rounded-3xl border border-[#1F2C4A] shadow-2xl overflow-hidden flex flex-col bg-[#111A2E] transition-all duration-500">
+                    <div className="px-4 sm:px-5 py-3 border-b border-[#1F2C4A]/60 bg-[#16223D]/30 flex flex-col lg:flex-row justify-between lg:items-center gap-4 transition-all">
                         <div className="flex items-center gap-4 flex-1">
-                            <div className="bg-brand-500 p-2 rounded-xl shadow-lg shadow-brand-100 hidden sm:block">
+                            <div className="bg-[#111A2E] p-2 rounded-xl shadow-lg shadow-[#2E7CF6]/10 hidden sm:block">
                                 <Globe className="w-4 h-4 text-white" />
                             </div>
 
@@ -332,7 +339,7 @@ export default function PlanningPage() {
                                 <select
                                     value={selectedStock || ""}
                                     onChange={(e) => setSelectedStock(e.target.value)}
-                                    className="w-full bg-white border border-slate-200 rounded-xl py-2 pl-4 pr-10 text-sm font-black text-slate-700 appearance-none focus:ring-4 focus:ring-brand-500/10 focus:border-brand-500 outline-none cursor-pointer transition-all shadow-sm group-hover:border-brand-300"
+                                    className="w-full bg-[#16223D] border border-[#1F2C4A] rounded-xl py-2 pl-4 pr-10 text-sm font-black text-[#E6EDF7] appearance-none focus:ring-4 focus:ring-[#2E7CF6]/10 focus:border-[#2E7CF6] outline-none cursor-pointer transition-all shadow-sm group-hover:border-[#2E7CF6]/60"
                                 >
                                     {planningData.availableStocks?.map((stock: any) => (
                                         <option key={stock.id} value={stock.symbol}>
@@ -340,27 +347,27 @@ export default function PlanningPage() {
                                         </option>
                                     ))}
                                 </select>
-                                <ChevronDown className="w-4 h-4 text-slate-400 absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none group-hover:text-brand-500 transition-colors" />
+                                <ChevronDown className="w-4 h-4 text-[#5A6B89] absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none group-hover:text-[#2E7CF6] transition-colors" />
                             </div>
 
-                            <div className="h-8 w-px bg-slate-200 hidden lg:block"></div>
+                            <div className="h-8 w-px bg-[#1F2C4A] hidden lg:block"></div>
 
                             <div className="flex items-center gap-3">
-                                <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></div>
-                                <h2 className="text-[10px] font-black text-slate-500 uppercase tracking-widest flex items-center gap-2">
-                                    即時分析 <span className="text-brand-600 font-black">{selectedStock || '需選取標的'}</span>
+                                <div className="w-1.5 h-1.5 rounded-full bg-[#10B981]/100 animate-pulse"></div>
+                                <h2 className="text-[10px] font-black text-[#93A4C2] uppercase tracking-widest flex items-center gap-2">
+                                    即時分析 <span className="text-[#2E7CF6] font-black">{selectedStock || '需選取標的'}</span>
                                 </h2>
                             </div>
                         </div>
 
                         {selectedAsset && (
                             <div className="flex items-center flex-wrap gap-2 lg:gap-4 w-full lg:w-auto justify-end">
-                                <div className="flex items-center gap-2 bg-white px-3 py-1.5 rounded-xl border border-slate-100 shadow-sm">
-                                    <span className="text-[8px] font-black text-slate-400 uppercase tracking-widest">策略類別</span>
+                                <div className="flex items-center gap-2 bg-[#111A2E] px-3 py-1.5 rounded-xl border border-[#1F2C4A]/60 shadow-sm">
+                                    <span className="text-[8px] font-black text-[#5A6B89] uppercase tracking-widest">策略類別</span>
                                     <select
                                         value={selectedAsset.currentCategory || ""}
                                         onChange={(e) => handleCategoryChange(selectedAsset.id, e.target.value)}
-                                        className="bg-transparent text-[10px] font-black text-slate-700 outline-none cursor-pointer"
+                                        className="bg-transparent text-[10px] font-black text-[#E6EDF7] outline-none cursor-pointer"
                                     >
                                         <option value="">未分類</option>
                                         {planningData.strategyTargets.map((t: any) => (
@@ -373,7 +380,7 @@ export default function PlanningPage() {
                                     {selectedAsset.recommendedCategory && selectedAsset.currentCategory !== selectedAsset.recommendedCategory && (
                                         <button
                                             onClick={() => handleCategoryChange(selectedAsset.id, selectedAsset.recommendedCategory)}
-                                            className="bg-brand-50 text-brand-600 border border-brand-100 px-3 py-1.5 rounded-xl text-[9px] font-black flex items-center gap-1 hover:bg-brand-100 transition-all shadow-sm"
+                                            className="bg-[#111A2E] text-[#2E7CF6] border border-[#1F2C4A] px-3 py-1.5 rounded-xl text-[9px] font-black flex items-center gap-1 hover:bg-[#16223D] transition-all shadow-sm"
                                         >
                                             <ShieldCheck className="w-3.5 h-3.5" />
                                             採納建議
@@ -385,7 +392,7 @@ export default function PlanningPage() {
                                             href={`https://www.tradingview.com/chart/?symbol=${selectedStock.replace('TPE:', 'TWSE:')}`}
                                             target="_blank"
                                             rel="noopener noreferrer"
-                                            className="p-2 bg-slate-100 hover:bg-slate-200 rounded-xl text-slate-500 transition-all border border-slate-200 shadow-sm"
+                                            className="p-2 bg-[#16223D] hover:bg-[#1F2C4A] rounded-xl text-[#93A4C2] transition-all border border-[#1F2C4A] shadow-sm"
                                             title="外部開啟"
                                         >
                                             <ExternalLink className="w-3.5 h-3.5" />
@@ -400,13 +407,13 @@ export default function PlanningPage() {
                         {selectedStock ? (
                             <TradingViewChart key={selectedStock} symbol={selectedStock} />
                         ) : (
-                            <div className="h-full flex flex-col items-center justify-center text-slate-400 space-y-3 p-8 text-center bg-slate-50/30">
-                                <div className="w-12 h-12 rounded-2xl bg-slate-100 flex items-center justify-center">
+                            <div className="h-full flex flex-col items-center justify-center text-[#5A6B89] space-y-3 p-8 text-center bg-[#16223D]/20">
+                                <div className="w-12 h-12 rounded-2xl bg-[#16223D] flex items-center justify-center">
                                     <Target className="w-6 h-6 opacity-20" />
                                 </div>
                                 <div>
-                                    <p className="font-black text-sm text-slate-500">等待選取標的</p>
-                                    <p className="text-[10px] font-bold text-slate-400">請從上方清單選擇股票以載入 K 線圖</p>
+                                    <p className="font-black text-sm text-[#93A4C2]">等待選取標的</p>
+                                    <p className="text-[10px] font-bold text-[#5A6B89]">請從上方清單選擇股票以載入 K 線圖</p>
                                 </div>
                             </div>
                         )}
@@ -414,15 +421,15 @@ export default function PlanningPage() {
                 </div>
 
                 {/* C. Strategy Notes (Always Open) */}
-                <div className="col-span-12 lg:col-span-3 glass rounded-3xl border border-slate-200/60 shadow-xl p-6 flex flex-col bg-white/40 backdrop-blur-xl overflow-hidden transition-all duration-300">
+                <div className="col-span-12 lg:col-span-3 glass rounded-3xl border border-[#1F2C4A] shadow-xl p-6 flex flex-col bg-[#16223D]/40 backdrop-blur-xl overflow-hidden transition-all duration-300">
                     <div className="flex items-center justify-between mb-5">
                         <div className="flex items-center gap-2.5">
-                            <div className="bg-brand-500 p-1.5 rounded-lg shadow-lg shadow-brand-200">
+                            <div className="bg-[#111A2E] p-1.5 rounded-lg shadow-lg shadow-[#2E7CF6]/15">
                                 <PenLine className="w-4 h-4 text-white" />
                             </div>
                             <div>
-                                <h2 className="text-sm font-black text-slate-800 leading-tight">戰術筆記</h2>
-                                <p className="text-[9px] font-bold text-slate-400 uppercase tracking-tighter">{selectedStock || '備註'}</p>
+                                <h2 className="text-sm font-black text-[#E6EDF7] leading-tight">戰術筆記</h2>
+                                <p className="text-[9px] font-bold text-[#5A6B89] uppercase tracking-tighter">{selectedStock || '備註'}</p>
                             </div>
                         </div>
                     </div>
@@ -431,8 +438,8 @@ export default function PlanningPage() {
                         {selectedStock ? (
                             <StockPlanningNotes symbol={selectedStock} />
                         ) : (
-                            <div className="h-full flex flex-col items-center justify-center text-slate-300 italic text-xs space-y-2 opacity-60">
-                                <div className="w-1 h-12 bg-slate-200 rounded-full"></div>
+                            <div className="h-full flex flex-col items-center justify-center text-[#5A6B89] italic text-xs space-y-2 opacity-60">
+                                <div className="w-1 h-12 bg-[#1F2C4A] rounded-full"></div>
                                 <p>等待標的選取...</p>
                             </div>
                         )}

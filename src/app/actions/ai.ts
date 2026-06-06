@@ -1,127 +1,16 @@
-"use server";
+// 靜態 Demo Mode — AI 財務洞察（預先產生的真實資產摘要，無需後端）
+import { REAL_DATA } from "@/lib/realData";
 
-import { supabase } from "@/lib/supabase";
-import { GoogleGenAI } from "@google/genai";
+const fmt = (n: number) => "NT$" + Math.round(n).toLocaleString();
 
-// ─────────────────────────────────────────────────────────────────
-// DEMO MODE MOCK DATA
-// Toggle by setting NEXT_PUBLIC_DEMO_MODE=true in .env.local
-// ─────────────────────────────────────────────────────────────────
-const DEMO_AI_SUMMARY = "您的資產配置目前相當穩健。美金資產佔比達 68%，能在匯率波動中提供良好的對沖。建議繼續關注「夢想度假屋」目標的進度，目前已達成 50%，進度符合預期。";
+const REAL_SUMMARY =
+    `截至 2026/02，您的家庭總資產淨值為 ${fmt(REAL_DATA.grandTotal)}，` +
+    `其中股票部位 ${fmt(REAL_DATA.stockTotal)}（佔約 ${(REAL_DATA.stockTotal / REAL_DATA.grandTotal * 100).toFixed(0)}%）。` +
+    `資產配置上核心持股約 54.7%、定存與現金約 41.6%，結構穩健、防禦性佳。` +
+    `提醒：NVDA 與 006208（富邦台50）各佔總資產逾 10%，已亮起 🟡 黃燈集中度提醒，` +
+    `若單一標的續漲建議留意是否超過 15% 的橘燈門檻。` +
+    `每月固定訂閱支出為 ${fmt(REAL_DATA.subscriptionsMonthlyTotal)}，可於訂閱頁檢視年付續費提醒。`;
 
-// ─────────────────────────────────────────────────────────────────
-// LIVE DATA FUNCTIONS
-// ─────────────────────────────────────────────────────────────────
-export async function generateLiveAISummary(dashboardData: any, userFeedback?: string): Promise<string> {
-    if (process.env.NEXT_PUBLIC_DEMO_MODE === "true") return DEMO_AI_SUMMARY;
-
-    // 1. Check for existing summary if no feedback is provided (Cache hit)
-    if (!userFeedback && dashboardData.latestSnapshot?.ai_summary) {
-        return dashboardData.latestSnapshot.ai_summary;
-    }
-
-    try {
-        if (!process.env.GEMINI_API_KEY || process.env.GEMINI_API_KEY === 'your_key_here') {
-            return "⚠️ Gemini API Key 未設定，無法產生即時 AI 洞察。請在 .env 中設定 GEMINI_API_KEY。";
-        }
-
-        const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY || "" });
-
-        const { data: previousFeedback } = await supabase
-            .from('ai_summary_feedback').select('user_prompt, ai_response')
-            .order('created_at', { ascending: false }).limit(3);
-
-        let historyContext = "";
-        if (previousFeedback && previousFeedback.length > 0) {
-            historyContext = "\n\n過往的調整指示與回應紀錄（請參考這些風格與要求）：\n" +
-                previousFeedback.reverse().map((f: any) => `使用者要求：${f.user_prompt}\n你的回應：${f.ai_response}`).join('\n\n');
-        }
-
-        let newFeedbackContext = "";
-        if (userFeedback) {
-            newFeedbackContext = `\n\n這一次，使用者提出了新的要求與回饋，請務必按照這個指示重新撰寫：\n「${userFeedback}」`;
-        }
-
-        const prompt = `
-作為一名專業的家庭財務顧問，這是一個家庭的即時財務狀況分析：
-
-總資產淨值：約 ${Math.round((dashboardData.totalNetWorth || 0) / 10000)}萬 台幣
-各幣別比例：${(dashboardData.currencyData || []).map((d: any) => `${d.name} ${d.value}%`).join(', ')}
-資產配置：${(dashboardData.allocationData || []).map((d: any) => `${d.name} ${d.value}%`).join(', ')}
-成員佔比：${(dashboardData.ownershipData || []).map((d: any) => `${d.name} ${d.value}%`).join(', ')}
-${historyContext}${newFeedbackContext}
-請給出一到兩句簡短、專業且具洞察力的財務總結與建議。不要囉嗦，字數預設控制在 60 字以內 (除非使用者有別的要求)，語氣要像是專業私人顧問。`;
-
-        let response;
-        // 根據剛才列出的模型，2.5 系列是目前最新的穩定版
-        const modelsToTry = [
-            'gemini-2.5-flash',
-            'gemini-2.0-flash',
-            'gemini-2.5-pro',
-            'gemini-pro'
-        ];
-        let lastError = null;
-
-        for (const modelName of modelsToTry) {
-            try {
-                console.log(`[AI Debug] Attempting model: ${modelName}`);
-                // 先嘗試標準物件格式
-                response = await ai.models.generateContent({
-                    model: modelName,
-                    contents: [{ role: 'user', parts: [{ text: prompt }] }],
-                });
-
-                if (response) {
-                    console.log(`[AI Debug] Success with ${modelName}`);
-                    break;
-                }
-            } catch (err: any) {
-                lastError = err;
-                console.warn(`[AI Debug] Model ${modelName} (object format) failed:`, err.message);
-
-                // 嘗試簡化格式 (直接傳字串)，這在某些 SDK 版本更穩定
-                try {
-                    response = await ai.models.generateContent({
-                        model: modelName,
-                        contents: prompt as any,
-                    });
-                    if (response) {
-                        console.log(`[AI Debug] Success with ${modelName} (string format)`);
-                        break;
-                    }
-                } catch (err2) {
-                    console.warn(`[AI Debug] Model ${modelName} (string format) failed too.`);
-                }
-            }
-        }
-
-        if (!response) {
-            throw lastError || new Error("所有 AI 模型嘗試皆失敗（404 或無權限）。");
-        }
-
-        const newSummary = (response as any).text || (response as any).candidates?.[0]?.content?.parts?.[0]?.text || "⚠️ AI 沒有回傳任何內容。";
-
-        // 2. Save result back to snapshot as the primary summary (Cache update)
-        if (newSummary && !newSummary.startsWith("⚠️") && dashboardData.latestSnapshot?.id) {
-            await supabase
-                .from('snapshots')
-                .update({ ai_summary: newSummary })
-                .eq('id', dashboardData.latestSnapshot.id);
-        }
-
-        // 3. Log interaction to DB if user provided feedback
-        if (userFeedback && newSummary && !newSummary.startsWith("⚠️")) {
-            await supabase.from('ai_summary_feedback').insert({
-                snapshot_id: dashboardData.latestSnapshot?.id || null,
-                user_prompt: userFeedback,
-                ai_response: newSummary
-            });
-        }
-
-        return newSummary;
-    } catch (err: any) {
-        console.error("AI generation failed:", err);
-        const errorMsg = err.message || JSON.stringify(err);
-        return `⚠️ AI 洞察失敗: ${errorMsg.slice(0, 100)}`;
-    }
+export async function generateLiveAISummary(_dashboardData?: any, _userFeedback?: string): Promise<string> {
+    return REAL_SUMMARY;
 }

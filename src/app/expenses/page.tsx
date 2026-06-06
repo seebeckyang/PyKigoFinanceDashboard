@@ -31,6 +31,9 @@ import {
 } from "@/components/expenses/ExpenseGroups";
 import { StatCard } from "@/components/expenses/StatCard";
 import { ExpenseCategoryChart } from "@/components/expenses/ExpenseCategoryChart";
+import { VoiceExpense } from "@/components/expenses/VoiceExpense";
+
+const IS_DEMO = process.env.NEXT_PUBLIC_DEMO_MODE === "true";
 
 export default function ExpensesPage() {
     const {
@@ -132,10 +135,10 @@ export default function ExpensesPage() {
 
     if (isInitialLoading) {
         return (
-            <div className="flex items-center justify-center min-h-screen bg-white">
+            <div className="flex items-center justify-center min-h-screen">
                 <div className="flex flex-col items-center gap-4">
-                    <div className="w-12 h-12 border-4 border-indigo-200 border-t-indigo-600 rounded-full animate-spin" />
-                    <p className="text-sm font-black text-indigo-900/40 uppercase tracking-widest">初始化數據中...</p>
+                    <div className="w-12 h-12 border-4 border-[#2E7CF6]/30 border-t-indigo-600 rounded-full animate-spin" />
+                    <p className="text-sm font-black text-[#5A6B89] uppercase tracking-widest">初始化數據中...</p>
                 </div>
             </div>
         );
@@ -150,27 +153,28 @@ export default function ExpensesPage() {
             <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-4">
                 <div className="space-y-3">
                     <div className="flex items-center gap-3">
-                        <div className="bg-indigo-600 text-white p-2.5 rounded-2xl shadow-lg shadow-indigo-200">
+                        <div className="bg-[#2E7CF6] text-white p-2.5 rounded-2xl shadow-lg shadow-indigo-200">
                             <Zap className="w-6 h-6" />
                         </div>
-                        <h1 className="text-4xl md:text-5xl font-black text-gray-900 tracking-tighter">
-                            Expense <span className="text-indigo-600">管理中心</span>
+                        <h1 className="text-4xl md:text-5xl font-black text-[#E6EDF7] tracking-tighter">
+                            支出 <span className="text-[#2E7CF6]">管理中心</span>
                         </h1>
                     </div>
-                    <p className="text-sm font-bold text-gray-400 uppercase tracking-widest pl-1">Smart Financial Tracking & Settlement</p>
+                    <p className="text-sm font-bold text-[#5A6B89] uppercase tracking-widest pl-1">智慧支出追蹤與結算</p>
                 </div>
 
                 <div className="flex flex-wrap items-center gap-3 md:gap-4">
+                    <VoiceExpense isDemo={IS_DEMO} />
                     <button
                         onClick={() => setShowImportModal(true)}
-                        className="flex items-center gap-2 md:gap-2.5 px-4 md:px-6 py-3 md:py-4 bg-amber-500 hover:bg-amber-600 text-white rounded-2xl md:rounded-[1.5rem] font-black text-xs md:text-sm transition-all shadow-xl shadow-amber-100 border border-amber-400 active:scale-95 group flex-1 md:flex-none"
+                        className="flex items-center gap-2 md:gap-2.5 px-4 md:px-6 py-3 md:py-4 bg-[#F59E0B] hover:bg-[#d4880a] text-white rounded-2xl md:rounded-[1.5rem] font-black text-xs md:text-sm transition-all shadow-xl shadow-[#F59E0B]/10 border border-[#F59E0B] active:scale-95 group flex-1 md:flex-none"
                     >
                         <Zap className="w-4 h-4 text-amber-200 group-hover:rotate-12 transition-transform" />
                         AI 智慧匯入
                     </button>
                     <button
                         onClick={() => setShowModal(true)}
-                        className="flex items-center gap-2 md:gap-2.5 px-6 md:px-8 py-3 md:py-4 bg-indigo-600 hover:bg-indigo-700 text-white rounded-2xl md:rounded-[1.5rem] font-black text-xs md:text-sm transition-all shadow-xl shadow-indigo-100 border border-indigo-500 active:scale-95 group flex-1 md:flex-none"
+                        className="flex items-center gap-2 md:gap-2.5 px-6 md:px-8 py-3 md:py-4 bg-[#2E7CF6] hover:bg-[#1a6ae3] text-white rounded-2xl md:rounded-[1.5rem] font-black text-xs md:text-sm transition-all shadow-xl shadow-[#2E7CF6]/10 border border-[#2E7CF6] active:scale-95 group flex-1 md:flex-none"
                     >
                         <Plus className="w-4 h-4 md:w-5 md:h-5 group-hover:rotate-90 transition-transform" />
                         手動記帳
@@ -185,8 +189,8 @@ export default function ExpensesPage() {
                     {/* Relocated Filters - Two Rows */}
                     <div className="space-y-4">
                         {/* Row 1: Project Tabs */}
-                        <div className="bg-white/40 p-3 rounded-3xl border border-gray-100 shadow-sm backdrop-blur-sm">
-                            <div className="flex items-center gap-1 bg-gray-100/50 p-1 rounded-2xl overflow-x-auto no-scrollbar">
+                        <div className="bg-[#16223D]/40 p-3 rounded-3xl border border-[#1F2C4A]/60 shadow-sm backdrop-blur-sm">
+                            <div className="flex items-center gap-1 bg-[#16223D]/50 p-1 rounded-2xl overflow-x-auto no-scrollbar">
                                 <TabButton
                                     active={activeTab === 'all'}
                                     onClick={() => setActiveTab('all')}
@@ -214,9 +218,9 @@ export default function ExpensesPage() {
                         {/* Row 2: Shared Filters Row */}
                         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                             {/* Paid For Filter - Always Visible */}
-                            <div className="bg-white/40 p-2 rounded-2xl border border-gray-100 shadow-sm backdrop-blur-sm flex items-center gap-2">
-                                <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest pl-2">對象</span>
-                                <div className="flex items-center gap-1 bg-gray-100/50 p-1 rounded-xl">
+                            <div className="bg-[#16223D]/40 p-2 rounded-2xl border border-[#1F2C4A]/60 shadow-sm backdrop-blur-sm flex items-center gap-2">
+                                <span className="text-[10px] font-black text-[#5A6B89] uppercase tracking-widest pl-2">對象</span>
+                                <div className="flex items-center gap-1 bg-[#16223D]/50 p-1 rounded-xl">
                                     {[
                                         { id: 'Both', label: '全部' },
                                         { id: 'PY', label: 'PY' },
@@ -227,7 +231,7 @@ export default function ExpensesPage() {
                                             onClick={() => setPaidForFilter(beneficiary.id)}
                                             className={cn(
                                                 "px-4 py-1.5 rounded-lg text-[10px] font-black transition-all",
-                                                paidForFilter === beneficiary.id ? "bg-white text-indigo-600 shadow-sm" : "text-gray-400 hover:text-gray-600"
+                                                paidForFilter === beneficiary.id ? "bg-[#16223D] text-[#2E7CF6] shadow-sm border border-[#2E7CF6]/30" : "text-[#5A6B89] hover:text-[#93A4C2]"
                                             )}
                                         >
                                             {beneficiary.label}
@@ -238,8 +242,8 @@ export default function ExpensesPage() {
 
                             {/* Date Mode & Range Picker - Hide only when in project view */}
                             {!isProjectTab && (
-                                <div className="flex flex-col md:flex-row md:items-center justify-between bg-white/40 p-3 rounded-[2rem] border border-gray-100 shadow-sm backdrop-blur-sm gap-4 animate-in fade-in slide-in-from-top-2 flex-1">
-                                    <div className="flex items-center gap-2 bg-gray-100/50 p-1 rounded-2xl">
+                                <div className="flex flex-col md:flex-row md:items-center justify-between bg-[#16223D]/40 p-3 rounded-[2rem] border border-[#1F2C4A]/60 shadow-sm backdrop-blur-sm gap-4 animate-in fade-in slide-in-from-top-2 flex-1">
+                                    <div className="flex items-center gap-2 bg-[#16223D]/50 p-1 rounded-2xl">
                                         {[
                                             { id: 'month', label: '月' },
                                             { id: 'quarter', label: '季' },
@@ -250,7 +254,7 @@ export default function ExpensesPage() {
                                                 onClick={() => setFilterMode(mode.id as any)}
                                                 className={cn(
                                                     "px-4 py-1.5 rounded-xl text-[10px] font-black transition-all",
-                                                    filterMode === mode.id ? "bg-white text-indigo-600 shadow-sm" : "text-gray-400 hover:text-gray-600"
+                                                    filterMode === mode.id ? "bg-[#16223D] text-[#2E7CF6] shadow-sm border border-[#2E7CF6]/30" : "text-[#5A6B89] hover:text-[#93A4C2]"
                                                 )}
                                             >
                                                 {mode.label}
@@ -258,8 +262,8 @@ export default function ExpensesPage() {
                                         ))}
                                     </div>
 
-                                    <div className="flex items-center gap-3 bg-white border border-gray-100 p-1.5 px-4 rounded-2xl shadow-sm flex-1 md:flex-none">
-                                        <Calendar className="w-4 h-4 text-indigo-500" />
+                                    <div className="flex items-center gap-3 bg-[#111A2E] border border-[#1F2C4A]/60 p-1.5 px-4 rounded-2xl shadow-sm flex-1 md:flex-none">
+                                        <Calendar className="w-4 h-4 text-[#2E7CF6]" />
                                         <div className="flex items-center gap-4">
                                             {filterMode === 'month' && (
                                                 <div className="flex flex-col">
@@ -267,7 +271,7 @@ export default function ExpensesPage() {
                                                         type="month"
                                                         value={selectedMonth}
                                                         onChange={(e) => setSelectedMonth(e.target.value)}
-                                                        className="bg-transparent border-none pr-3 text-sm font-black text-slate-900 outline-none cursor-pointer leading-tight uppercase"
+                                                        className="bg-transparent border-none pr-3 text-sm font-black text-[#E6EDF7] outline-none cursor-pointer leading-tight uppercase"
                                                     />
                                                 </div>
                                             )}
@@ -277,17 +281,17 @@ export default function ExpensesPage() {
                                                         <select
                                                             value={selectedYear}
                                                             onChange={(e) => setSelectedYear(e.target.value)}
-                                                            className="bg-transparent border-none text-sm font-black text-slate-900 outline-none cursor-pointer leading-tight"
+                                                            className="bg-transparent border-none text-sm font-black text-[#E6EDF7] outline-none cursor-pointer leading-tight"
                                                         >
                                                             {[2024, 2025, 2026].map(y => <option key={y} value={y.toString()}>{y}</option>)}
                                                         </select>
                                                     </div>
-                                                    <div className="w-px h-6 bg-gray-100" />
+                                                    <div className="w-px h-6 bg-[#16223D]" />
                                                     <div className="flex flex-col">
                                                         <select
                                                             value={selectedQuarter}
                                                             onChange={(e) => setSelectedQuarter(parseInt(e.target.value))}
-                                                            className="bg-transparent border-none text-sm font-black text-slate-900 outline-none cursor-pointer leading-tight uppercase"
+                                                            className="bg-transparent border-none text-sm font-black text-[#E6EDF7] outline-none cursor-pointer leading-tight uppercase"
                                                         >
                                                             {[1, 2, 3, 4].map(q => <option key={q} value={q}>Q{q}</option>)}
                                                         </select>
@@ -299,7 +303,7 @@ export default function ExpensesPage() {
                                                     <select
                                                         value={selectedYear}
                                                         onChange={(e) => setSelectedYear(e.target.value)}
-                                                        className="bg-transparent border-none text-sm font-black text-slate-900 outline-none cursor-pointer leading-tight"
+                                                        className="bg-transparent border-none text-sm font-black text-[#E6EDF7] outline-none cursor-pointer leading-tight"
                                                     >
                                                         {[2024, 2025, 2026].map(y => <option key={y} value={y.toString()}>{y} 年度</option>)}
                                                     </select>
@@ -349,22 +353,22 @@ export default function ExpensesPage() {
                             </div>
                         ) : (
                             <div className="md:col-span-2">
-                                <div className="bg-white rounded-[2.5rem] p-8 shadow-sm border border-gray-100 h-full flex flex-col md:flex-row gap-8">
+                                <div className="bg-[#111A2E] rounded-[2.5rem] p-8 shadow-sm border border-[#1F2C4A]/60 h-full flex flex-col md:flex-row gap-8">
                                     <div className="flex-1">
                                         <div className="flex items-center gap-3 mb-6">
-                                            <div className="w-10 h-10 rounded-xl bg-indigo-50 flex items-center justify-center text-indigo-600">
+                                            <div className="w-10 h-10 rounded-xl bg-[#16223D] flex items-center justify-center text-[#2E7CF6]">
                                                 <BarChart3 className="w-5 h-5" />
                                             </div>
-                                            <h3 className="font-black text-lg text-slate-900 tracking-tight">支出類別分佈</h3>
+                                            <h3 className="font-black text-lg text-[#E6EDF7] tracking-tight">支出類別分佈</h3>
                                         </div>
                                         <div className="space-y-6">
                                             <div className="flex flex-col">
-                                                <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">{filterMode === 'month' ? '單月' : filterMode === 'quarter' ? '單季' : '年度'}日常生活支出</span>
-                                                <div className="text-3xl font-black text-slate-900 tracking-tighter">
+                                                <span className="text-[10px] font-black text-[#5A6B89] uppercase tracking-widest mb-1">{filterMode === 'month' ? '單月' : filterMode === 'quarter' ? '單季' : '年度'}日常生活支出</span>
+                                                <div className="text-3xl font-black text-[#E6EDF7] tracking-tighter">
                                                     NT$ {expenses.filter(e => !e.goal_id).reduce((sum, e) => sum + (Number(e.amount) || 0), 0).toLocaleString()}
                                                 </div>
                                             </div>
-                                            <p className="text-xs font-medium text-slate-400 leading-relaxed">
+                                            <p className="text-xs font-medium text-[#5A6B89] leading-relaxed">
                                                 展示此{filterMode === 'month' ? '月份' : filterMode === 'quarter' ? '季度' : '年度'}各類別的支出比例，協助您掌握預算流向。您可以切換上方{filterMode === 'month' ? '月、季、年' : '切換條件'}查看不同時期的消費習慣。
                                             </p>
                                         </div>
@@ -392,29 +396,29 @@ export default function ExpensesPage() {
             </div>
 
             {/* Focused Action Section */}
-            <div className="bg-slate-900 rounded-[3rem] p-10 md:p-16 shadow-2xl relative overflow-hidden group">
-                <div className="absolute top-0 right-0 w-96 h-96 bg-indigo-500/10 blur-[100px] rounded-full -mr-48 -mt-48 transition-all group-hover:bg-indigo-500/20" />
-                <div className="absolute bottom-0 left-0 w-64 h-64 bg-amber-500/5 blur-[80px] rounded-full -ml-32 -mb-32" />
+            <div className="bg-[#0B1220] rounded-[3rem] p-10 md:p-16 shadow-2xl relative overflow-hidden group">
+                <div className="absolute top-0 right-0 w-96 h-96 bg-[#2E7CF6]/10 blur-[100px] rounded-full -mr-48 -mt-48 transition-all group-hover:bg-[#2E7CF6]/20" />
+                <div className="absolute bottom-0 left-0 w-64 h-64 bg-[#F59E0B]/5 blur-[80px] rounded-full -ml-32 -mb-32" />
 
                 <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-12">
                     <div className="max-w-xl">
-                        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 border border-white/10 text-[10px] font-black text-indigo-400 uppercase tracking-widest mb-6">
-                            Transaction Management
+                        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#16223D]/30 border border-[#1F2C4A]/50 text-[10px] font-black text-[#22D3EE] uppercase tracking-widest mb-6">
+                            交易明細管理
                         </div>
                         <h3 className="text-4xl md:text-5xl font-black text-white tracking-tighter leading-tight">
-                            管理您的所有 <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-indigo-200">收支細目</span>
+                            管理您的所有 <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#2E7CF6] to-[#93A4C2]">收支細目</span>
                         </h3>
-                        <p className="text-gray-400 font-medium text-lg mt-6 leading-relaxed">
+                        <p className="text-[#5A6B89] font-medium text-lg mt-6 leading-relaxed">
                             進入專屬管理中心進行批次編輯、手動確認 AI 匯入項目，以及查看完整的歷史收支紀錄。
                         </p>
                     </div>
 
                     <button
                         onClick={() => setShowAllExpensesModal(true)}
-                        className="flex-shrink-0 flex items-center gap-4 px-10 py-6 bg-white hover:bg-indigo-50 text-slate-900 rounded-[2rem] font-black text-lg transition-all shadow-2xl shadow-indigo-500/20 active:scale-95 group"
+                        className="flex-shrink-0 flex items-center gap-4 px-10 py-6 bg-[#16223D] hover:bg-[#1F2C4A] text-[#E6EDF7] border border-[#1F2C4A] rounded-[2rem] font-black text-lg transition-all shadow-2xl shadow-[#2E7CF6]/15 active:scale-95 group"
                     >
                         管理交易明細
-                        <div className="w-8 h-8 rounded-full bg-indigo-600 text-white flex items-center justify-center group-hover:translate-x-1 transition-transform">
+                        <div className="w-8 h-8 rounded-full bg-[#2E7CF6] text-white flex items-center justify-center group-hover:translate-x-1 transition-transform">
                             <ChevronRight className="w-5 h-5" />
                         </div>
                     </button>
