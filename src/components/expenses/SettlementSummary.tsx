@@ -44,10 +44,10 @@ export const SettlementSummary = memo(function SettlementSummary({
                     <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
                         <div>
                             <h3 className="text-2xl md:text-3xl font-black tracking-tighter mb-1">
-                                {settlement.net_balance === 0 ? '目前已結清' : (settlement.net_balance < 0 ? 'CY 待支付' : 'HY 待支付')}
+                                本期家庭總支出
                             </h3>
                             <div className="text-4xl md:text-5xl font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-[#111A2E] to-gray-400">
-                                ${settlement.abs_balance.toLocaleString()}
+                                NT$ {(settlement.cy_credit + settlement.cy_debit).toLocaleString()}
                             </div>
                         </div>
 
@@ -72,12 +72,12 @@ export const SettlementSummary = memo(function SettlementSummary({
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div className="bg-[#16223D]/30 p-4 rounded-3xl border border-[#1F2C4A]/50 backdrop-blur-md">
-                        <div className="text-[10px] font-black text-[#93A4C2] uppercase mb-1 tracking-widest text-center sm:text-left">CY 墊付</div>
-                        <div className="text-xl md:text-2xl font-black text-slate-100 text-center sm:text-left">${settlement.cy_credit.toLocaleString()}</div>
+                        <div className="text-[10px] font-black text-[#93A4C2] uppercase mb-1 tracking-widest text-center sm:text-left">CY 出</div>
+                        <div className="text-xl md:text-2xl font-black text-slate-100 text-center sm:text-left">NT$ {settlement.cy_credit.toLocaleString()}</div>
                     </div>
                     <div className="bg-[#16223D]/30 p-4 rounded-3xl border border-[#1F2C4A]/50 backdrop-blur-md">
-                        <div className="text-[10px] font-black text-[#93A4C2] uppercase mb-1 tracking-widest text-center sm:text-left">HY 墊付</div>
-                        <div className="text-xl md:text-2xl font-black text-slate-100 text-center sm:text-left">${settlement.cy_debit.toLocaleString()}</div>
+                        <div className="text-[10px] font-black text-[#93A4C2] uppercase mb-1 tracking-widest text-center sm:text-left">HY 出</div>
+                        <div className="text-xl md:text-2xl font-black text-slate-100 text-center sm:text-left">NT$ {settlement.cy_debit.toLocaleString()}</div>
                     </div>
                 </div>
 
@@ -90,13 +90,12 @@ export const SettlementSummary = memo(function SettlementSummary({
 
                 <div className="mt-auto">
                     <button
-                        onClick={onOpenSettlement}
-                        disabled={settlement.abs_balance === 0}
-                        className="w-full bg-[#2E7CF6] hover:bg-[#1a6ae3] text-white py-4.5 rounded-[1.5rem] font-black text-sm transition-all flex items-center justify-center gap-3 relative z-10 shadow-xl shadow-indigo-900/20 active:scale-[0.98] disabled:opacity-20 disabled:cursor-not-allowed group/btn"
+                        onClick={onOpenHistory}
+                        className="w-full bg-[#16223D] hover:bg-[#1F2C4A] text-[#E6EDF7] py-4.5 rounded-[1.5rem] font-black text-sm transition-all flex items-center justify-center gap-3 relative z-10 shadow-xl shadow-indigo-900/20 active:scale-[0.98] border border-[#1F2C4A]/60 group/btn"
                         style={{ height: '56px' }}
                     >
-                        <CheckCircle className="w-5 h-5 text-[#2E7CF6] transition-transform group-hover/btn:scale-110" />
-                        執行結算作業
+                        <History className="w-5 h-5 text-[#22D3EE] transition-transform group-hover/btn:scale-110" />
+                        查看支出歷史
                     </button>
                 </div>
             </div>

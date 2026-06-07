@@ -143,6 +143,65 @@ export default function ExpensesPage() {
         activeGoal ? (goalProjectExpenses / (activeGoal.target_amount || 1)) * 100 : 0,
         [activeGoal, goalProjectExpenses]);
 
+    // === Client-side overrides for Settlement and Category Chart (multi-currency aware) ===
+    // 規則：家庭共享支出不平分 - paid_by 自己出的就全算自己（CY/HY 各自負擔），不再 ×0.5
+    // 所有金額一律先用 fx 換算成 TWD 再加總
+    const clientSettlement = React.useMemo(() => {
+        if (!expenses || expenses.length === 0) {
+            return {
+                cy_credit: 0,
+                cy_debit: 0,
+                net_balance: 0,
+                base_balance: 0,
+                settled_total: 0,
+                summary: "雙方互不相欠",
+                abs_balance: 0,
+                balance_status: "已結清"
+            };
+        }
+        let cyOut = 0;  // CY 出的錢 (全額算)
+        let hyOut = 0;  // HY 出的錢 (全額算)
+        (expenses as any[]).forEach(e => {
+            if (e.is_reviewed === false) return;
+            const amt = convertToTWD(e.amount, e.currency || "TWD");
+            const pBy = String(e.paid_by || "").toUpperCase();
+            if (pBy === "CY") cyOut += amt;
+            else if (pBy === "HY") hyOut += amt;
+        });
+        // 家庭共享不平分：CY 出的就是 CY 出的，HY 出的就是 HY 出的
+        // net_balance > 0 表示 CY 出比較多，HY 應給付 CY (但既然是家庭共享，這裡只是參考)
+        const net = cyOut - hyOut;
+        return {
+            cy_credit: Math.round(cyOut),
+            cy_debit: Math.round(hyOut),
+            net_balance: Math.round(net),
+            base_balance: Math.round(net),
+            settled_total: 0,
+            summary: "家庭共享支出（不平分）",
+            abs_balance: Math.round(Math.abs(net)),
+            balance_status: net === 0 ? "已結清" : "家庭共享"
+        };
+    }, [expenses, convertToTWD]);
+
+    const clientCategoryStats = React.useMemo(() => {
+        if (!expenses || expenses.length === 0 || !categories) return [];
+        const catMap = new Map((categories as any[]).map(c => [c.id, c]));
+        const groups = new Map<string, { name: string; amount: number; color: string }>();
+        (expenses as any[]).forEach(e => {
+            if (e.is_reviewed === false) return;
+            const cat = catMap.get(e.category_id);
+            const name = cat?.name || "其他";
+            const color = cat?.color || "#94a3b8";
+            const amt = convertToTWD(e.amount, e.currency || "TWD");
+            const existing = groups.get(name);
+            if (existing) existing.amount += amt;
+            else groups.set(name, { name, amount: amt, color });
+        });
+        return Array.from(groups.values())
+            .map(g => ({ ...g, amount: Math.round(g.amount) }))
+            .sort((a, b) => b.amount - a.amount);
+    }, [expenses, categories, convertToTWD]);
+
     if (isInitialLoading) {
         return (
             <div className="flex items-center justify-center min-h-screen">
@@ -385,7 +444,7 @@ export default function ExpensesPage() {
                                     </div>
                                     <div className="w-full md:w-[280px] h-[300px] flex items-center justify-center">
                                         <ExpenseCategoryChart
-                                            data={stats?.currentMonth?.categories || []}
+                                            data={clientCategoryStats}
                                             loading={isLoading}
                                         />
                                     </div>
@@ -398,7 +457,7 @@ export default function ExpensesPage() {
                 {/* Settlement Section */}
                 <div className="lg:col-span-5 h-full">
                     <SettlementSummary
-                        settlement={settlement}
+                        settlement={clientSettlement}
                         onOpenHistory={() => setShowHistoryModal(true)}
                         onOpenSettlement={() => setShowPartialSettlementModal(true)}
                     />

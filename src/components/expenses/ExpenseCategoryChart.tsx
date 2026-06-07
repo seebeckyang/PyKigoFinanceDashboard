@@ -119,7 +119,7 @@ export function ExpenseCategoryChart({ data, loading }: ExpenseCategoryChartProp
                 <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 mt-[-40px] text-center pointer-events-none">
                     <div className="text-[10px] font-black text-[#5A6B89] tracking-[0.2em] uppercase mb-1">Total</div>
                     <div className="text-xl font-black text-[#E6EDF7] tracking-tighter">
-                        {chartData.reduce((acc, curr) => acc + curr.amount, 0).toLocaleString()}
+                        NT$ {chartData.reduce((acc, curr) => acc + curr.amount, 0).toLocaleString()}
                     </div>
                 </div>
             </div>
