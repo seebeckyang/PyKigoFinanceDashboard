@@ -155,7 +155,7 @@ export function SettlementHistoryModal({
                                     </div>
                                     <div className="flex flex-col">
                                         <div className="font-bold text-[#E6EDF7] flex items-center gap-2">
-                                            $ {item.amount.toLocaleString()}
+                                            NT$ {item.amount.toLocaleString()}
                                             <span className="text-[10px] px-2 py-0.5 rounded-full bg-[#16223D] text-[#93A4C2] font-bold uppercase tracking-wider">
                                                 Paid to {item.payee}
                                             </span>
@@ -278,7 +278,7 @@ export function PartialSettlementModal({
                                 <div className="text-amber-800">
                                     <div className="text-[10px] font-black uppercase tracking-widest opacity-60">Payer</div>
                                     <div className="text-sm font-bold">
-                                        {isEditing ? `結算金額 $${settlement.amount.toLocaleString()}` : `目前總欠款 $${(settlement.abs_balance || 0).toLocaleString()}`}
+                                        {isEditing ? `結算金額 NT$ ${settlement.amount.toLocaleString()}` : `目前總欠款 NT$ ${(settlement.abs_balance || 0).toLocaleString()}`}
                                     </div>
                                 </div>
                             </div>
@@ -300,12 +300,12 @@ export function PartialSettlementModal({
                         <div>
                             <label className="text-xs font-black text-[#5A6B89] uppercase tracking-widest mb-2 block">結算金額</label>
                             <div className="relative">
-                                <div className="absolute left-4 top-1/2 -translate-y-1/2 font-black text-[#5A6B89] text-xl">$</div>
+                                <div className="absolute left-4 top-1/2 -translate-y-1/2 font-black text-[#5A6B89] text-xl">NT$</div>
                                 <input
                                     type="number"
                                     value={amount}
                                     onChange={(e) => setAmount(Number(e.target.value))}
-                                    className="w-full bg-[#111A2E] border-2 border-[#1F2C4A]/60 rounded-2xl py-4 pl-10 pr-6 font-black text-3xl text-[#E6EDF7] focus:border-[#2E7CF6] transition-all outline-none"
+                                    className="w-full bg-[#111A2E] border-2 border-[#1F2C4A]/60 rounded-2xl py-4 pl-16 pr-6 font-black text-3xl text-[#E6EDF7] focus:border-[#2E7CF6] transition-all outline-none"
                                 />
                             </div>
                             {!isEditing && (

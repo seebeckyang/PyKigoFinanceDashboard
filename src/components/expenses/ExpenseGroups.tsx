@@ -19,6 +19,7 @@ import {
     deleteExpense,
     confirmExpensesBulk
 } from "@/app/actions/expenses";
+import { useFxRates, formatMoneyWithTWD } from "@/lib/fx";
 
 /**
  * Tab Button Component
@@ -75,6 +76,10 @@ export const ExpenseItemCard = memo(function ExpenseItemCard({
     };
 
     const hasStagedChanges = stagedFields && Object.keys(stagedFields).length > 0;
+
+    // 多幣別：顯示原幣 + TWD 折算
+    const { convertToTWD } = useFxRates();
+    const moneyDisplay = formatMoneyWithTWD(item.amount, (item as any).currency || "TWD", convertToTWD);
 
     const handleFieldChange = (field: string, value: any) => {
         if (onStageUpdate) {
@@ -142,7 +147,12 @@ export const ExpenseItemCard = memo(function ExpenseItemCard({
                     </div>
                 </div>
                 <div className="flex items-center gap-2">
-                    <div className="font-black text-[#E6EDF7] text-lg md:text-xl tracking-tight">-NT$ {item.amount.toLocaleString()}</div>
+                    <div className="flex flex-col items-end">
+                        <div className="font-black text-[#E6EDF7] text-lg md:text-xl tracking-tight">-{moneyDisplay.primary}</div>
+                        {moneyDisplay.secondary && (
+                            <div className="text-[10px] font-bold text-[#5A6B89] tracking-tight mt-0.5">{moneyDisplay.secondary}</div>
+                        )}
+                    </div>
                     {!isBatchMode && onDelete && (
                         <button
                             onClick={(e) => { e.stopPropagation(); onDelete(item.id); }}

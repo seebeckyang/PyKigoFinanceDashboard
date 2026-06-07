@@ -2,9 +2,11 @@
 
 import React, { useState, useRef, useEffect } from "react";
 import { Mic, MicOff, Loader2, Check, X, Pencil, Sparkles, Info } from "lucide-react";
+import { formatMoney } from "@/lib/fx";
 
 interface ParsedExpense {
     amount: number;
+    currency?: string;
     category: string;
     date: string;
     note: string;
@@ -165,7 +167,7 @@ export function VoiceExpense({ onConfirm, isDemo = true }: VoiceExpenseProps) {
                                     <Pencil className="w-3 h-3" /> 解析結果（請確認）
                                 </div>
                                 <div className="grid grid-cols-2 gap-2 text-sm">
-                                    <Field label="金額" value={`NT$ ${parsed.amount.toLocaleString()}`} />
+                                    <Field label="金額" value={formatMoney(parsed.amount, parsed.currency || "TWD")} />
                                     <Field label="類別" value={parsed.category} />
                                     <Field label="日期" value={parsed.date} />
                                     <Field label="分攤對象" value={parsed.paid_for} />

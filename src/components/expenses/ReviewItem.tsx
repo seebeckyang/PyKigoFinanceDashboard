@@ -10,6 +10,7 @@ import {
 import { cn } from "@/lib/utils";
 import { Expense, ExpenseCategory } from "@/types/expenses";
 import { getSuggestedCategoryId } from "./utils";
+import { useFxRates, formatMoneyWithTWD } from "@/lib/fx";
 
 interface ReviewItemProps {
     item: Expense;
@@ -21,6 +22,18 @@ interface ReviewItemProps {
     categories: ExpenseCategory[];
     goals: any[];
     batchSettings: any;
+}
+
+// 金額顯示子元件（原幣 + TWD 折算）
+function ReviewItemAmount({ amount, currency }: { amount: number; currency: string }) {
+    const { convertToTWD } = useFxRates();
+    const m = formatMoneyWithTWD(amount, currency, convertToTWD);
+    return (
+        <div className="flex flex-col items-start xl:items-center">
+            <div className="font-black text-2xl text-[#E6EDF7] tracking-tighter">{m.primary}</div>
+            {m.secondary && <div className="text-[10px] font-bold text-[#5A6B89] mt-0.5">{m.secondary}</div>}
+        </div>
+    );
 }
 
 export const ReviewItem = memo(function ReviewItem({
@@ -99,7 +112,7 @@ export const ReviewItem = memo(function ReviewItem({
             </div>
 
             <div className="xl:col-span-2 text-left xl:text-center">
-                <div className="font-black text-2xl text-[#E6EDF7] tracking-tighter">NT$ {item.amount.toLocaleString()}</div>
+                <ReviewItemAmount amount={item.amount} currency={(item as any).currency || "TWD"} />
             </div>
 
             <div className="xl:col-span-5 grid grid-cols-2 gap-x-10 gap-y-3 bg-[#111A2E]/50 px-6 py-4 rounded-[2rem] border border-[#1F2C4A]/60">

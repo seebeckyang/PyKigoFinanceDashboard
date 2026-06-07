@@ -155,3 +155,27 @@ export function formatMoney(amount: number, currency: Currency | string = "TWD")
     maximumFractionDigits: noDecimals ? 0 : 2,
   })}`;
 }
+
+/**
+ * 格式化金額（原幣 + TWD 折算）
+ *   formatMoneyWithTWD(19.5, "CNY", convertToTWD)
+ *     → { primary: "¥ 19.50", secondary: "≈ NT$ 91" }
+ *   formatMoneyWithTWD(5000, "TWD", convertToTWD)
+ *     → { primary: "NT$ 5,000", secondary: null }  // 已是 TWD 不顯示 secondary
+ *
+ * 用於明細卡：原幣別是主資訊，TWD 折算是輔助資訊。
+ */
+export function formatMoneyWithTWD(
+  amount: number | string | undefined | null,
+  currency: Currency | string = "TWD",
+  convertToTWD: (a: number | string | undefined | null, c: string) => number
+): { primary: string; secondary: string | null } {
+  const amt = Number(amount) || 0;
+  const cur = (currency || "TWD").toUpperCase();
+  const primary = formatMoney(amt, cur);
+  if (cur === "TWD") {
+    return { primary, secondary: null };
+  }
+  const twd = convertToTWD(amt, cur);
+  return { primary, secondary: `≈ ${formatMoney(twd, "TWD")}` };
+}
