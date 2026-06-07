@@ -1,9 +1,9 @@
 "use client";
 
-import { useState, useEffect, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip as RechartsTooltip } from "recharts";
 import { PieChartIcon, RefreshCw, Clock, TrendingUp, TrendingDown, Layers } from "lucide-react";
-import { getHoldings, Holding } from "@/app/actions/holdings";
+import { getHoldingsSync, getHoldings, Holding } from "@/app/actions/holdings";
 import { useLiveMarket, toTwd } from "@/hooks/useLiveMarket";
 
 // 金融感色票
@@ -29,14 +29,20 @@ function timeLabel(d: Date | null): string {
 }
 
 export default function HoldingsPage() {
-    const [holdings, setHoldings] = useState<Holding[]>([]);
-    const [loading, setLoading] = useState(true);
+    // 首屏：同步以本地真實資料 render（避免水合不一致）；掛載後若 Supabase 已設定
+    // 且有資料，再以正式資料取代（純前端取代，不影響 SSR/水合）。
+    const [holdings, setHoldings] = useState<Holding[]>(() => getHoldingsSync());
 
     useEffect(() => {
-        getHoldings().then((h) => {
-            setHoldings(h);
-            setLoading(false);
-        });
+        let alive = true;
+        getHoldings()
+            .then((live) => {
+                if (alive && live && live.length > 0) setHoldings(live);
+            })
+            .catch(() => {});
+        return () => {
+            alive = false;
+        };
     }, []);
 
     const tickers = useMemo(() => holdings.map((h) => h.ticker), [holdings]);
@@ -103,10 +109,6 @@ export default function HoldingsPage() {
     }, [rows, totalTwd]);
 
     const fmt = (n: number) => "NT$ " + Math.round(n).toLocaleString();
-
-    if (loading) {
-        return <div className="p-8 animate-pulse text-[#5A6B89]">正在載入持倉資料中…</div>;
-    }
 
     return (
         <div className="max-w-7xl mx-auto space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-700 pb-12">

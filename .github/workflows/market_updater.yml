@@ -2,13 +2,14 @@ name: Market Data Updater
 
 on:
   schedule:
-    - cron: '0 0,6,12,18 * * *' # Run every 6 hours
-  workflow_dispatch: # Allow manual trigger
+    # UTC 09:00 = 台灣時間 17:00（每日收盤後），週一到週五
+    - cron: '0 9 * * 1-5'
+  workflow_dispatch: # 允許手動觸發
 
 jobs:
   update-market-data:
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -24,6 +25,6 @@ jobs:
 
       - name: Run Updater Script
         env:
-          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
-          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
         run: npm run market:update
