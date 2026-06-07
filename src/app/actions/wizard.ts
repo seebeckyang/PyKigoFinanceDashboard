@@ -15,17 +15,17 @@ export type CashInputDTO = {
 const DEMO_WIZARD_DATA = {
     mappedAssets: [
         {
-            id: "demo-cash-1", title: "International Bank (USD)", owner: "PY",
+            id: "demo-cash-1", title: "International Bank (USD)", owner: "CY",
             asset_type: "cash", currency: "USD", ticker_symbol: null,
             prevBalance: "12,500", defaultValue: "12500", fxRate: 31.6, totalValue: 395000, growth: 0
         },
         {
-            id: "demo-cash-2", title: "Local Savings (TWD)", owner: "Kigo",
+            id: "demo-cash-2", title: "Local Savings (TWD)", owner: "CY",
             asset_type: "cash", currency: "TWD", ticker_symbol: null,
             prevBalance: "4,200,000", defaultValue: "4200000", fxRate: 1.0, totalValue: 4200000, growth: 0
         },
         {
-            id: "demo-stock-1", title: "Cloud Provider (RSU)", owner: "PY",
+            id: "demo-stock-1", title: "Cloud Provider (RSU)", owner: "CY",
             asset_type: "rsu", currency: "USD", ticker_symbol: "AMZN",
             shares: 1500, price: 185, totalValue: 8769000, growth: 5.2,
             prevBalance: "0", defaultValue: "0", fxRate: 31.6

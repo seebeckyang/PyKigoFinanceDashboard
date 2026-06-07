@@ -7,8 +7,8 @@ export interface Expense {
     category_id?: string;
     project_label: string;
     goal_id?: string;
-    paid_by: string;   // 'PY', 'Kigo'
-    paid_for: string;  // 'Both', 'PY', 'Kigo'
+    paid_by: string;   // 'CY', 'HY'
+    paid_for: string;  // 'Both', 'CY', 'HY'
     is_reviewed: boolean;
     is_automated: boolean;
     is_duplicate: boolean;
@@ -26,10 +26,10 @@ export interface ExpenseCategory {
 }
 
 export interface AASettlement {
-    total_py_paid: number;
-    total_kigo_paid: number;
-    py_owes_kigo: number;
-    kigo_owes_py: number;
+    total_cy_paid: number;
+    total_hy_paid: number;
+    cy_owes_hy: number;
+    hy_owes_cy: number;
     net_settlement: {
         from: string;
         to: string;
@@ -40,8 +40,8 @@ export interface Settlement {
     id: string;
     settlement_date: string;
     amount: number;
-    payer: string;   // 'PY', 'Kigo'
-    payee: string;   // 'PY', 'Kigo'
+    payer: string;   // 'CY', 'HY'
+    payee: string;   // 'CY', 'HY'
     project_label: string;
     goal_id?: string;
     notes?: string;

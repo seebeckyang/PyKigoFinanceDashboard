@@ -419,8 +419,8 @@ export default function GoalTracker() {
                                                     <div className="flex-1 font-medium text-[#E6EDF7] truncate">{asset.title}</div>
 
                                                     <div className="flex items-center gap-1.5 shrink-0">
-                                                        <span className={`text-[10px] px-2 py-0.5 rounded-md font-bold ${asset.owner === 'PY' ? 'bg-[#10B981]/10 text-[#10B981]' :
-                                                            asset.owner === 'Kigo' ? 'bg-[#F59E0B]/10 text-[#F59E0B]' :
+                                                        <span className={`text-[10px] px-2 py-0.5 rounded-md font-bold ${asset.owner === 'CY' ? 'bg-[#10B981]/10 text-[#10B981]' :
+                                                            asset.owner === 'HY' ? 'bg-[#F59E0B]/10 text-[#F59E0B]' :
                                                                 'bg-[#2E7CF6]/10 text-[#2E7CF6]'
                                                             }`}>
                                                             {asset.owner === 'Both' ? '共同' : asset.owner}

@@ -44,7 +44,7 @@ export const SettlementSummary = memo(function SettlementSummary({
                     <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
                         <div>
                             <h3 className="text-2xl md:text-3xl font-black tracking-tighter mb-1">
-                                {settlement.net_balance === 0 ? '目前已結清' : (settlement.net_balance < 0 ? 'PY 待支付' : 'Kigo 待支付')}
+                                {settlement.net_balance === 0 ? '目前已結清' : (settlement.net_balance < 0 ? 'CY 待支付' : 'HY 待支付')}
                             </h3>
                             <div className="text-4xl md:text-5xl font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-[#111A2E] to-gray-400">
                                 ${settlement.abs_balance.toLocaleString()}
@@ -72,12 +72,12 @@ export const SettlementSummary = memo(function SettlementSummary({
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div className="bg-[#16223D]/30 p-4 rounded-3xl border border-[#1F2C4A]/50 backdrop-blur-md">
-                        <div className="text-[10px] font-black text-[#93A4C2] uppercase mb-1 tracking-widest text-center sm:text-left">PY 墊付</div>
-                        <div className="text-xl md:text-2xl font-black text-slate-100 text-center sm:text-left">${settlement.py_credit.toLocaleString()}</div>
+                        <div className="text-[10px] font-black text-[#93A4C2] uppercase mb-1 tracking-widest text-center sm:text-left">CY 墊付</div>
+                        <div className="text-xl md:text-2xl font-black text-slate-100 text-center sm:text-left">${settlement.cy_credit.toLocaleString()}</div>
                     </div>
                     <div className="bg-[#16223D]/30 p-4 rounded-3xl border border-[#1F2C4A]/50 backdrop-blur-md">
-                        <div className="text-[10px] font-black text-[#93A4C2] uppercase mb-1 tracking-widest text-center sm:text-left">Kigo 墊付</div>
-                        <div className="text-xl md:text-2xl font-black text-slate-100 text-center sm:text-left">${settlement.py_debit.toLocaleString()}</div>
+                        <div className="text-[10px] font-black text-[#93A4C2] uppercase mb-1 tracking-widest text-center sm:text-left">HY 墊付</div>
+                        <div className="text-xl md:text-2xl font-black text-slate-100 text-center sm:text-left">${settlement.cy_debit.toLocaleString()}</div>
                     </div>
                 </div>
 
@@ -150,7 +150,7 @@ export function SettlementHistoryModal({
                                 <div className="flex items-center gap-4">
                                     <div className={cn(
                                         "w-12 h-12 rounded-xl flex items-center justify-center font-bold text-xs shadow-sm",
-                                        item.payer === 'PY' ? "bg-blue-600 text-white" : "bg-emerald-600 text-white"
+                                        item.payer === 'CY' ? "bg-blue-600 text-white" : "bg-emerald-600 text-white"
                                     )}>
                                         {item.payer}
                                     </div>
@@ -220,11 +220,11 @@ export function PartialSettlementModal({
     const [notes, setNotes] = useState(settlement.notes || '');
     const [date, setDate] = useState(settlement.settlement_date || new Date().toISOString().split('T')[0]);
 
-    const isPYPaying = isEditing
-        ? settlement.payer === 'PY'
+    const isCYPaying = isEditing
+        ? settlement.payer === 'CY'
         : (settlement.net_balance || 0) < 0;
-    const isKigoPaying = isEditing
-        ? settlement.payer === 'Kigo'
+    const isHYPaying = isEditing
+        ? settlement.payer === 'HY'
         : (settlement.net_balance || 0) > 0;
 
     const currentAbsBalance = isEditing ? (settlement.amount || 0) : (settlement.abs_balance || 0);
@@ -239,8 +239,8 @@ export function PartialSettlementModal({
         onSubmit({
             amount,
             settlement_date: date,
-            payer: isPYPaying ? 'PY' : 'Kigo',
-            payee: isPYPaying ? 'Kigo' : 'PY',
+            payer: isCYPaying ? 'CY' : 'HY',
+            payee: isCYPaying ? 'HY' : 'CY',
             project_label: isGoalTab ? 'all' : activeTab,
             goal_id: isGoalTab ? activeTab : null,
             notes: notes || (isEditing ? '' : (amount < currentAbsBalance ? '部份結算' : '全額結算'))
@@ -272,9 +272,9 @@ export function PartialSettlementModal({
                             <div className="flex items-center gap-3">
                                 <div className={cn(
                                     "w-10 h-10 rounded-full flex items-center justify-center font-black text-base shadow-sm border",
-                                    isPYPaying ? "bg-blue-600 text-white border-blue-400" : "bg-emerald-600 text-white border-emerald-400"
+                                    isCYPaying ? "bg-blue-600 text-white border-blue-400" : "bg-emerald-600 text-white border-emerald-400"
                                 )}>
-                                    {isPYPaying ? 'PY' : 'Kigo'}
+                                    {isCYPaying ? 'CY' : 'HY'}
                                 </div>
                                 <div className="text-amber-800">
                                     <div className="text-[10px] font-black uppercase tracking-widest opacity-60">Payer</div>
@@ -287,13 +287,13 @@ export function PartialSettlementModal({
                             <div className="flex items-center gap-3">
                                 <div className="text-right text-amber-800">
                                     <div className="text-[10px] font-black uppercase tracking-widest opacity-60">Payee</div>
-                                    <div className="text-sm font-bold">{isPYPaying ? 'Kigo' : 'PY'}</div>
+                                    <div className="text-sm font-bold">{isCYPaying ? 'HY' : 'CY'}</div>
                                 </div>
                                 <div className={cn(
                                     "w-10 h-10 rounded-full flex items-center justify-center font-black text-base shadow-sm border",
-                                    !isPYPaying ? "bg-blue-600 text-white border-blue-400" : "bg-emerald-600 text-white border-emerald-400"
+                                    !isCYPaying ? "bg-blue-600 text-white border-blue-400" : "bg-emerald-600 text-white border-emerald-400"
                                 )}>
-                                    {!isPYPaying ? 'PY' : 'Kigo'}
+                                    {!isCYPaying ? 'CY' : 'HY'}
                                 </div>
                             </div>
                         </div>

@@ -114,7 +114,7 @@ export default function LoginPage() {
 
                 <div className="mt-10 pt-8 border-t border-[#1F2C4A] text-center">
                     <p className="text-xs text-[#5A6B89] font-medium">
-                        &copy; 2026 PY & KIGO 家庭財務戰情室. All rights reserved.
+                        &copy; 2026 CY & HY 家庭財務戰情室. All rights reserved.
                     </p>
                 </div>
             </div>

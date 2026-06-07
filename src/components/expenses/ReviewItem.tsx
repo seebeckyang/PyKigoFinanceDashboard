@@ -37,7 +37,7 @@ export const ReviewItem = memo(function ReviewItem({
     const [updates, setUpdates] = useState({
         goal_id: item.goal_id || '',
         category_id: item.category_id || getSuggestedCategoryId(item.store_name, categories),
-        paid_by: item.paid_by || (batchSettings?.paid_by || 'PY'),
+        paid_by: item.paid_by || (batchSettings?.paid_by || 'CY'),
         paid_for: item.paid_for || (batchSettings?.paid_for || 'Both')
     });
 
@@ -129,8 +129,8 @@ export const ReviewItem = memo(function ReviewItem({
                         }}
                         className="bg-transparent text-[13px] font-black text-[#10B981] outline-none cursor-pointer"
                     >
-                        <option value="PY">PY</option>
-                        <option value="Kigo">Kigo</option>
+                        <option value="CY">CY</option>
+                        <option value="HY">HY</option>
                         <option value="Both">Both</option>
                     </select>
                 </div>
@@ -161,8 +161,8 @@ export const ReviewItem = memo(function ReviewItem({
                         className="bg-transparent text-[13px] font-black text-[#93A4C2] outline-none cursor-pointer uppercase"
                     >
                         <option value="Both">BOTH</option>
-                        <option value="PY">PY</option>
-                        <option value="Kigo">Kigo</option>
+                        <option value="CY">CY</option>
+                        <option value="HY">HY</option>
                     </select>
                 </div>
             </div>

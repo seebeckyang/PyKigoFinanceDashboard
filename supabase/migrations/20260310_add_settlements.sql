@@ -5,8 +5,8 @@ CREATE TABLE IF NOT EXISTS settlements (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     settlement_date DATE NOT NULL DEFAULT CURRENT_DATE,
     amount DECIMAL(12, 2) NOT NULL CHECK (amount > 0),
-    payer TEXT NOT NULL CHECK (payer IN ('PY', 'Kigo')),
-    payee TEXT NOT NULL CHECK (payee IN ('PY', 'Kigo')),
+    payer TEXT NOT NULL CHECK (payer IN ('CY', 'HY')),
+    payee TEXT NOT NULL CHECK (payee IN ('CY', 'HY')),
     project_label TEXT NOT NULL DEFAULT 'all',
     goal_id UUID REFERENCES goals(id) ON DELETE SET NULL,
     notes TEXT,
@@ -24,5 +24,5 @@ CREATE INDEX idx_settlements_goal ON settlements(goal_id);
 
 -- Mock Data for History
 INSERT INTO settlements (settlement_date, amount, payer, payee, project_label, notes) VALUES
-('2026-02-15', 1200, 'Kigo', 'PY', 'general', '二月份部分生活費結清'),
-('2026-03-01', 5000, 'PY', 'Kigo', 'new_home', '三月初裝修款預付清算');
+('2026-02-15', 1200, 'HY', 'CY', 'general', '二月份部分生活費結清'),
+('2026-03-01', 5000, 'CY', 'HY', 'new_home', '三月初裝修款預付清算');

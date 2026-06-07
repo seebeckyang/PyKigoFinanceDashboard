@@ -22,8 +22,8 @@ CREATE TABLE expenses (
     category_id UUID REFERENCES expense_categories(id) ON DELETE SET NULL,
     project_label TEXT NOT NULL DEFAULT 'general', -- 'general', 'new_home', etc.
     goal_id UUID REFERENCES goals(id) ON DELETE SET NULL,
-    paid_by TEXT NOT NULL DEFAULT 'PY', -- 'PY', 'Kigo'
-    paid_for TEXT NOT NULL DEFAULT 'Both', -- 'Both', 'PY', 'Kigo'
+    paid_by TEXT NOT NULL DEFAULT 'CY', -- 'CY', 'HY'
+    paid_for TEXT NOT NULL DEFAULT 'Both', -- 'Both', 'CY', 'HY'
     is_reviewed BOOLEAN NOT NULL DEFAULT false,
     is_automated BOOLEAN NOT NULL DEFAULT false,
     einvoice_id TEXT UNIQUE, -- For Taiwan E-Invoice de-duplication

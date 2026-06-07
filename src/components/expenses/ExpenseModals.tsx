@@ -272,7 +272,7 @@ export function ExpenseEntryModal({ onClose, categories, goals, onSubmit, onSubm
         project_label: 'general',
         goal_id: '',
         category_id: '',
-        paid_by: 'PY',
+        paid_by: 'CY',
         paid_for: 'Both'
     });
 
@@ -388,8 +388,8 @@ export function ExpenseEntryModal({ onClose, categories, goals, onSubmit, onSubm
                                 onChange={(e) => setPayload({ ...payload, paid_by: e.target.value })}
                                 className="w-full bg-[#10B981]/10/50 border border-emerald-200 rounded-xl px-4 py-2.5 text-sm font-bold text-[#0ea072] outline-none cursor-pointer"
                             >
-                                <option>PY</option>
-                                <option>Kigo</option>
+                                <option>CY</option>
+                                <option>HY</option>
                                 <option>Both</option>
                             </select>
                         </div>
@@ -401,8 +401,8 @@ export function ExpenseEntryModal({ onClose, categories, goals, onSubmit, onSubm
                                 className="w-full bg-blue-50/50 border border-blue-200 rounded-xl px-4 py-2.5 text-sm font-bold text-blue-700 outline-none cursor-pointer"
                             >
                                 <option>Both</option>
-                                <option>PY</option>
-                                <option>Kigo</option>
+                                <option>CY</option>
+                                <option>HY</option>
                             </select>
                         </div>
                     </div>

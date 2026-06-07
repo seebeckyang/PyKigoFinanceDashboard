@@ -18,24 +18,24 @@ export async function getExpenses(filters?: {
     if (process.env.NEXT_PUBLIC_DEMO_MODE === 'true') {
         const mockExpenses = [
             // Reviewed (Current Month)
-            { id: '1', date: '2026-03-05', amount: 1250, store_name: '微風超市', project_label: 'general', goal_id: null, paid_by: 'PY', paid_for: 'Both', is_reviewed: true, is_automated: true, category_id: 'cat1', categories: { name: '餐飲食品', icon: 'utensils', color: '#ef4444' } },
-            { id: '2', date: '2026-03-06', amount: 4500, store_name: '宜家家居', project_label: 'general', goal_id: 'demo-goal-1', paid_by: 'Kigo', paid_for: 'Both', is_reviewed: true, is_automated: false, category_id: 'cat2', categories: { name: '居家生活', icon: 'home', color: '#3b82f6' } },
-            { id: '3', date: '2026-03-08', amount: 320, store_name: '7-11', project_label: 'general', goal_id: null, paid_by: 'PY', paid_for: 'PY', is_reviewed: true, is_automated: true, category_id: 'cat1', categories: { name: '餐飲食品', icon: 'utensils', color: '#ef4444' } },
-            { id: '4', date: '2026-03-09', amount: 12000, store_name: '全國電子', project_label: 'general', goal_id: null, paid_by: 'PY', paid_for: 'Kigo', is_reviewed: true, is_automated: false, category_id: 'cat3', categories: { name: '電子產品', icon: 'cpu', color: '#8b5cf6' } },
-            { id: '10', date: '2026-03-10', amount: 850, store_name: '星巴克 (已確認)', project_label: 'general', goal_id: null, paid_by: 'PY', paid_for: 'Both', is_reviewed: true, is_automated: true, category_id: 'cat1', categories: { name: '餐飲食品', icon: 'utensils', color: '#ef4444' } },
+            { id: '1', date: '2026-03-05', amount: 1250, store_name: '微風超市', project_label: 'general', goal_id: null, paid_by: 'CY', paid_for: 'Both', is_reviewed: true, is_automated: true, category_id: 'cat1', categories: { name: '餐飲食品', icon: 'utensils', color: '#ef4444' } },
+            { id: '2', date: '2026-03-06', amount: 4500, store_name: '宜家家居', project_label: 'general', goal_id: 'demo-goal-1', paid_by: 'HY', paid_for: 'Both', is_reviewed: true, is_automated: false, category_id: 'cat2', categories: { name: '居家生活', icon: 'home', color: '#3b82f6' } },
+            { id: '3', date: '2026-03-08', amount: 320, store_name: '7-11', project_label: 'general', goal_id: null, paid_by: 'CY', paid_for: 'CY', is_reviewed: true, is_automated: true, category_id: 'cat1', categories: { name: '餐飲食品', icon: 'utensils', color: '#ef4444' } },
+            { id: '4', date: '2026-03-09', amount: 12000, store_name: '全國電子', project_label: 'general', goal_id: null, paid_by: 'CY', paid_for: 'HY', is_reviewed: true, is_automated: false, category_id: 'cat3', categories: { name: '電子產品', icon: 'cpu', color: '#8b5cf6' } },
+            { id: '10', date: '2026-03-10', amount: 850, store_name: '星巴克 (已確認)', project_label: 'general', goal_id: null, paid_by: 'CY', paid_for: 'Both', is_reviewed: true, is_automated: true, category_id: 'cat1', categories: { name: '餐飲食品', icon: 'utensils', color: '#ef4444' } },
 
             // Unreviewed (AI Inbox / Smart Input)
-            { id: '5', date: '2026-03-10', amount: 500, store_name: '星巴克', project_label: 'general', goal_id: null, paid_by: 'Kigo', paid_for: 'Both', is_reviewed: false, is_automated: true, category_id: 'cat1', categories: { name: '餐飲食品', icon: 'utensils', color: '#ef4444' } },
-            { id: '8', date: '2026-03-10', amount: 1580, store_name: '屈臣氏', project_label: 'general', goal_id: null, paid_by: 'PY', paid_for: 'Both', is_reviewed: false, is_automated: true, category_id: 'cat4', categories: { name: '個人護理', icon: 'heart', color: '#ec4899' } },
-            { id: '9', date: '2026-03-11', amount: 890, store_name: 'Uber Eating', project_label: 'general', goal_id: null, paid_by: 'PY', paid_for: 'Both', is_reviewed: false, is_automated: true, is_duplicate: true, category_id: 'cat1', categories: { name: '餐飲食品', icon: 'utensils', color: '#ef4444' } },
+            { id: '5', date: '2026-03-10', amount: 500, store_name: '星巴克', project_label: 'general', goal_id: null, paid_by: 'HY', paid_for: 'Both', is_reviewed: false, is_automated: true, category_id: 'cat1', categories: { name: '餐飲食品', icon: 'utensils', color: '#ef4444' } },
+            { id: '8', date: '2026-03-10', amount: 1580, store_name: '屈臣氏', project_label: 'general', goal_id: null, paid_by: 'CY', paid_for: 'Both', is_reviewed: false, is_automated: true, category_id: 'cat4', categories: { name: '個人護理', icon: 'heart', color: '#ec4899' } },
+            { id: '9', date: '2026-03-11', amount: 890, store_name: 'Uber Eating', project_label: 'general', goal_id: null, paid_by: 'CY', paid_for: 'Both', is_reviewed: false, is_automated: true, is_duplicate: true, category_id: 'cat1', categories: { name: '餐飲食品', icon: 'utensils', color: '#ef4444' } },
 
             // Past Month (February) - Home Renovation Goal
-            { id: '6', date: '2026-02-15', amount: 8500, store_name: '特力屋', project_label: 'general', goal_id: 'demo-goal-1', paid_by: 'PY', paid_for: 'Both', is_reviewed: true, is_automated: false, category_id: 'cat2', categories: { name: '居家生活', icon: 'home', color: '#3b82f6' } },
-            { id: '7', date: '2026-02-20', amount: 1500, store_name: '無印良品', project_label: 'general', goal_id: 'demo-goal-1', paid_by: 'Kigo', paid_for: 'PY', is_reviewed: true, is_automated: true, category_id: 'cat1', categories: { name: '餐飲食品', icon: 'utensils', color: '#ef4444' } },
+            { id: '6', date: '2026-02-15', amount: 8500, store_name: '特力屋', project_label: 'general', goal_id: 'demo-goal-1', paid_by: 'CY', paid_for: 'Both', is_reviewed: true, is_automated: false, category_id: 'cat2', categories: { name: '居家生活', icon: 'home', color: '#3b82f6' } },
+            { id: '7', date: '2026-02-20', amount: 1500, store_name: '無印良品', project_label: 'general', goal_id: 'demo-goal-1', paid_by: 'HY', paid_for: 'CY', is_reviewed: true, is_automated: true, category_id: 'cat1', categories: { name: '餐飲食品', icon: 'utensils', color: '#ef4444' } },
 
             // Past Month (January)
-            { id: 'jan1', date: '2026-01-10', amount: 3500, store_name: '壽司郎', project_label: 'general', goal_id: null, paid_by: 'PY', paid_for: 'Both', is_reviewed: true, is_automated: false, category_id: 'cat1', categories: { name: '餐飲食品', icon: 'utensils', color: '#ef4444' } },
-            { id: 'jan2', date: '2026-01-25', amount: 48000, store_name: '長榮航空', project_label: 'general', goal_id: null, paid_by: 'Kigo', paid_for: 'Both', is_reviewed: true, is_automated: false, category_id: 'cat5', categories: { name: '交通旅遊', icon: 'plane', color: '#10b981' } }
+            { id: 'jan1', date: '2026-01-10', amount: 3500, store_name: '壽司郎', project_label: 'general', goal_id: null, paid_by: 'CY', paid_for: 'Both', is_reviewed: true, is_automated: false, category_id: 'cat1', categories: { name: '餐飲食品', icon: 'utensils', color: '#ef4444' } },
+            { id: 'jan2', date: '2026-01-25', amount: 48000, store_name: '長榮航空', project_label: 'general', goal_id: null, paid_by: 'HY', paid_for: 'Both', is_reviewed: true, is_automated: false, category_id: 'cat5', categories: { name: '交通旅遊', icon: 'plane', color: '#10b981' } }
         ];
 
         let filtered = [...mockExpenses];
@@ -253,19 +253,19 @@ export async function confirmExpensesBulk(items: { id: string, updates: Partial<
 }
 
 /**
- * 分帳結算計算 (PY 視視角)
+ * 分帳結算計算 (CY 視視角)
  * Balance = (PY_Credit - PY_Debit) - (Existing Settlements)
  */
 export async function getSplitSettlement(project_label?: string, goal_id?: string, startDate?: string, endDate?: string) {
     if (process.env.NEXT_PUBLIC_DEMO_MODE === 'true') {
         const mockExpenses = [
-            { id: '1', date: '2026-03-05', amount: 1250, store_name: '微風超市', project_label: '一般帳務', paid_by: 'PY', paid_for: 'Both' },
-            { id: '2', date: '2026-03-06', amount: 4500, store_name: '宜家家居', project_label: '新家裝修', paid_by: 'Kigo', paid_for: 'Both' },
-            { id: '3', date: '2026-03-08', amount: 320, store_name: '7-11', project_label: '一般帳務', paid_by: 'PY', paid_for: 'PY' },
-            { id: '4', date: '2026-03-09', amount: 12000, store_name: '全國電子', project_label: '一般帳務', paid_by: 'PY', paid_for: 'Kigo' },
-            { id: '5', date: '2026-03-10', amount: 500, store_name: '星巴克', project_label: '一般帳務', paid_by: 'Kigo', paid_for: 'Both' },
-            { id: '6', date: '2026-02-15', amount: 8500, store_name: '特力屋', project_label: '新家裝修', paid_by: 'PY', paid_for: 'Both' },
-            { id: '7', date: '2026-02-20', amount: 1500, store_name: '無印良品', project_label: '新家裝修', paid_by: 'Kigo', paid_for: 'PY' }
+            { id: '1', date: '2026-03-05', amount: 1250, store_name: '微風超市', project_label: '一般帳務', paid_by: 'CY', paid_for: 'Both' },
+            { id: '2', date: '2026-03-06', amount: 4500, store_name: '宜家家居', project_label: '新家裝修', paid_by: 'HY', paid_for: 'Both' },
+            { id: '3', date: '2026-03-08', amount: 320, store_name: '7-11', project_label: '一般帳務', paid_by: 'CY', paid_for: 'CY' },
+            { id: '4', date: '2026-03-09', amount: 12000, store_name: '全國電子', project_label: '一般帳務', paid_by: 'CY', paid_for: 'HY' },
+            { id: '5', date: '2026-03-10', amount: 500, store_name: '星巴克', project_label: '一般帳務', paid_by: 'HY', paid_for: 'Both' },
+            { id: '6', date: '2026-02-15', amount: 8500, store_name: '特力屋', project_label: '新家裝修', paid_by: 'CY', paid_for: 'Both' },
+            { id: '7', date: '2026-02-20', amount: 1500, store_name: '無印良品', project_label: '新家裝修', paid_by: 'HY', paid_for: 'CY' }
         ];
 
         let filtered = mockExpenses;
@@ -284,23 +284,23 @@ export async function getSplitSettlement(project_label?: string, goal_id?: strin
             const pBy = String(exp.paid_by).toUpperCase();
             const pFor = String(exp.paid_for).toUpperCase();
 
-            if (pBy === 'PY') {
-                if (pFor === 'KIGO') tpC_total += amount;
+            if (pBy === 'CY') {
+                if (pFor === 'HY') tpC_total += amount;
                 else if (pFor === 'BOTH') tpC_total += amount * 0.5;
-            } else if (pBy === 'KIGO') {
-                if (pFor === 'PY') tpD_total += amount;
+            } else if (pBy === 'HY') {
+                if (pFor === 'CY') tpD_total += amount;
                 else if (pFor === 'BOTH') tpD_total += amount * 0.5;
             }
         });
 
         const currentBalance = tpC_total - tpD_total;
         return {
-            py_credit: tpC_total,
-            py_debit: tpD_total,
+            cy_credit: tpC_total,
+            cy_debit: tpD_total,
             net_balance: currentBalance,
             base_balance: currentBalance,
             settled_total: 0,
-            summary: currentBalance > 0 ? "Kigo 應給付 PY" : currentBalance < 0 ? "PY 應給付 Kigo" : "雙方互不相欠",
+            summary: currentBalance > 0 ? "HY 應給付 CY" : currentBalance < 0 ? "CY 應給付 HY" : "雙方互不相欠",
             abs_balance: Math.abs(currentBalance)
         };
     }
@@ -325,43 +325,43 @@ export async function getSplitSettlement(project_label?: string, goal_id?: strin
     if (expRes.error) throw expRes.error;
     if (setlRes.error) throw setlRes.error;
 
-    let totalPYCredit_AllTime = 0;
-    let totalPYDebit_AllTime = 0;
+    let totalCYCredit_AllTime = 0;
+    let totalCYDebit_AllTime = 0;
 
     allExpData.forEach((exp: any) => {
         const amount = Number(exp.amount);
         const pBy = String(exp.paid_by).toUpperCase();
         const pFor = String(exp.paid_for).toUpperCase();
 
-        if (pBy === 'PY') {
-            if (pFor === 'KIGO') totalPYCredit_AllTime += amount;
-            else if (pFor === 'BOTH') totalPYCredit_AllTime += amount * 0.5;
-        } else if (pBy === 'KIGO') {
-            if (pFor === 'PY') totalPYDebit_AllTime += amount;
-            else if (pFor === 'BOTH') totalPYDebit_AllTime += amount * 0.5;
+        if (pBy === 'CY') {
+            if (pFor === 'HY') totalCYCredit_AllTime += amount;
+            else if (pFor === 'BOTH') totalCYCredit_AllTime += amount * 0.5;
+        } else if (pBy === 'HY') {
+            if (pFor === 'CY') totalCYDebit_AllTime += amount;
+            else if (pFor === 'BOTH') totalCYDebit_AllTime += amount * 0.5;
         }
     });
 
-    let settledAmountByPY = 0;
-    let settledAmountByKigo = 0;
+    let settledAmountByCY = 0;
+    let settledAmountByHY = 0;
 
     (pastSetl as any[])?.forEach((s: any) => {
         const payer = String(s.payer).toUpperCase();
-        if (payer === 'PY') settledAmountByPY += Number(s.amount);
-        if (payer === 'KIGO') settledAmountByKigo += Number(s.amount);
+        if (payer === 'CY') settledAmountByCY += Number(s.amount);
+        if (payer === 'HY') settledAmountByHY += Number(s.amount);
     });
 
     // 3. Card stats should be ALL-TIME and ONLY include reviewed items
-    const baseBalance = totalPYCredit_AllTime - totalPYDebit_AllTime;
-    const currentBalance = baseBalance + settledAmountByPY - settledAmountByKigo;
+    const baseBalance = totalCYCredit_AllTime - totalCYDebit_AllTime;
+    const currentBalance = baseBalance + settledAmountByCY - settledAmountByHY;
 
     return {
-        py_credit: totalPYCredit_AllTime,
-        py_debit: totalPYDebit_AllTime,
+        cy_credit: totalCYCredit_AllTime,
+        cy_debit: totalCYDebit_AllTime,
         net_balance: currentBalance,
         base_balance: baseBalance,
-        settled_total: settledAmountByPY + settledAmountByKigo,
-        summary: currentBalance > 0 ? "Kigo 應給付 PY" : currentBalance < 0 ? "PY 應給付 Kigo" : "雙方互不相欠",
+        settled_total: settledAmountByCY + settledAmountByHY,
+        summary: currentBalance > 0 ? "HY 應給付 CY" : currentBalance < 0 ? "CY 應給付 HY" : "雙方互不相欠",
         abs_balance: Math.abs(currentBalance)
     };
 }
@@ -407,7 +407,7 @@ export async function getExpensesSummary(filters?: {
 export async function getSettlementHistory(project_label?: string, goal_id?: string) {
     if (process.env.NEXT_PUBLIC_DEMO_MODE === 'true') {
         return [
-            { id: 's1', settlement_date: '2026-02-28', amount: 2500, payer: 'Kigo', payee: 'PY', project_label: '一般帳務', notes: '2月生活費結清', created_at: new Date().toISOString() }
+            { id: 's1', settlement_date: '2026-02-28', amount: 2500, payer: 'HY', payee: 'CY', project_label: '一般帳務', notes: '2月生活費結清', created_at: new Date().toISOString() }
         ] as Settlement[];
     }
     let query = supabase.from('settlements').select('*').order('settlement_date', { ascending: false });

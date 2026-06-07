@@ -223,8 +223,8 @@ export default function ExpensesPage() {
                                 <div className="flex items-center gap-1 bg-[#16223D]/50 p-1 rounded-xl">
                                     {[
                                         { id: 'Both', label: '全部' },
-                                        { id: 'PY', label: 'PY' },
-                                        { id: 'Kigo', label: 'Kigo' }
+                                        { id: 'CY', label: 'CY' },
+                                        { id: 'HY', label: 'HY' }
                                     ].map(beneficiary => (
                                         <button
                                             key={beneficiary.id}

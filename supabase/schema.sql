@@ -8,7 +8,7 @@ CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
 -- 1. Create Enums
 CREATE TYPE asset_type_enum AS ENUM ('cash', 'stock', 'fixed_deposit', 'rsu');
-CREATE TYPE owner_enum AS ENUM ('PY', 'Kigo', 'Both');
+CREATE TYPE owner_enum AS ENUM ('CY', 'HY', 'Both');
 CREATE TYPE goal_status_enum AS ENUM ('on_track', 'warning', 'achieved');
 
 -- ---------------------------------------------------------------------
@@ -17,7 +17,7 @@ CREATE TYPE goal_status_enum AS ENUM ('on_track', 'warning', 'achieved');
 
 -- Members (Optional, but good for normalisation if needed later)
 CREATE TABLE members (
-    id TEXT PRIMARY KEY, -- 'PY', 'Kigo', 'Both'
+    id TEXT PRIMARY KEY, -- 'CY', 'HY', 'Both'
     name TEXT NOT NULL,
     color_theme TEXT
 );
@@ -138,8 +138,8 @@ CREATE POLICY "Enable update access for all users" ON goal_asset_mapping FOR UPD
 
 -- Seed Members
 INSERT INTO members (id, name, color_theme) VALUES 
-('PY', 'PY', 'emerald'),
-('Kigo', 'Kigo', 'amber'),
+('CY', 'CY', 'emerald'),
+('HY', 'HY', 'amber'),
 ('Both', '共同', 'indigo')
 ON CONFLICT (id) DO NOTHING;
 

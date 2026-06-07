@@ -346,7 +346,7 @@ export function useExpenses() {
                 is_reviewed: false,
                 is_automated: true,
                 project_label: 'general',
-                paid_by: 'PY',
+                paid_by: 'CY',
                 paid_for: 'Both',
                 currency: 'TWD'
             }));

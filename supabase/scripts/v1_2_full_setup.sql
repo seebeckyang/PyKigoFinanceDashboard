@@ -14,7 +14,7 @@ EXCEPTION
 END $$;
 
 DO $$ BEGIN
-    CREATE TYPE owner_enum AS ENUM ('PY', 'Kigo', 'Both');
+    CREATE TYPE owner_enum AS ENUM ('CY', 'HY', 'Both');
 EXCEPTION
     WHEN duplicate_object THEN null;
 END $$;
@@ -141,7 +141,7 @@ CREATE POLICY "Public Access" ON user_goals FOR ALL USING (true) WITH CHECK (tru
 
 -- 6. Initial Seed Data
 INSERT INTO members (id, name, color_theme) VALUES 
-('PY', 'PY', 'emerald'), ('Kigo', 'Kigo', 'amber'), ('Both', '共同', 'indigo')
+('CY', 'CY', 'emerald'), ('HY', 'HY', 'amber'), ('Both', '共同', 'indigo')
 ON CONFLICT (id) DO NOTHING;
 
 INSERT INTO market_cache (symbol, price) VALUES

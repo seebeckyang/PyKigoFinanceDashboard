@@ -11,25 +11,25 @@ TRUNCATE TABLE goals CASCADE;
 TRUNCATE TABLE assets CASCADE;
 
 -- 1. Insert Base Assets (Matching Demo IDs where possible for continuity)
--- R1: PY RSU (Global Tech)
+-- R1: CY RSU (Global Tech)
 INSERT INTO assets (id, title, owner, asset_type, currency, ticker_symbol, is_active, avg_cost, strategy_category)
-VALUES ('00000000-0000-0000-0000-000000000001', 'Global Tech RSU', 'PY', 'rsu', 'USD', 'NVDA', true, 0, '成長動能 (科技股)');
+VALUES ('00000000-0000-0000-0000-000000000001', 'Global Tech RSU', 'CY', 'rsu', 'USD', 'NVDA', true, 0, '成長動能 (科技股)');
 
--- R2: PY Stock (MSFT/Growth focus)
+-- R2: CY Stock (MSFT/Growth focus)
 INSERT INTO assets (id, title, owner, asset_type, currency, ticker_symbol, is_active, avg_cost, strategy_category)
-VALUES ('00000000-0000-0000-0000-000000000002', 'Microsoft Corp', 'PY', 'stock', 'USD', 'MSFT', true, 350, '成長動能 (科技股)');
+VALUES ('00000000-0000-0000-0000-000000000002', 'Microsoft Corp', 'CY', 'stock', 'USD', 'MSFT', true, 350, '成長動能 (科技股)');
 
--- R3: Kigo Stock (VOO/Core focus)
+-- R3: HY Stock (VOO/Core focus)
 INSERT INTO assets (id, title, owner, asset_type, currency, ticker_symbol, is_active, avg_cost, strategy_category)
-VALUES ('00000000-0000-0000-0000-000000000003', 'Vanguard S&P 500', 'Kigo', 'stock', 'USD', 'VOO', true, 480, '核心持股 (大型股)');
+VALUES ('00000000-0000-0000-0000-000000000003', 'Vanguard S&P 500', 'HY', 'stock', 'USD', 'VOO', true, 480, '核心持股 (大型股)');
 
 -- R4: Both Cash (Family Reserve)
 INSERT INTO assets (id, title, owner, asset_type, currency, ticker_symbol, is_active, avg_cost, strategy_category)
 VALUES ('00000000-0000-0000-0000-000000000004', 'Family Reserve Fund', 'Both', 'cash', 'TWD', NULL, true, 1, '投機/現金資產');
 
--- R5: Kigo Fixed Deposit (JPY)
+-- R5: HY Fixed Deposit (JPY)
 INSERT INTO assets (id, title, owner, asset_type, currency, ticker_symbol, is_active, avg_cost, strategy_category)
-VALUES ('00000000-0000-0000-0000-000000000005', 'Japan Travel Fund', 'Kigo', 'fixed_deposit', 'JPY', NULL, true, 1, '投機/現金資產');
+VALUES ('00000000-0000-0000-0000-000000000005', 'Japan Travel Fund', 'HY', 'fixed_deposit', 'JPY', NULL, true, 1, '投機/現金資產');
 
 -- R6: Both Cash (Daily)
 INSERT INTO assets (id, title, owner, asset_type, currency, ticker_symbol, is_active, avg_cost, strategy_category)
@@ -49,8 +49,8 @@ INSERT INTO snapshots (id, period_name, created_at) VALUES
 -- Latest Snapshot (2026/2) - Total ~98.42M
 INSERT INTO snapshot_records (snapshot_id, asset_id, quantity, unit_price, fx_rate, total_twd_value) VALUES 
 ('11111111-1111-1111-1111-111111111115', '00000000-0000-0000-0000-000000000001', 2000, 280, 31.6, 17715600), -- RSU
-('11111111-1111-1111-1111-111111111115', '00000000-0000-0000-0000-000000000002', 400, 420.5, 31.6, 49210000), -- Stock PY
-('11111111-1111-1111-1111-111111111115', '00000000-0000-0000-0000-000000000003', 200, 520, 31.6, 11810400), -- Stock Kigo
+('11111111-1111-1111-1111-111111111115', '00000000-0000-0000-0000-000000000002', 400, 420.5, 31.6, 49210000), -- Stock CY
+('11111111-1111-1111-1111-111111111115', '00000000-0000-0000-0000-000000000003', 200, 520, 31.6, 11810400), -- Stock HY
 ('11111111-1111-1111-1111-111111111115', '00000000-0000-0000-0000-000000000004', 9842000, 1, 1, 9842000), -- Cash Both
 ('11111111-1111-1111-1111-111111111115', '00000000-0000-0000-0000-000000000005', 37853846, 1, 0.208, 7873600), -- JPY FD
 ('11111111-1111-1111-1111-111111111115', '00000000-0000-0000-0000-000000000006', 1968400, 1, 1, 1968400); -- Cash Both (R6)
@@ -88,4 +88,4 @@ INSERT INTO goal_asset_mapping (goal_id, asset_id) VALUES
 
 -- Luxury Villa funded by main stocks
 INSERT INTO goal_asset_mapping (goal_id, asset_id) VALUES 
-('22222222-2222-2222-2222-222222222222', '00000000-0000-0000-0000-000000000002'); -- PY Stock
+('22222222-2222-2222-2222-222222222222', '00000000-0000-0000-0000-000000000002'); -- CY Stock

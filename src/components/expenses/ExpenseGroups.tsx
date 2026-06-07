@@ -68,7 +68,7 @@ export const ExpenseItemCard = memo(function ExpenseItemCard({
     const currentFields = {
         store_name: item.store_name,
         category_id: item.category_id || '',
-        paid_by: item.paid_by || 'PY',
+        paid_by: item.paid_by || 'CY',
         paid_for: item.paid_for || 'Both',
         goal_id: item.goal_id || '',
         ...(stagedFields || {})
@@ -188,8 +188,8 @@ export const ExpenseItemCard = memo(function ExpenseItemCard({
                             onChange={(e) => handleFieldChange('paid_by', e.target.value)}
                             className="bg-transparent text-xs font-black text-[#10B981] outline-none cursor-pointer"
                         >
-                            <option value="PY">PY</option>
-                            <option value="Kigo">Kigo</option>
+                            <option value="CY">CY</option>
+                            <option value="HY">HY</option>
                             <option value="Both">Both</option>
                         </select>
                     </div>
@@ -201,8 +201,8 @@ export const ExpenseItemCard = memo(function ExpenseItemCard({
                             className="bg-transparent text-xs font-black text-[#93A4C2] outline-none cursor-pointer uppercase"
                         >
                             <option value="Both">BOTH</option>
-                            <option value="PY">PY</option>
-                            <option value="Kigo">Kigo</option>
+                            <option value="CY">CY</option>
+                            <option value="HY">HY</option>
                         </select>
                     </div>
                 </div>
