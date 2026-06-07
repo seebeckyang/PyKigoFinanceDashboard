@@ -11,8 +11,16 @@
 
 import { createClient } from "@supabase/supabase-js";
 
-const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL;
-const SUPABASE_ANON_KEY = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+// ───────────────────────────────────────────────────────────────────────────
+// 直接寫死 Supabase 連線資訊（family finance war-room / project: bmngtlkkumqtnfrlbydh）
+// 環境變數仍可覆寫（本地測試用），但正式環境不依賴 Vercel 設定即可運作。
+// anon key 是公開金鑰（受 RLS 保護），可安全寫入前端 bundle。
+// ───────────────────────────────────────────────────────────────────────────
+const HARDCODED_URL = "https://bmngtlkkumqtnfrlbydh.supabase.co";
+const HARDCODED_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJtbmd0bGtrdW1xdG5mcmxieWRoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMzNTUyNDUsImV4cCI6MjA4ODkzMTI0NX0.tu_RQ7KFjqbjoqQoSSVinyFobcEKO1o1Wfb9CBxElDY";
+
+const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL || HARDCODED_URL;
+const SUPABASE_ANON_KEY = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || HARDCODED_ANON_KEY;
 
 export const isSupabaseConfigured: boolean = Boolean(SUPABASE_URL && SUPABASE_ANON_KEY);
 
