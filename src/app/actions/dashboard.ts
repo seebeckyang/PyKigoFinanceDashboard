@@ -17,7 +17,7 @@ function buildRawRecords() {
             assets: {
                 currency: h.currency,
                 asset_type: h.category === "成長" ? "stock" : h.category === "投機" ? "stock" : "stock",
-                owner: "Both",
+                owner: "CY",
                 title: h.name,
                 ticker_symbol: h.symbol,
                 strategy_category: h.category,
@@ -32,7 +32,7 @@ function buildRawRecords() {
             assets: {
                 currency: a.currency,
                 asset_type: a.subtype === "定存" ? "fixed_deposit" : "cash",
-                owner: "Both",
+                owner: "CY",
                 title: a.name,
                 strategy_category: "定存/現金",
             },
@@ -43,7 +43,7 @@ function buildRawRecords() {
         records.push({
             id: `fund-${i++}`,
             total_twd_value: Math.round(f.current_value * REAL_DATA.fx),
-            assets: { currency: f.currency, asset_type: "fund", owner: "Both", title: f.name, strategy_category: "定存/現金" },
+            assets: { currency: f.currency, asset_type: "fund", owner: "CY", title: f.name, strategy_category: "定存/現金" },
         });
     });
     // 保單
@@ -51,7 +51,7 @@ function buildRawRecords() {
         records.push({
             id: `pol-${i++}`,
             total_twd_value: Math.round(p.current_value * REAL_DATA.fx),
-            assets: { currency: p.currency, asset_type: "insurance", owner: "Both", title: p.name, strategy_category: "定存/現金" },
+            assets: { currency: p.currency, asset_type: "insurance", owner: "CY", title: p.name, strategy_category: "定存/現金" },
         });
     });
     return records;
@@ -103,7 +103,7 @@ export async function getReportData(_snapshotId?: string) {
     const assetItems = [
         ...REAL_DATA.holdings.map((h, i) => ({
             id: i + 1,
-            owner: "Both",
+            owner: "CY",
             ownerColor: "bg-indigo-100 text-indigo-700",
             type: "股票",
             name: `${h.name} (${h.symbol})`,
@@ -113,7 +113,7 @@ export async function getReportData(_snapshotId?: string) {
         })),
         ...REAL_DATA.accounts.map((a, i) => ({
             id: 1000 + i,
-            owner: "Both",
+            owner: "CY",
             ownerColor: "bg-emerald-100 text-emerald-700",
             type: a.subtype === "定存" ? "定存" : "活存",
             name: `${a.institution} ${a.name}`,

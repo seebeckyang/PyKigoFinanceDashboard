@@ -21,7 +21,7 @@ const DEMO_GOALS = [
 
 const DEMO_ASSETS = [
     { id: "demo-asset-1", title: "Global Savings (USD)", owner: "CY", currency: "USD", asset_type: "cash" },
-    { id: "demo-asset-2", title: "Family Trust (TWD)", owner: "Both", currency: "TWD", asset_type: "cash" }
+    { id: "demo-asset-2", title: "Family Trust (TWD)", owner: "CY", currency: "TWD", asset_type: "cash" }
 ];
 
 // ─────────────────────────────────────────────────────────────────
