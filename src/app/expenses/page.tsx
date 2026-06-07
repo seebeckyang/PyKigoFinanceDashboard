@@ -32,6 +32,7 @@ import {
 import { StatCard } from "@/components/expenses/StatCard";
 import { ExpenseCategoryChart } from "@/components/expenses/ExpenseCategoryChart";
 import { VoiceExpense } from "@/components/expenses/VoiceExpense";
+import { useFxRates } from "@/lib/fx";
 
 const IS_DEMO = process.env.NEXT_PUBLIC_DEMO_MODE === "true";
 
@@ -92,10 +93,19 @@ export default function ExpensesPage() {
 
     const [isListExpanded, setIsListExpanded] = useState(false);
 
-    // Memoized stats calculation
-    const currentMonthExpenses = React.useMemo(() =>
-        stats?.currentMonth?.total || 0,
-        [stats?.currentMonth?.total]);
+    // 即時匯率（多幣別支出統一換算成 TWD）
+    const { convertToTWD, source: fxSource, fetchedAt: fxFetchedAt } = useFxRates();
+
+    // 本期累積支出（以 TWD 為單位）
+    // 說明：stats.currentMonth.total 是 Supabase server-side 加總原始 amount，不懂幣別。
+    // 正確做法：在 client 端拿本期 expenses，一筆筆用 fx 換算後再加總。
+    const currentMonthExpenses = React.useMemo(() => {
+        if (!expenses || expenses.length === 0) return 0;
+        return expenses.reduce(
+            (sum, e: any) => sum + convertToTWD(e.amount, e.currency || "TWD"),
+            0
+        );
+    }, [expenses, convertToTWD]);
 
     // Accurate daily average calculation based on selected range
     const daysCount = React.useMemo(() => {
@@ -322,8 +332,8 @@ export default function ExpensesPage() {
                                 <StatCard
                                     icon={<TrendingUp className="w-6 h-6" />}
                                     label={`${filterMode === 'month' ? '本月' : filterMode === 'quarter' ? '本季' : '本年'}累積支出`}
-                                    value={`NT$ ${currentMonthExpenses.toLocaleString()}`}
-                                    subtext={`期間：${startDate} 至 ${endDate}`}
+                                    value={`NT$ ${Math.round(currentMonthExpenses).toLocaleString()}`}
+                                    subtext={`期間：${startDate} 至 ${endDate}　|　匯率：${fxSource === 'live' ? '即時' : '備援'}${fxFetchedAt ? ' · ' + new Date(fxFetchedAt).toLocaleString('zh-TW', { hour: '2-digit', minute: '2-digit', month: '2-digit', day: '2-digit' }) : ''}`}
                                     color="indigo"
                                     change={stats?.comparison !== undefined ? `${stats.comparison > 0 ? '+' : ''}${stats.comparison}%` : undefined}
                                     loading={isLoading}
@@ -332,7 +342,7 @@ export default function ExpensesPage() {
                                     icon={<BarChart3 className="w-6 h-6" />}
                                     label={`${filterMode === 'month' ? '日均' : filterMode === 'quarter' ? '季日均' : '年日均'}支出估算`}
                                     value={`NT$ ${Math.round(avgDaily).toLocaleString()}`}
-                                    subtext={`基於本期間 ${daysCount} 天支出的平均值`}
+                                    subtext={`基於本期間 ${daysCount} 天的 TWD 換算平均值`}
                                     color="amber"
                                     loading={isLoading}
                                 />
@@ -365,7 +375,7 @@ export default function ExpensesPage() {
                                             <div className="flex flex-col">
                                                 <span className="text-[10px] font-black text-[#5A6B89] uppercase tracking-widest mb-1">{filterMode === 'month' ? '單月' : filterMode === 'quarter' ? '單季' : '年度'}日常生活支出</span>
                                                 <div className="text-3xl font-black text-[#E6EDF7] tracking-tighter">
-                                                    NT$ {expenses.filter(e => !e.goal_id).reduce((sum, e) => sum + (Number(e.amount) || 0), 0).toLocaleString()}
+                                                    NT$ {Math.round(expenses.filter((e: any) => !e.goal_id).reduce((sum, e: any) => sum + convertToTWD(e.amount, e.currency || "TWD"), 0)).toLocaleString()}
                                                 </div>
                                             </div>
                                             <p className="text-xs font-medium text-[#5A6B89] leading-relaxed">
