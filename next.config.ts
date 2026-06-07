@@ -1,9 +1,9 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  // 純前端靜態輸出（Demo Mode）— 可直接部署到 S3 / pplx.app，無需常駐 server
+  // 純前端靜態輸出（家庭財務戰情室）— 部署到 Vercel 靜態託管，連線到 Supabase
   output: "export",
-  assetPrefix: "./",
+  // 注意：不要設 assetPrefix: "./"，相對路徑會讓 /expenses/ 子頁載入 chunks 變成 404
   trailingSlash: true,
   images: { unoptimized: true },
   eslint: { ignoreDuringBuilds: true },
