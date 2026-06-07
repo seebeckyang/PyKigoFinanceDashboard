@@ -268,6 +268,7 @@ export function ExpenseEntryModal({ onClose, categories, goals, onSubmit, onSubm
     const [payload, setPayload] = useState({
         date: new Date().toISOString().split('T')[0],
         amount: '',
+        currency: 'TWD',
         store_name: '',
         project_label: 'general',
         goal_id: '',
@@ -321,14 +322,28 @@ export function ExpenseEntryModal({ onClose, categories, goals, onSubmit, onSubm
                             />
                         </div>
                         <div className="col-span-2 sm:col-span-1 space-y-1.5">
-                            <label className="text-xs font-bold text-[#93A4C2] uppercase tracking-wider">金額 (NT$)</label>
-                            <input
-                                type="number"
-                                placeholder="0"
-                                value={payload.amount}
-                                onChange={(e) => setPayload({ ...payload, amount: e.target.value })}
-                                className="w-full bg-[#111A2E] border border-[#1F2C4A] rounded-xl px-4 py-2.5 text-sm font-bold text-[#E6EDF7] focus:ring-2 focus:ring-[#2E7CF6]/20 focus:border-[#2E7CF6] outline-none"
-                            />
+                            <label className="text-xs font-bold text-[#93A4C2] uppercase tracking-wider">金額 / 幣別</label>
+                            <div className="flex gap-2">
+                                <input
+                                    type="number"
+                                    placeholder="0"
+                                    value={payload.amount}
+                                    onChange={(e) => setPayload({ ...payload, amount: e.target.value })}
+                                    className="flex-1 min-w-0 bg-[#111A2E] border border-[#1F2C4A] rounded-xl px-3 py-2.5 text-sm font-bold text-[#E6EDF7] focus:ring-2 focus:ring-[#2E7CF6]/20 focus:border-[#2E7CF6] outline-none"
+                                />
+                                <select
+                                    value={payload.currency}
+                                    onChange={(e) => setPayload({ ...payload, currency: e.target.value })}
+                                    className="w-[88px] flex-shrink-0 bg-[#111A2E] border border-[#1F2C4A] rounded-xl px-2 py-2.5 text-sm font-bold text-[#E6EDF7] focus:ring-2 focus:ring-[#2E7CF6]/20 focus:border-[#2E7CF6] outline-none cursor-pointer"
+                                >
+                                    <option value="TWD">TWD</option>
+                                    <option value="USD">USD</option>
+                                    <option value="CNY">CNY</option>
+                                    <option value="EUR">EUR</option>
+                                    <option value="JPY">JPY</option>
+                                    <option value="HKD">HKD</option>
+                                </select>
+                            </div>
                         </div>
                         <div className="col-span-2 space-y-1.5">
                             <label className="text-xs font-bold text-[#93A4C2] uppercase tracking-wider">店家 / 支出項目</label>
