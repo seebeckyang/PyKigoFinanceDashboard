@@ -16,11 +16,12 @@
 import { useEffect, useMemo, useState } from "react";
 import { useFxRates, formatMoneyWithTWD, formatMoney } from "@/lib/fx";
 import EntityModal, { EntityKind } from "@/components/holdings/EntityModal";
-import { Pencil, Trash2, Plus, RefreshCw, AlertTriangle } from "lucide-react";
+import { useLiveQuotes, yahooSym } from "@/lib/useLiveQuotes";
+import { Pencil, Trash2, Plus, RefreshCw, AlertTriangle, TrendingUp, TrendingDown } from "lucide-react";
 
 type Institution = { id: string; name: string; type: string; country?: string; sort_order?: number };
 type Account = { id: string; institution_id: string; name: string; account_type: string; currency: string; balance: number };
-type Holding = { id: string; institution_id: string; symbol: string; name?: string; market?: string; shares: number; market_value?: number; market_price?: number; currency: string; classification?: string };
+type Holding = { id: string; institution_id: string; symbol: string; name?: string; market?: string; shares: number; market_value?: number; market_price?: number; currency: string; classification?: string; live_price?: number; live_changePct?: number };
 type Fund = { id: string; institution_id: string; fund_code?: string; name: string; market_value: number; currency: string };
 type Policy = { id: string; institution_id: string; policy_name: string; policy_type?: string; current_value: number; currency: string };
 type Subscription = { id: string; service_name: string; amount: number; currency: string; cycle: string; next_charge_at?: string; category?: string; planned_cancel?: boolean };
@@ -37,6 +38,21 @@ export default function HoldingsPage() {
     const [modal, setModal] = useState<{ open: boolean; kind: EntityKind; initial?: any; extra?: any }>({ open: false, kind: "institution" });
 
     const { convertToTWD } = useFxRates();
+
+    // 即時行情:從 holdings 收集要查的 symbols
+    const symbolsToQuote = useMemo(() => holdings.map(h => ({ symbol: h.symbol, market: h.market })), [holdings]);
+    const liveQuotes = useLiveQuotes(symbolsToQuote);
+
+    // 即時市值版的 holdings:有 live price 就用 shares × live
+    const holdingsWithLive = useMemo(() => holdings.map(h => {
+        const ys = yahooSym(h.symbol, h.market);
+        const q = liveQuotes[ys] || liveQuotes[h.symbol];
+        if (q && q.price > 0 && Number(h.shares) > 0) {
+            const live_mv = Number(h.shares) * q.price;
+            return { ...h, market_value: live_mv, live_price: q.price, live_changePct: q.changePct };
+        }
+        return h;
+    }), [holdings, liveQuotes]);
 
     async function loadAll() {
         setErr(null);
@@ -76,17 +92,17 @@ export default function HoldingsPage() {
     const totalTwd = useMemo(() => {
         let t = 0;
         for (const a of accounts) t += convertToTWD(Number(a.balance) || 0, a.currency);
-        for (const h of holdings) t += convertToTWD(Number(h.market_value) || 0, h.currency);
+        for (const h of holdingsWithLive) t += convertToTWD(Number(h.market_value) || 0, h.currency);
         for (const f of funds) t += convertToTWD(Number(f.market_value) || 0, f.currency);
         for (const p of policies) t += convertToTWD(Number(p.current_value) || 0, p.currency);
         return t;
-    }, [accounts, holdings, funds, policies, convertToTWD]);
+    }, [accounts, holdingsWithLive, funds, policies, convertToTWD]);
 
     // ─── 每家機構小計 ───
     function instTotal(instId: string): number {
         let t = 0;
         for (const a of accounts.filter(x => x.institution_id === instId)) t += convertToTWD(Number(a.balance) || 0, a.currency);
-        for (const h of holdings.filter(x => x.institution_id === instId)) t += convertToTWD(Number(h.market_value) || 0, h.currency);
+        for (const h of holdingsWithLive.filter(x => x.institution_id === instId)) t += convertToTWD(Number(h.market_value) || 0, h.currency);
         for (const f of funds.filter(x => x.institution_id === instId)) t += convertToTWD(Number(f.market_value) || 0, f.currency);
         for (const p of policies.filter(x => x.institution_id === instId)) t += convertToTWD(Number(p.current_value) || 0, p.currency);
         return t;
@@ -97,7 +113,7 @@ export default function HoldingsPage() {
         if (!totalTwd) return [];
         const alerts: { symbol: string; pct: number; level: "warning" | "danger" }[] = [];
         const bySymbol = new Map<string, number>();
-        for (const h of holdings) {
+        for (const h of holdingsWithLive) {
             const twd = convertToTWD(Number(h.market_value) || 0, h.currency);
             bySymbol.set(h.symbol, (bySymbol.get(h.symbol) ?? 0) + twd);
         }
@@ -107,7 +123,7 @@ export default function HoldingsPage() {
             else if (pct >= 10) alerts.push({ symbol: sym, pct, level: "warning" });
         }
         return alerts.sort((a, b) => b.pct - a.pct);
-    }, [holdings, totalTwd, convertToTWD]);
+    }, [holdingsWithLive, totalTwd, convertToTWD]);
 
     async function handleDelete(kind: EntityKind, id: string) {
         if (!confirm("確定刪除?")) return;
@@ -196,7 +212,7 @@ export default function HoldingsPage() {
                     inst={inst}
                     totalTwd={instTotal(inst.id)}
                     accounts={accounts.filter(a => a.institution_id === inst.id)}
-                    holdings={holdings.filter(h => h.institution_id === inst.id)}
+                    holdings={holdingsWithLive.filter(h => h.institution_id === inst.id)}
                     funds={funds.filter(f => f.institution_id === inst.id)}
                     policies={policies.filter(p => p.institution_id === inst.id)}
                     convertToTWD={convertToTWD}
@@ -293,11 +309,23 @@ function InstitutionCard(props: {
                 renderItem={(h) => {
                     const mv = Number(h.market_value) || 0;
                     const m = formatMoneyWithTWD(mv, h.currency, convertToTWD);
+                    const live = (h as any).live_price as number | undefined;
+                    const chg = (h as any).live_changePct as number | undefined;
                     return (
                         <ItemRow key={h.id}
                             left={<div>
-                                <div className="text-sm font-medium">{h.symbol} <span className="text-gray-500 font-normal">· {h.name}</span></div>
-                                <div className="text-[10px] text-gray-500">{h.shares} 股 · {h.market} {h.classification && <span className="ml-1 text-blue-400">[{h.classification}]</span>}</div>
+                                <div className="text-sm font-medium">
+                                    {h.symbol} <span className="text-gray-500 font-normal">· {h.name}</span>
+                                    {chg !== undefined && (
+                                        <span className={`ml-2 text-[10px] inline-flex items-center gap-0.5 ${chg >= 0 ? "text-green-400" : "text-red-400"}`}>
+                                            {chg >= 0 ? <TrendingUp size={10} /> : <TrendingDown size={10} />}{chg.toFixed(2)}%
+                                        </span>
+                                    )}
+                                </div>
+                                <div className="text-[10px] text-gray-500">
+                                    {h.shares} 股{live ? ` × ${formatMoney(live, h.currency)}` : ""} · {h.market || "--"}
+                                    {h.classification && <span className="ml-1 text-blue-400">[{h.classification}]</span>}
+                                </div>
                             </div>}
                             right={<div className="text-right">
                                 <div className="text-sm tabular-nums">{m.primary}</div>
