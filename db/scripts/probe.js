@@ -2,8 +2,8 @@
 const { Client } = require("pg");
 
 const SECRET = process.env.SUPABASE_SECRET_KEY;
-const URL = process.env.SUPABASE_URL || "https://bmngtlkkumqtnfrlbydh.supabase.co";
-const REF = new URL(URL).hostname.split(".")[0];
+const SB_URL = process.env.SUPABASE_URL || "https://bmngtlkkumqtnfrlbydh.supabase.co";
+const REF = new URL(SB_URL).hostname.split(".")[0];
 
 const candidates = [
     // Session pooler (IPv4, 5432)

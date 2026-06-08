@@ -9,9 +9,9 @@ const fs = require("fs");
 const path = require("path");
 
 const SECRET = process.env.SUPABASE_SECRET_KEY;
-const URL = process.env.SUPABASE_URL || "https://bmngtlkkumqtnfrlbydh.supabase.co";
+const SB_URL = process.env.SUPABASE_URL || "https://bmngtlkkumqtnfrlbydh.supabase.co";
 if (!SECRET) { console.error("SUPABASE_SECRET_KEY 未設定"); process.exit(1); }
-const REF = new URL(URL).hostname.split(".")[0];
+const REF = new URL(SB_URL).hostname.split(".")[0];
 
 const POOLERS = [
     "aws-0-ap-southeast-1.pooler.supabase.com",
