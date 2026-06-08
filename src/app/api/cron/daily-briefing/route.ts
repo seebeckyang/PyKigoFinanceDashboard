@@ -7,6 +7,7 @@
 
 import { NextResponse } from "next/server";
 import { supabaseAdmin, HAS_SECRET } from "@/lib/supabaseAdmin";
+import * as J from "@/lib/jsonStore";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -51,12 +52,12 @@ async function fxToTwd(): Promise<Record<string, number>> {
 export async function GET() {
     if (!HAS_SECRET) return NextResponse.json({ error: "SECRET 未設定" }, { status: 503 });
 
-    // 1) 撈持股 / 帳戶
-    const [{ data: holdings }, { data: accounts }, { data: funds }, { data: policies }] = await Promise.all([
-        supabaseAdmin.from("holdings").select("*"),
-        supabaseAdmin.from("accounts").select("*"),
-        supabaseAdmin.from("funds").select("*"),
-        supabaseAdmin.from("policies").select("*"),
+    // 1) 撈持股 / 帳戶(走 jsonStore)
+    const [holdings, accounts, funds, policies] = await Promise.all([
+        J.listAll("holding").catch(() => []),
+        J.listAll("account").catch(() => []),
+        J.listAll("fund").catch(() => []),
+        J.listAll("policy").catch(() => []),
     ]);
 
     // 2) 拉行情(持股 + 大盤指數)
@@ -105,14 +106,7 @@ export async function GET() {
 
     const today = new Date().toISOString().slice(0, 10);
 
-    // 6) 寫 daily_snapshots
-    await supabaseAdmin.from("daily_snapshots").upsert({
-        snapshot_date: today,
-        total_twd: Math.round(totalTwd),
-        payload: { positions, market, fx, top3, bottom3 } as any,
-    }, { onConflict: "snapshot_date" });
-
-    // 7) 寫戰情摘要到 alerts
+    // 6) 寫 snapshots(用現有表，period_name=date,ai_summary=記重點)
     const summary = [
         `📊 ${today} 戰情報`,
         `家庭資產:NT$ ${Math.round(totalTwd).toLocaleString()}`,
@@ -121,15 +115,11 @@ export async function GET() {
         `大盤: ${market.map(m => `${m.symbol} ${m.changePct?.toFixed(2)}%`).join(" / ")}`,
     ].join("\n");
 
-    await supabaseAdmin.from("alerts").upsert({
-        kind: "daily_briefing",
-        level: "info",
-        ref_id: today,
-        title: `${today} 戰情報`,
-        body: summary,
-        status: "active",
-        created_at: new Date().toISOString(),
-    }, { onConflict: "ref_id,kind" });
+    await supabaseAdmin.from("snapshots").upsert({
+        period_name: today,
+        ai_summary: summary,
+        notes: JSON.stringify({ total_twd: Math.round(totalTwd), positions_count: positions.length }),
+    }, { onConflict: "period_name" });
 
     return NextResponse.json({
         ok: true,

@@ -1,9 +1,9 @@
-// /api/cron/subscription-renewals
-// 每天跑一次,撈出 30 天內 / 7 天內到期的訂閱,寫入 alerts 表(系統內通知)
-// 之後可以接 Perplexity push notification
+// /api/cron/subscription-renewals — JSON 大法版
+// 走 jsonStore 撈訂閱,把續費警示寫到 snapshots(period_name="renewals:YYYY-MM-DD")
 
 import { NextResponse } from "next/server";
 import { supabaseAdmin, HAS_SECRET } from "@/lib/supabaseAdmin";
+import * as J from "@/lib/jsonStore";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -11,42 +11,36 @@ export const dynamic = "force-dynamic";
 export async function GET() {
     if (!HAS_SECRET) return NextResponse.json({ error: "SECRET 未設定" }, { status: 503 });
 
+    const subs = await J.listAll("subscription").catch(() => []);
+
     const now = new Date();
-    const in7 = new Date(now.getTime() + 7 * 86400_000);
-    const in30 = new Date(now.getTime() + 30 * 86400_000);
-
-    const { data: subs, error } = await supabaseAdmin
-        .from("subscriptions")
-        .select("*")
-        .not("next_charge_at", "is", null);
-    if (error) return NextResponse.json({ error: error.message }, { status: 500 });
-
     const alerts: any[] = [];
-    for (const s of subs ?? []) {
+    for (const s of subs) {
+        if (!s.next_charge_at) continue;
+        if (s.planned_cancel) continue;
         const due = new Date(s.next_charge_at);
         const days = Math.ceil((due.getTime() - now.getTime()) / 86400_000);
-        let level: "info" | "warning" | "danger" | null = null;
-        if (days <= 7 && days >= 0) level = "warning";
-        else if (days <= 30 && days > 7) level = "info";
+        let level: "info" | "warning" | null = null;
+        if (days >= 0 && days <= 7) level = "warning";
+        else if (days > 7 && days <= 30) level = "info";
         if (!level) continue;
-        if (s.planned_cancel) continue;
         alerts.push({
-            kind: "subscription_renewal",
-            level,
-            ref_id: s.id,
-            title: `${s.service_name} 將於 ${days} 天後續扣`,
-            body: `${s.amount} ${s.currency} (${s.cycle}) · ${s.payment_method || ""}`,
-            due_at: s.next_charge_at,
+            service: s.service_name, amount: s.amount, currency: s.currency,
+            cycle: s.cycle, due_at: s.next_charge_at, days_until: days, level,
         });
     }
 
     if (alerts.length > 0) {
-        // 寫入 alerts 表(覆寫同 ref_id 的 active 紀錄)
-        for (const a of alerts) {
-            await supabaseAdmin.from("alerts")
-                .upsert({ ...a, status: "active", created_at: new Date().toISOString() }, { onConflict: "ref_id,kind" });
-        }
+        const today = new Date().toISOString().slice(0, 10);
+        const summary = alerts.map(a =>
+            `${a.level === "warning" ? "🔥" : "📅"} ${a.service} 將於 ${a.days_until} 天後續扣 ${a.amount} ${a.currency}`
+        ).join("\n");
+        await supabaseAdmin.from("snapshots").upsert({
+            period_name: `renewals:${today}`,
+            ai_summary: summary,
+            notes: JSON.stringify({ alerts }),
+        }, { onConflict: "period_name" });
     }
 
-    return NextResponse.json({ ok: true, found: subs?.length ?? 0, alerts_created: alerts.length, alerts });
+    return NextResponse.json({ ok: true, total: subs.length, alerts });
 }
