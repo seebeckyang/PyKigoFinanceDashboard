@@ -14,11 +14,23 @@ if (!SECRET) { console.error("SUPABASE_SECRET_KEY 未設定"); process.exit(1); 
 const REF = new URL(SB_URL).hostname.split(".")[0];
 
 const POOLERS = [
+    // 新版 aws-1-*(現行)
+    "aws-1-ap-southeast-1.pooler.supabase.com",
+    "aws-1-ap-northeast-1.pooler.supabase.com",
+    "aws-1-us-east-1.pooler.supabase.com",
+    "aws-1-us-east-2.pooler.supabase.com",
+    "aws-1-us-west-1.pooler.supabase.com",
+    "aws-1-eu-central-1.pooler.supabase.com",
+    "aws-1-eu-west-1.pooler.supabase.com",
+    "aws-1-eu-west-2.pooler.supabase.com",
+    "aws-1-ap-south-1.pooler.supabase.com",
+    "aws-1-ap-southeast-2.pooler.supabase.com",
+    "aws-1-ca-central-1.pooler.supabase.com",
+    "aws-1-sa-east-1.pooler.supabase.com",
+    // 興許仍有舊版 aws-0-*
     "aws-0-ap-southeast-1.pooler.supabase.com",
     "aws-0-ap-northeast-1.pooler.supabase.com",
     "aws-0-us-east-1.pooler.supabase.com",
-    "aws-0-us-west-1.pooler.supabase.com",
-    "aws-0-eu-central-1.pooler.supabase.com",
 ];
 
 async function connect() {
