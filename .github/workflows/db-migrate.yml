@@ -1,0 +1,32 @@
+name: DB Migrate
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "db/migrations/**"
+      - ".github/workflows/db-migrate.yml"
+  workflow_dispatch:
+
+jobs:
+  migrate:
+    runs-on: ubuntu-latest
+    env:
+      SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+      SUPABASE_SECRET_KEY: ${{ secrets.SUPABASE_SECRET_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install pg
+        run: npm init -y && npm install pg
+
+      - name: Probe connection paths
+        run: node db/scripts/probe.js
+        continue-on-error: true
+
+      - name: Run migrations
+        run: node db/scripts/migrate.js
